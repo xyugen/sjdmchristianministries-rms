@@ -20,7 +20,7 @@ const Page = () => {
           className="mx-auto size-20 rounded-sm"
         />
 
-        <h2 className="text-center text-xl font-bold leading-tight text-foreground text-blue-gem-100 sm:text-2xl">
+        <h2 className="text-center text-xl font-bold leading-tight text-foreground !text-blue-gem-100 sm:text-2xl">
           SJDM Christian Ministries
         </h2>
       </div>
