@@ -19,6 +19,19 @@ export default {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
+				'blue-gem': {
+					'50': '#f2f0ff',
+					'100': '#e8e4ff',
+					'200': '#d3ccff',
+					'300': '#b3a4ff',
+					'400': '#8f70ff',
+					'500': '#6e37ff',
+					'600': '#5f0fff',
+					'700': '#5000ff',
+					'800': '#4200da',
+					'900': '#3400a5',
+					'950': '#1f007a',
+				},
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
