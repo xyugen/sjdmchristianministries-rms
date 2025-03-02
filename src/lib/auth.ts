@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-import { betterAuth } from "better-auth";
-
-export const auth = betterAuth({
-  
-});
-=======
 import { db } from "@/server/db";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
@@ -21,4 +14,3 @@ export const auth = betterAuth({
   },
   plugins: [admin()],
 });
->>>>>>> main
