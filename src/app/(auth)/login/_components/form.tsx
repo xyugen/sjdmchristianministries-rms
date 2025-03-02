@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import SubmitButton from "@/components/form/submit-button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
@@ -11,13 +11,19 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { PageRoutes } from "@/constants/page-routes";
+import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { type z } from "zod";
 import { formSchema } from "./schema";
 
 const LoginForm = () => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -29,8 +35,25 @@ const LoginForm = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { email, password, rememberMe } = values;
-
-    // TODO: Add login logic
+    
+    const toastId = toast.loading("Signing in...");
+    try {
+      const response = await authClient.signIn.email({
+        email,
+        password,
+        rememberMe,
+      });
+      if (response.error) {
+        throw new Error(response.error.message);
+      } else {
+        toast.success("Signed in successfully!", { id: toastId });
+        router.push(PageRoutes.DASHBOARD);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message, { id: toastId });
+      }
+    }
   };
 
   return (
@@ -86,12 +109,12 @@ const LoginForm = () => {
             </FormItem>
           )}
         />
-        <Button
-          // formState={form.formState}
+        <SubmitButton
+          formState={form.formState}
           className="inline-flex w-full items-center justify-center rounded-md px-3.5 py-2.5 font-semibold leading-7"
         >
           Sign In <Mail className="ml-1 size-4" />
-        </Button>
+        </SubmitButton>
       </form>
     </Form>
   );

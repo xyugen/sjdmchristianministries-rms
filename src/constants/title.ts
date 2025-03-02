@@ -1,0 +1,1 @@
+export const title = "SJDM Christian Ministry";
