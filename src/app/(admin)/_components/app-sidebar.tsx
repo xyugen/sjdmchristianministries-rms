@@ -11,6 +11,7 @@ import {
 
 import { PageRoutes } from "@/constants/page-routes";
 import AppMainSidebar from "./app-main-sidebar";
+import { AppUserSidebar } from "./app-user-sidebar";
 
 export function AppSidebar() {
   return (
@@ -18,8 +19,9 @@ export function AppSidebar() {
       <SidebarHeader className="p-1.5 text-center text-lg font-medium">
         SJDM Christian Ministry
       </SidebarHeader>
+
       <SidebarContent className="mt-4">
-        <SidebarGroup className="pb-0 text-base">
+        <SidebarGroup>
           <SidebarMenuButton asChild>
             <a href={PageRoutes.DASHBOARD}>
               <Home />
@@ -31,8 +33,11 @@ export function AppSidebar() {
         <SidebarGroup>
           <AppMainSidebar />
         </SidebarGroup>
-      </SidebarContent>
-      <SidebarFooter></SidebarFooter>
+        </SidebarContent>
+
+      <SidebarFooter>
+        <AppUserSidebar/>
+      </SidebarFooter>
     </Sidebar>
   );
 }

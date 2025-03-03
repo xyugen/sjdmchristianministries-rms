@@ -1,9 +1,9 @@
-import { FolderDown } from "lucide-react";
+import { FolderDown, FileLock2  } from "lucide-react";
 
 export const RecordMenuItems = [
     {
       title: "Administrative Records",
-      icon: FolderDown,
+      icon: FileLock2,
       isActive: false,
       items: [
         {
