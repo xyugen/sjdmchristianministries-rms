@@ -1,9 +1,17 @@
-import React from 'react'
+import React from "react";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "./_components/app-sidebar";
 
-const Layout = ({ children }: { children: React.ReactNode}) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className="flex min-h-screen items-center p-4">{children}</main>
+    <SidebarProvider>
+      <AppSidebar />
+      <main className="flex min-h-screen items-center p-4">
+        <SidebarTrigger />
+        {children}
+      </main>
+    </SidebarProvider>
   );
-}
+};
 
-export default Layout
+export default Layout;
