@@ -15,8 +15,8 @@ export enum PageRoutes {
   TRAINING_RECORDS = `${HUMAN_RESOURCE}/training-records`,
 
   //Financial Records
-  FINANCIAL_RECORDS = "/financial-records",
-  FINANCIAL_REPORTS = `${FINANCIAL_RECORDS}/financial-reports`,
-  EXPENSE_INVOICES = `${FINANCIAL_RECORDS}/expense-invoices`,
-  PURCHASE_ORDERS_RECEIPTS = `${FINANCIAL_RECORDS}/purchase-orders-receipts`,
+  FINANCIAL= "/financial",
+  FINANCIAL_REPORTS = `${FINANCIAL}/financial-reports`,
+  EXPENSE_INVOICES = `${FINANCIAL}/expense-invoices`,
+  PURCHASE_ORDERS_RECEIPTS = `${FINANCIAL}/purchase-orders-receipts`,
 }
