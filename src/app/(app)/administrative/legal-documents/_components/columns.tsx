@@ -1,5 +1,4 @@
-import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react"
+import { type ColumnDef } from "@tanstack/react-table";
 export type Document = {
   id: string;
   title: string;
