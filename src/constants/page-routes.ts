@@ -1,7 +1,7 @@
 export enum PageRoutes {
   LOGIN = "/login",
 
-  DASHBOARD = "/dashboard", 
+  DASHBOARD = "/", 
 
   //Administrative Records
   ADMINISTRATIVE = "/administrative",
