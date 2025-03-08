@@ -1,7 +1,7 @@
 export enum PageRoutes {
   LOGIN = "/login",
 
-  DASHBOARD = "/dashboard", 
+  DASHBOARD = "/", 
 
   //Administrative Records
   ADMINISTRATIVE = "/administrative",
@@ -10,7 +10,7 @@ export enum PageRoutes {
   LEGAL_DOCUMENTS = `${ADMINISTRATIVE}/legal-documents`,
 
   //Human Resource Records
-  HUMAN_RESOURCE = "/human-resource",
+  HUMAN_RESOURCE = "/human-resources",
   EMPLOYEE_PROFILES = `${HUMAN_RESOURCE}/employee-profiles`,
   TRAINING_RECORDS = `${HUMAN_RESOURCE}/training-records`,
 
