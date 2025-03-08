@@ -13,7 +13,29 @@ export const metadata: Metadata = {
     template: `%s | ${title}`,
   },
   description: "A record management system for the SJDM Christian Ministry",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [
+    { rel: "icon", url: "/favicon.ico" },
+    {
+      rel: "apple-touch-icon",
+      url: "/apple-touch-icon.png",
+    },
+    {
+      rel: "icon",
+      type: "image/png",
+      sizes: "32x32",
+      url: "/favicon-32x32.png",
+    },
+    {
+      rel: "icon",
+      type: "image/png",
+      sizes: "16x16",
+      url: "/favicon-16x16.png",
+    },
+    {
+      rel: "manifest",
+      url: "/site.webmanifest",
+    },
+  ],
 };
 
 export default function RootLayout({

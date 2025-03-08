@@ -1,6 +1,6 @@
 "use client";
-import { ColumnDef } from "@tanstack/react-table";
-import { Checkbox } from "@/components/ui/checkbox"
+import { Checkbox } from "@/components/ui/checkbox";
+import { type ColumnDef } from "@tanstack/react-table";
 export type Document = {
   issuedBy: string;
   docType: string;
