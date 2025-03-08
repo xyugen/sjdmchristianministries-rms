@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 
 import { type ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox"
+=======
+"use client";
+import { Checkbox } from "@/components/ui/checkbox";
+import { type ColumnDef } from "@tanstack/react-table";
+>>>>>>> dev/gian
 export type Document = {
   issuedBy: string;
   docType: string;
