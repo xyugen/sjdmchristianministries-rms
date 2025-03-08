@@ -4,6 +4,7 @@ import {
   ColumnDef,
   ColumnFiltersState,
   flexRender,
+  getPaginationRowModel,
   getCoreRowModel,
   getFilteredRowModel,
   useReactTable,
@@ -35,6 +36,7 @@ export function DataTable<TData, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     state: {
@@ -46,16 +48,18 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter Title..."
-          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+          placeholder="Document Title..."
+          value={
+            (table.getColumn("docType")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
+            table.getColumn("docType")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
       </div>
       <div>
-        <Table className="w-[95vw] max-w-[1000px]">
+        <Table className="w-full max-w-full sm:w-[95vw] sm:max-w-[900px]">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -103,7 +107,29 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
-      </div>  
+      </div>
+      <div className="flex items-center justify-end space-x-2 py-2">
+      <div className="flex-1 text-sm text-muted-foreground">
+        {table.getFilteredSelectedRowModel().rows.length} of{" "}
+        {table.getFilteredRowModel().rows.length} row(s) selected.
+      </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </Button>
+      </div>
     </div>
   );
 }

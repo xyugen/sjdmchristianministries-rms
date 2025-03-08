@@ -9,32 +9,18 @@ export const metadata: Metadata = {
 
 const data: Document[] = [
   {
-    id: "marissa123",
-    title: "Christian Ministry Policies and Procedures",
-    dateCreated: "2023-10-01",
-    author: "Author Name",
-    status: "Draft",
+    issuedBy: "Marissa123",
+    docType: "Christian Ministry Policies and Procedures",
+    docNumber: 43851,
+    issueDate: new Date("2023-02-10"),
+    expiryDate: new Date("2024-02-10"),
   },
   {
-    id: "marissa123",
-    title: "Employee Handbook",
-    dateCreated: "2023-10-01",
-    author: "Author Name",
-    status: "Draft",
-  },
-  {
-    id: "marissa123",
-    title: "Meeting Agendas",
-    dateCreated: "2023-10-01",
-    author: "Author Name",
-    status: "Draft",
-  },
-  {
-    id: "marissa123",
-    title: "Budget Report",
-    dateCreated: "2023-10-01",
-    author: "Author Name",
-    status: "Draft",
+    issuedBy: "Columbres123",
+    docType: "Legal Documents",
+    docNumber: 43852,
+    issueDate: new Date("2023-03-10"),
+    expiryDate: new Date("2024-03-10"),
   },
 ];
 
