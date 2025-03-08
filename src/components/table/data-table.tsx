@@ -13,8 +13,6 @@ import {
 
 import { Button } from "@/components/ui/button";
 
-import { Input } from "@/components/ui/input";
-
 import {
   Table,
   TableBody,
@@ -23,6 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import SearchFilter from "./search-filter";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -36,6 +35,7 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
+  
   const table = useReactTable({
     data,
     columns,
@@ -50,18 +50,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Document Title..."
-          value={
-            (table.getColumn("docType")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn("docType")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-      </div>
+      <SearchFilter table={table} column="docType"/>
       <div>
         <Table className="w-full max-w-full sm:w-[95vw] sm:max-w-[900px]">
           <TableHeader>
