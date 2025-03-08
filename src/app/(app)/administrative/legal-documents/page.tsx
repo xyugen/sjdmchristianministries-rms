@@ -1,9 +1,9 @@
 import { type Metadata } from "next";
 import * as React from "react";
 import { columns, type Document } from "./_components/columns";
-import { DataTable } from "@/components/table/data-table";
 import { Separator } from "@/components/ui/separator";
 import BreadcrumbLayout from "@/components/breadcrumb/page-breadcrumb";
+import { DataTable } from "./_components/data-table";
 
 export const metadata: Metadata = {
   title: "Legal Documents",
@@ -35,7 +35,7 @@ const Page = () => {
       </div>
 
       <div className="container mx-auto py-8">
-        <DataTable columns={columns} data={data} filteredColumn="docType" />
+        <DataTable columns={columns} data={data} />
       </div>
     </div>
   );

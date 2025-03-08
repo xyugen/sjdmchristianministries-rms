@@ -12,7 +12,6 @@ import {
 } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 import {
   Table,
@@ -22,17 +21,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { DataTableToolbar } from "./table-toolbar";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  filteredColumn : string
 }
+
+
+
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  filteredColumn
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
@@ -52,16 +53,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center py-4">
-      <Input
-        placeholder={`Search ${String(table.getColumn(filteredColumn)?.columnDef.header)}...`}
-        value={(table.getColumn(filteredColumn)?.getFilterValue() as string) ?? ""}
-        onChange={(event) =>
-          table.getColumn(filteredColumn)?.setFilterValue(event.target.value)
-        }
-        className="max-w-sm"
-      />
-    </div>
+      <DataTableToolbar table={table} />
       <div>
         <Table className="w-full max-w-full sm:w-[95vw] sm:max-w-[900px]">
           <TableHeader>
