@@ -26,11 +26,13 @@ import SearchFilter from "./search-filter";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  filteredColumn : string
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  filteredColumn
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
@@ -50,7 +52,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <SearchFilter table={table} column="docType"/>
+      <SearchFilter table={table} column={filteredColumn}/>
       <div>
         <Table className="w-full max-w-full sm:w-[95vw] sm:max-w-[900px]">
           <TableHeader>

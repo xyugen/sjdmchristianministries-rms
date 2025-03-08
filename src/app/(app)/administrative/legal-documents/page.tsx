@@ -35,7 +35,7 @@ const Page = () => {
       </div>
 
       <div className="container mx-auto py-8">
-        <DataTable columns={columns} data={data} />
+        <DataTable columns={columns} data={data} filteredColumn="docType" />
       </div>
     </div>
   );
