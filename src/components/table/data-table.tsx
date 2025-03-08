@@ -12,6 +12,7 @@ import {
 } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 import {
   Table,
@@ -21,7 +22,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import SearchFilter from "./search-filter";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -52,7 +52,16 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <SearchFilter table={table} column={filteredColumn}/>
+      <div className="flex items-center py-4">
+      <Input
+        placeholder={`Search ${String(table.getColumn(filteredColumn)?.columnDef.header)}...`}
+        value={(table.getColumn(filteredColumn)?.getFilterValue() as string) ?? ""}
+        onChange={(event) =>
+          table.getColumn(filteredColumn)?.setFilterValue(event.target.value)
+        }
+        className="max-w-sm"
+      />
+    </div>
       <div>
         <Table className="w-full max-w-full sm:w-[95vw] sm:max-w-[900px]">
           <TableHeader>
