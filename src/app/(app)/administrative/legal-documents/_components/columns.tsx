@@ -48,9 +48,19 @@ export const columns: ColumnDef<Document>[] = [
   {
     accessorKey: "issueDate",
     header: "Issue Date",
+    cell: ({ getValue }) => {
+      const rawDate = new Date(getValue() as string);
+      const formattedDate = rawDate.toLocaleDateString("en-US");  
+      return formattedDate;
+    },
   },
   {
     accessorKey: "expiryDate",
     header: "Expiry Date",
+    cell: ({ getValue }) => {
+      const rawDate = new Date(getValue() as string);
+      const formattedDate = rawDate.toLocaleDateString("en-US");  
+      return formattedDate;
+    },
   },
 ];

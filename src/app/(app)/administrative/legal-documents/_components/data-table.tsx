@@ -53,9 +53,24 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
+<<<<<<< HEAD
       <DataTableToolbar table={table} />
+=======
+      <div className="flex items-center py-4">
+        <Input
+          placeholder="Document Type..."
+          value={
+            (table.getColumn("docType")?.getFilterValue() as string) ?? ""
+          }
+          onChange={(event) =>
+            table.getColumn("docType")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+      </div>
+>>>>>>> dev/gian
       <div>
-        <Table className="w-full max-w-full sm:w-[95vw] sm:max-w-[900px]">
+        <Table className="w-full max-w-full sm:w-[95vw] sm:max-w-[1000px]">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
