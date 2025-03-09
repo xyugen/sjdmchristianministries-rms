@@ -1,9 +1,9 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
 
 export type EmployeeProfile = {
-  id: Number;
+  id: number;
   role: "Admin" | "Pastor" | "Finance";
   name: string;
   birthDate: Date;
@@ -11,7 +11,7 @@ export type EmployeeProfile = {
   maritalStatus: "Single" | "Married";
   nationality: string;
   address: string;
-  contact_number: Number;
+  contact_number: number;
 };
 
 export const columns: ColumnDef<EmployeeProfile>[] = [

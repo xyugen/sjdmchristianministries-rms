@@ -1,6 +1,6 @@
 "use client";
-import * as React from "react";
 
+import{ useState } from "react";
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -28,14 +28,11 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-
-
-
 export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     [],
   );
   
@@ -53,22 +50,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-<<<<<<< HEAD
       <DataTableToolbar table={table} />
-=======
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Document Type..."
-          value={
-            (table.getColumn("docType")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn("docType")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-      </div>
->>>>>>> dev/gian
       <div>
         <Table className="w-full max-w-full sm:w-[95vw] sm:max-w-[1000px]">
           <TableHeader>
