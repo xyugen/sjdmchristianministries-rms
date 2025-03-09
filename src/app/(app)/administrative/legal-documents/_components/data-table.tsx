@@ -52,7 +52,7 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="flex items-center py-4">
         <Input
-          placeholder="Document Title..."
+          placeholder="Document Type..."
           value={
             (table.getColumn("docType")?.getFilterValue() as string) ?? ""
           }
@@ -63,7 +63,7 @@ export function DataTable<TData, TValue>({
         />
       </div>
       <div>
-        <Table className="w-full max-w-full sm:w-[95vw] sm:max-w-[900px]">
+        <Table className="w-full max-w-full sm:w-[95vw] sm:max-w-[1000px]">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
