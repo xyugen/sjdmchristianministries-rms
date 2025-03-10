@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import { type Metadata } from "next";
 import * as React from "react";
 import { Separator } from "@/components/ui/separator";
 import BreadcrumbLayout from "@/components/breadcrumb/page-breadcrumb";
@@ -6,7 +6,8 @@ import BreadcrumbLayout from "@/components/breadcrumb/page-breadcrumb";
 export const metadata: Metadata = {
   title: "Training Records",
 };
-const Page = () => {
+
+function Page() {
   return (
     <div className="flex flex-col">
       <div className="mt-1 flex text-center">
@@ -18,6 +19,6 @@ const Page = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Page;

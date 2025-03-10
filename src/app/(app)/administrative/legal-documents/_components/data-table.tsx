@@ -1,6 +1,6 @@
 "use client";
-import * as React from "react";
 
+import{ useState } from "react";
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -13,8 +13,6 @@ import {
 
 import { Button } from "@/components/ui/button";
 
-import { Input } from "@/components/ui/input";
-
 import {
   Table,
   TableBody,
@@ -23,6 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { DataTableToolbar } from "./table-toolbar";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -33,9 +32,10 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     [],
   );
+  
   const table = useReactTable({
     data,
     columns,
@@ -50,18 +50,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Document Type..."
-          value={
-            (table.getColumn("docType")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn("docType")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-      </div>
+      <DataTableToolbar table={table} />
       <div>
         <Table className="w-full max-w-full sm:w-[95vw] sm:max-w-[1000px]">
           <TableHeader>

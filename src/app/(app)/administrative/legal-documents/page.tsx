@@ -1,9 +1,9 @@
 import { type Metadata } from "next";
 import * as React from "react";
 import { columns, type Document } from "./_components/columns";
-import { DataTable } from "./_components/data-table";
 import { Separator } from "@/components/ui/separator";
 import BreadcrumbLayout from "@/components/breadcrumb/page-breadcrumb";
+import { DataTable } from "./_components/data-table";
 
 export const metadata: Metadata = {
   title: "Legal Documents",
