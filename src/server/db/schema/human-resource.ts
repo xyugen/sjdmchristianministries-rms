@@ -20,3 +20,12 @@ export const employee = createTable("employee", {
   address: text("address", { mode: "text" }),
   contactNumber: text("contact_number", { mode: "text" }),
 });
+
+export const employeeTraining = createTable("employee_training", {
+  id: text("id").primaryKey(),
+  employeeId: text("employee_id")
+    .notNull()
+    .references(() => employee.id, { onDelete: "cascade" }),
+  trainingName: text("training_name", { mode: "text" }),
+  dateCompleted: int("date_completed", { mode: "timestamp" }),
+});
