@@ -1,5 +1,5 @@
 import { PageRoutes } from "@/constants/page-routes";
-import { Landmark, FileLock2, Users } from "lucide-react";
+import { FileLock2, Users } from "lucide-react";
 
 export const RecordMenuItems = [
     {
@@ -34,25 +34,6 @@ export const RecordMenuItems = [
           title: "Training Records",
           url: PageRoutes.TRAINING_RECORDS,
         },
-      ],
-    },
-    {
-      title: "Financial Records",
-      icon: Landmark,
-      isActive: false,
-      items: [
-        {
-          title: "Financial Reports",
-          url: PageRoutes.FINANCIAL_REPORTS,
-        },
-        {
-          title: "Expense Invoices",
-          url: PageRoutes.EXPENSE_INVOICES,
-        },
-        {
-          title: "Purchase Orders/Receipts",
-          url : PageRoutes.PURCHASE_ORDERS_RECEIPTS,
-        }
       ],
     },
   ];
