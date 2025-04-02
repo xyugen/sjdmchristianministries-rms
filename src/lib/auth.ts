@@ -1,3 +1,4 @@
+import { ROLES } from "@/constants/roles";
 import { db } from "@/server/db";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
@@ -12,5 +13,9 @@ export const auth = betterAuth({
     autoSignIn: false,
     requireEmailVerification: true,
   },
-  plugins: [admin()],
+  plugins: [
+    admin({
+      defaultRole: ROLES[1], // Pastor
+    }),
+  ],
 });

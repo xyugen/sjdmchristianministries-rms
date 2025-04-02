@@ -1,6 +1,7 @@
 import { sql } from "drizzle-orm";
 import { integer, text } from "drizzle-orm/sqlite-core";
 import { createTable } from "../table";
+import { ROLES } from "@/constants/roles";
 
 // User Table
 export const user = createTable("user", {
@@ -8,7 +9,7 @@ export const user = createTable("user", {
   name: text("name").notNull(),
   email: text("email").notNull(),
   emailVerified: integer("emailVerified", { mode: "boolean" }),
-  role: text("role"),
+  role: text("role", { enum: ROLES }),
   banned: integer("banned", { mode: "boolean" }),
   banReason: text("banReason"),
   banExpires: integer("banExpires", { mode: "timestamp" }),
