@@ -3,7 +3,7 @@ import * as React from "react";
 import { columns, type Document } from "./_components/columns";
 import { Separator } from "@/components/ui/separator";
 import BreadcrumbLayout from "@/components/breadcrumb/page-breadcrumb";
-import { DataTable } from "./_components/data-table";
+import { DataTable } from "@/components/table/data-table";
 
 export const metadata: Metadata = {
   title: "Legal Documents",
@@ -26,6 +26,18 @@ const data: Document[] = [
   },
 ];
 
+//Sample options
+const SampleDocuments = [
+  {
+    label: "Christian Ministry Policies and Procedures",
+    value: "Christian Ministry Policies and Procedures",
+  },
+  {
+    label: "Legal Document",
+    value: "Legal Document",
+  },
+];
+
 const Page = () => {
   return (
     <div className="flex flex-col">
@@ -35,7 +47,13 @@ const Page = () => {
       </div>
 
       <div className="container mx-auto py-8">
-        <DataTable columns={columns} data={data} />
+        <DataTable 
+            columns={columns} 
+            data={data} 
+            filteredTitle="issued By"
+            filteredColumn="docType"
+            options={SampleDocuments}      
+        />
       </div>
     </div>
   );
