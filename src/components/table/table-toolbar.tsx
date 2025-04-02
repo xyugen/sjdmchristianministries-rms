@@ -8,46 +8,43 @@ import { DataTableFacetedFilter } from "@/components/table/table-faceted-filter"
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
+  filteredTitle: string;
+  filteredColumn?: string;
+  options?: {
+    label: string;
+    value: string;
+  }[];
 }
 
-//Sample options
-const SampleDocuments = [
-  {
-    label: "Admin",
-    value: "Admin",
-  },
-  {
-    label: "Pastor",
-    value: "Pastor",  
-  },
-];
-
-export function DataTableToolbar<TData>({
+export const DataTableToolbar = <TData,>({
   table,
-}: DataTableToolbarProps<TData>) {
+  filteredTitle,
+  filteredColumn,
+  options
+}: DataTableToolbarProps<TData>) => {
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
     <div className="flex items-center justify-between gap-x-2 mb-1.5">
       <div className="flex flex-1 items-center space-x-2">
         <Input
-          placeholder="Search name..."
+          placeholder={`Search ${filteredTitle}...`}
           value={
-            (table.getColumn("name")?.getFilterValue() as string) ??
+            (table.getColumn(filteredTitle)?.getFilterValue() as string) ??
             ""
           }
           onChange={(event) =>
             table
-              .getColumn("name")
+              .getColumn(filteredTitle)
               ?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        {table.getColumn("role") && (
+        {filteredColumn && options && table.getColumn(filteredColumn) && (
           <DataTableFacetedFilter
-            column={table.getColumn("role")}
-            title="Role"
-            options={SampleDocuments}
+            column={table.getColumn(filteredColumn)}
+            title={filteredColumn}
+            options={options}
           />
         )}
         {isFiltered && (

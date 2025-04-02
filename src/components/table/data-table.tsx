@@ -1,6 +1,5 @@
 "use client";
 
-import{ useState } from "react";
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -11,8 +10,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { Button } from "@/components/ui/button";
-
 import {
   Table,
   TableBody,
@@ -21,21 +18,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { DataTableToolbar } from "./table-toolbar";
+
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  filteredTitle: string;
+  filteredColumn?: string;
+  options?: {
+      label : string;
+      value : string;
+  }[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  filteredTitle,
+  filteredColumn,
+  options
 }: DataTableProps<TData, TValue>) {
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-    [],
-  );
-  
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
   const table = useReactTable({
     data,
     columns,
@@ -50,7 +57,12 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <DataTableToolbar table={table} />
+      <DataTableToolbar
+          table={table} 
+          filteredTitle={filteredTitle} 
+          filteredColumn={filteredColumn} 
+          options={options}
+      />
       <div>
         <Table className="w-full max-w-full sm:w-[95vw] sm:max-w-[1000px]">
           <TableHeader>
@@ -102,10 +114,10 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-2">
-      <div className="flex-1 text-sm text-muted-foreground">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} row(s) selected.
-      </div>
+        <div className="flex-1 text-sm text-muted-foreground">
+          {table.getFilteredSelectedRowModel().rows.length} of{" "}
+          {table.getFilteredRowModel().rows.length} row(s) selected.
+        </div>
         <Button
           variant="outline"
           size="sm"
