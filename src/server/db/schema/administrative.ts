@@ -2,9 +2,9 @@
  * Tables used for administrative records *
  ******************************************/
 
+import { DOCUMENT_ORIGIN, DOCUMENT_TYPE } from "@/constants/document";
 import { int, text } from "drizzle-orm/sqlite-core";
 import { createTable } from "../table";
-import { DOCUMENT_ORIGIN, DOCUMENT_TYPE } from "@/constants/document";
 import { employee } from "./human-resource";
 
 export const organizationalPolicies = createTable("organizational_policies", {
