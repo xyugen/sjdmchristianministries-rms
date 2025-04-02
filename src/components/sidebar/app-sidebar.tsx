@@ -1,4 +1,4 @@
-import { Home } from "lucide-react";
+import { Landmark, Home } from "lucide-react";
 
 import {
   Sidebar,
@@ -33,8 +33,17 @@ export function AppSidebar() {
         <SidebarGroup>
           <AppMainSidebar />
         </SidebarGroup>
-        </SidebarContent>
 
+        <SidebarGroup>
+          <SidebarMenuButton asChild>
+            <a href={PageRoutes.FINANCIAL}>
+              <Landmark />
+              <span>Financial</span>
+            </a>
+          </SidebarMenuButton>
+        </SidebarGroup>
+       </SidebarContent>
+       
       <SidebarFooter>
         <AppUserSidebar/>
       </SidebarFooter>

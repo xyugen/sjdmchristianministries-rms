@@ -50,7 +50,7 @@ const Page = () => {
         <DataTable 
             columns={columns} 
             data={data} 
-            filteredTitle="issued By"
+            filteredTitle="issuedBy"
             filteredColumn="docType"
             options={SampleDocuments}      
         />
