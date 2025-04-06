@@ -1,11 +1,15 @@
 import { organizationalPolicies } from "@/server/db/schema";
 import { db } from "@/server/db";
 import { eq } from "@/server/db";
+import { generateUUID } from "@/lib/utils";
 
 
 export const createOrganizationalPolicy = async ( organizationalPolicy ) => {
   try {
-    await db.insert(organizationalPolicies).values(organizationalPolicy).returning().run();
+    await db.insert(organizationalPolicies).values({
+      id: generateUUID(),
+      ...organizationalPolicy
+    }).returning().run();
   } catch (error) {
     console.log(error);
   }
