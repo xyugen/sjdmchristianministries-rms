@@ -2,8 +2,8 @@ import { type Metadata } from "next";
 import * as React from "react";
 import { Separator } from "@/components/ui/separator";
 import BreadcrumbLayout from "@/components/breadcrumb/page-breadcrumb";
-import { columns, EmployeeProfile } from "./_components/columns";
-import { DataTable } from "./_components/data-table";
+import { columns, type EmployeeProfile } from "./_components/columns";
+import { DataTable } from "@/components/table/data-table";
 
 export const metadata: Metadata = {
   title: "Employee Profiles",
@@ -34,6 +34,19 @@ const data: EmployeeProfile[] = [
   },
 ]
 
+//Sample options
+const SampleDocuments = [ 
+  {
+    label: "Admin",
+    value: "Admin",
+  },
+  {
+    label: "Pastor",
+    value: "Pastor",  
+  },
+];
+
+
 function Page() {
   return (
     <div className="flex flex-col">
@@ -46,7 +59,13 @@ function Page() {
       </div>
 
       <div className="container mx-auto py-8">
-        <DataTable columns={columns} data={data} />
+        <DataTable 
+            columns={columns} 
+            data={data} 
+            filteredTitle="name" 
+            filteredColumn="name" 
+            options={SampleDocuments}
+          />
       </div>
     </div>
   );
