@@ -1,12 +1,13 @@
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
 import { getAllOrganizationalPolicies,
-  getAllMeetingAgendas } from "@/lib/api/administrative/query";
+  getAllMeetingAgendas,
+  getAllLegalDocuments } from "@/lib/api/administrative/query";
 import { createOrganizationalPolicy, 
   deleteOrganizationalPolicy, 
   editOrganizationalPolicy, 
-  createMeetingAgenda } from "@/lib/api/administrative/mutation";
-
+  createMeetingAgenda,
+  createLegalDocument } from "@/lib/api/administrative/mutation";
 
 export const administrativeRouter = createTRPCRouter({
   getAllOrganizationalPolicies: protectedProcedure.query(async () => {
@@ -44,6 +45,36 @@ export const administrativeRouter = createTRPCRouter({
   ).mutation(async ({ input }) => {
     return await deleteOrganizationalPolicy(input.id);
   }),
+
+  /**
+   * Legal Documents
+   */
+  createLegalDocument: protectedProcedure.input(z.object({
+    documentType: z.string(),
+    documentNumber: z.string(),
+    documentOrigin: z.string(),
+    issuerId: z.string(),
+    issueDate: z.string().transform((val) => new Date(val)),
+    expiryDate: z.string().optional().transform((val) => (val ? new Date(val) : undefined))
+  })).mutation(async ({ input }) => {
+    try {
+      return await createLegalDocument(input);
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error creating legal document");
+    }
+  }),
+  getAllLegalDocuments: publicProcedure.query(async () => {
+    try {
+      return await getAllLegalDocuments();
+    } catch (error) {
+      console.log(error);
+    }
+  }),
+
+  /**
+   * Meeting Agendas
+   */
   createMeetingAgenda: protectedProcedure.input(
     z.object({
       meetingDate: z.string().transform((val) => new Date(val)),
@@ -55,20 +86,7 @@ export const administrativeRouter = createTRPCRouter({
     })
   ).mutation(async ({ input }) => {
     try {
-      const meetingDate = new Date(input.meetingDate);
-      const startTime = input.startTime ? new Date(input.startTime) : undefined;
-      const endTime = input.endTime ? new Date(input.endTime) : undefined;
-  
-      const dataToSave = {
-        meetingDate: meetingDate,
-        startTime: startTime,
-        endTime: endTime,
-        presidingOfficer: input.presidingOfficer,
-        agenda: input.agenda,
-        summary: input.summary,
-      };
-
-      return await createMeetingAgenda(dataToSave);
+      return await createMeetingAgenda(input);
     } catch (error) {
       console.log(error);
       throw new Error("Error creating meeting agenda");
@@ -80,6 +98,5 @@ export const administrativeRouter = createTRPCRouter({
     } catch (error) {
       console.log(error);
     }
-  }),
-  
+  })
 });
