@@ -1,7 +1,11 @@
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
-import { getAllOrganizationalPolicies } from "@/lib/api/administrative/query";
-import { createOrganizationalPolicy, deleteOrganizationalPolicy, editOrganizationalPolicy } from "@/lib/api/administrative/mutation";
+import { getAllOrganizationalPolicies,
+  getAllMeetingAgendas } from "@/lib/api/administrative/query";
+import { createOrganizationalPolicy, 
+  deleteOrganizationalPolicy, 
+  editOrganizationalPolicy, 
+  createMeetingAgenda } from "@/lib/api/administrative/mutation";
 
 
 export const administrativeRouter = createTRPCRouter({
@@ -22,7 +26,7 @@ export const administrativeRouter = createTRPCRouter({
       console.log(error);
     }
   }),
-  editOrganizationalPolicy: publicProcedure.input(z.object({
+  editOrganizationalPolicy: protectedProcedure.input(z.object({
     id: z.string(),
     data: z.object({ 
       title: z.string().optional(), 
@@ -39,5 +43,43 @@ export const administrativeRouter = createTRPCRouter({
     z.object({ id: z.string() })
   ).mutation(async ({ input }) => {
     return await deleteOrganizationalPolicy(input.id);
-  })
+  }),
+  createMeetingAgenda: protectedProcedure.input(
+    z.object({
+      meetingDate: z.string().transform((val) => new Date(val)),
+      startTime: z.string().optional().transform((val) => (val ? new Date(val) : undefined)),
+      endTime: z.string().optional().transform((val) => (val ? new Date(val) : undefined)),
+      presidingOfficer: z.string(),
+      agenda: z.string(),
+      summary: z.string().optional()
+    })
+  ).mutation(async ({ input }) => {
+    try {
+      const meetingDate = new Date(input.meetingDate);
+      const startTime = input.startTime ? new Date(input.startTime) : undefined;
+      const endTime = input.endTime ? new Date(input.endTime) : undefined;
+  
+      const dataToSave = {
+        meetingDate: meetingDate,
+        startTime: startTime,
+        endTime: endTime,
+        presidingOfficer: input.presidingOfficer,
+        agenda: input.agenda,
+        summary: input.summary,
+      };
+
+      return await createMeetingAgenda(dataToSave);
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error creating meeting agenda");
+    }
+  }),
+  getAllMeetingAgendas: protectedProcedure.query(async () => {
+    try {
+      return await getAllMeetingAgendas();
+    } catch (error) {
+      console.log(error);
+    }
+  }),
+  
 });
