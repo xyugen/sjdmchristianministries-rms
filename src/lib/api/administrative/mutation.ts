@@ -1,4 +1,5 @@
-import { organizationalPolicies } from "@/server/db/schema";
+import { organizationalPolicies as orgPoliciesTable, 
+  meetingAgendas as meetingAgendasTable } from "@/server/db/schema";
 import { db } from "@/server/db";
 import { eq } from "@/server/db";
 import { generateUUID } from "@/lib/utils";
@@ -6,7 +7,7 @@ import { generateUUID } from "@/lib/utils";
 
 export const createOrganizationalPolicy = async (organizationalPolicy) => {
   try {
-    return await db.insert(organizationalPolicies).values({
+    return await db.insert(orgPoliciesTable).values({
       id: generateUUID(),
       ...organizationalPolicy
     })
@@ -19,9 +20,9 @@ export const createOrganizationalPolicy = async (organizationalPolicy) => {
 
 export const editOrganizationalPolicy = async (id: string, organizationalPolicy: { title?: string; description?: string }) => {
   try {
-    return await db.update(organizationalPolicies)
+    return await db.update(orgPoliciesTable)
       .set(organizationalPolicy)
-      .where(eq(organizationalPolicies.id, id))
+      .where(eq(orgPoliciesTable.id, id))
       .returning()
       .run();
   } catch (error) {
@@ -31,8 +32,21 @@ export const editOrganizationalPolicy = async (id: string, organizationalPolicy:
 
 export const deleteOrganizationalPolicy = async (id: string) => {
   try {
-    return await db.delete(organizationalPolicies)
-      .where(eq(organizationalPolicies.id, id))
+    return await db.delete(orgPoliciesTable)
+      .where(eq(orgPoliciesTable.id, id))
+      .returning()
+      .run();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const createMeetingAgenda = async (meetingAgenda) => {
+  try {
+    return await db.insert(meetingAgendasTable).values({
+      id: generateUUID(),
+      ...meetingAgenda
+    })
       .returning()
       .run();
   } catch (error) {
