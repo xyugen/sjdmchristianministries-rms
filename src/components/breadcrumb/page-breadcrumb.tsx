@@ -11,7 +11,7 @@ interface BreadcrumbLayoutProps {
   parentPage?: string;
 }
 
-const BreadcrumbLayout: React.FC<BreadcrumbLayoutProps> = ({
+const PageBreadCrumb: React.FC<BreadcrumbLayoutProps> = ({
   currentPage,
   parentPage,
 }) => {
@@ -36,4 +36,4 @@ const BreadcrumbLayout: React.FC<BreadcrumbLayoutProps> = ({
   );
 };
 
-export default BreadcrumbLayout;
+export default PageBreadCrumb;

@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/table";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { DataTableToolbar } from "./table-toolbar";
+import { DataTableToolbar } from "./data-table-toolbar";
 
 
 interface DataTableProps<TData, TValue> {
