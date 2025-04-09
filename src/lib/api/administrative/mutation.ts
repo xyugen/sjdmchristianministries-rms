@@ -1,5 +1,6 @@
 import { organizationalPolicies as orgPoliciesTable, 
-  meetingAgendas as meetingAgendasTable } from "@/server/db/schema";
+  meetingAgendas as meetingAgendasTable,
+  legalDocuments as legalDocumentsTable } from "@/server/db/schema";
 import { db } from "@/server/db";
 import { eq } from "@/server/db";
 import { generateUUID } from "@/lib/utils";
@@ -46,6 +47,19 @@ export const createMeetingAgenda = async (meetingAgenda) => {
     return await db.insert(meetingAgendasTable).values({
       id: generateUUID(),
       ...meetingAgenda
+    })
+      .returning()
+      .run();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const createLegalDocument = async (legalDocument) => {
+  try {
+    return await db.insert(legalDocumentsTable).values({
+      id: generateUUID(),
+      ...legalDocument
     })
       .returning()
       .run();
