@@ -30,7 +30,7 @@ export const meetingAgendas = createTable("meeting_agendas", {
   meetingDate: int("meeting_date", { mode: "timestamp" }).notNull(),
   startTime: int("start_time", { mode: "timestamp" }), // time
   endTime: int("end_time", { mode: "timestamp" }),
-  presidingOffider: text("presiding_officer", { mode: "text" }).notNull(),
+  presidingOfficer: text("presiding_officer", { mode: "text" }).notNull(),
   agenda: text("agenda").notNull(),
   summary: text("summary"),
 });
