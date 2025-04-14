@@ -32,44 +32,39 @@ const data: EmployeeProfile[] = [
     address: "456 Elm Street, City, Country",
     contact_number: 9876543210,
   },
-]
+];
 
 //Sample options
-const SampleDocuments = [ 
+const SampleDocuments = [
   {
     label: "Admin",
     value: "Admin",
   },
   {
     label: "Pastor",
-    value: "Pastor",  
+    value: "Pastor",
   },
 ];
-
 
 function Page() {
   return (
     <div className="flex flex-col">
-      <div className="mt-1 flex text-center">
-        <Separator orientation="vertical" className="ml-1 mr-2.5 h-5" />
-        <BreadcrumbLayout
-          currentPage="Employee Profiles"
-          parentPage="Human Resources Records"
-        />
-      </div>
+      <BreadcrumbLayout
+        currentPage="Employee Profiles"
+        parentPage="Human Resources Records"
+      />
 
       <div className="container mx-auto py-8">
-        <DataTable 
-            columns={columns} 
-            data={data} 
-            filteredTitle="name" 
-            filteredColumn="name" 
-            options={SampleDocuments}
-          />
+        <DataTable
+          columns={columns}
+          data={data}
+          filteredTitle="name"
+          filteredColumn="name"
+          options={SampleDocuments}
+        />
       </div>
     </div>
   );
 }
 
 export default Page;
-
