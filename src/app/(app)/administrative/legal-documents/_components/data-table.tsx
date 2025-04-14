@@ -2,6 +2,7 @@ import React from "react";
 import { columns, type Document } from "./columns";
 import { DataTable } from "@/components/table/data-table";
 import { DataTableSkeleton } from "@/components/table/data-table-skeletion";
+import { DocumentsOptionFilters } from "@/data/documents";
 
 const data: Document[] = [
   {
@@ -20,28 +21,16 @@ const data: Document[] = [
   },
 ];
 
-//Sample options
-const SampleDocuments = [
-  {
-    label: "Christian Ministry Policies and Procedures",
-    value: "Christian Ministry Policies and Procedures",
-  },
-  {
-    label: "Legal Document",
-    value: "Legal Document",
-  },
-];
-
 const LegalDocumentsTable = () => {
   return (
-    <div>
-      {false ? (
+    <div className="mt-6">
+      {true ? (
         <DataTable
           columns={columns}
           data={data}
           filteredTitle="issuedBy"
           filteredColumn="docType"
-          options={SampleDocuments}
+          options={DocumentsOptionFilters}
         />
       ) : (
         <DataTableSkeleton />

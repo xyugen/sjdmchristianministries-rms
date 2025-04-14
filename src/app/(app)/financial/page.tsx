@@ -1,9 +1,14 @@
-import React from 'react'
+import PageBreadCrumb from "@/components/breadcrumb/page-breadcrumb";
+import React from "react";
 
 const Page = () => {
   return (
-    <div>page</div>
-  )
-}
+    <div>
+      <PageBreadCrumb
+        currentPage="Financial"
+      />
+    </div>
+  );
+};
 
-export default Page
+export default Page;

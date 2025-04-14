@@ -5,22 +5,29 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Separator } from "../ui/separator";
 
-interface BreadcrumbLayoutProps {
+interface PageHeaderLayoutProps {
+  subPage ?: string;
   currentPage: string;
   parentPage?: string;
 }
 
-const PageBreadCrumb: React.FC<BreadcrumbLayoutProps> = ({
+const PageBreadCrumb: React.FC<PageHeaderLayoutProps> = ({
   currentPage,
   parentPage,
+  subPage,
 }) => {
-  return (
-    <Breadcrumb>
+  const activeStyle = "font-medium text-primary";
+  const inactiveStyle = "text-muted-foreground";
+
+  return (  
+    <Breadcrumb className="mt-1 flex text-center">
+      <Separator orientation="vertical" className="ml-1 mr-2.5 h-5" />
       <BreadcrumbList className="flex items-center">
         {parentPage && (
           <BreadcrumbItem className="hidden md:block">
-            <BreadcrumbPage className="text-muted-foreground">
+            <BreadcrumbPage className={inactiveStyle}>
               {parentPage}
             </BreadcrumbPage>
           </BreadcrumbItem>
@@ -29,8 +36,20 @@ const PageBreadCrumb: React.FC<BreadcrumbLayoutProps> = ({
           <BreadcrumbSeparator className="hidden md:block" />
         )}
         <BreadcrumbItem>
-          <BreadcrumbPage>{currentPage}</BreadcrumbPage>
+          <BreadcrumbPage className={subPage ? inactiveStyle : activeStyle}>
+            {currentPage}
+          </BreadcrumbPage>
         </BreadcrumbItem>
+        {subPage && (
+          <>
+            <BreadcrumbSeparator className="hidden md:block" />
+            <BreadcrumbItem>
+              <BreadcrumbPage className={activeStyle}>
+                {subPage}
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </>
+        )}
       </BreadcrumbList>
     </Breadcrumb>
   );
