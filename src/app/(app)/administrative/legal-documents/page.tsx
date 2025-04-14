@@ -16,7 +16,7 @@ const Page = () => {
         currentPage="Legal Documents"
         parentPage="Administrative Records"
       />
-
+      
       <Header />
       <LegalDocumentsTable />
     </div>

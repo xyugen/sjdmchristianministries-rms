@@ -1,3 +1,4 @@
+
 import PageBreadCrumb from "@/components/breadcrumb/page-breadcrumb";
 import React from "react";
 
@@ -12,3 +13,4 @@ const Page = () => {
 };
 
 export default Page;
+
