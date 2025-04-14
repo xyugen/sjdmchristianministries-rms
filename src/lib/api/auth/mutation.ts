@@ -4,19 +4,23 @@ import {
   session as sessionTable, 
   verification as verificationTable 
 } from "@/server/db/schema";
-import {db} from "@/server/db";
+import { db, InferSelectModel } from "@/server/db";
 import { generateUUID } from "@/lib/utils";
 
-export const createUser = async (user) => {
+export type newUser = InferSelectModel<typeof userTable>
+
+export const createUser = async (user): Promise<newUser | null> => {
   try {
-    return await db.insert(userTable).values({
+    const result = await db.insert(userTable).values({
       id: generateUUID(),
       ...user
     })
       .returning()
-      .run();
+      .all();
+    return result[0] ?? null;
   } catch (error) {
     console.log(error);
+    return null;
   }
 }
 
