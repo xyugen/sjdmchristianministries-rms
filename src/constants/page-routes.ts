@@ -7,7 +7,10 @@ export enum PageRoutes {
   ADMINISTRATIVE = "/administrative",
   ORGANIZATIONAL_POLICIES = `${ADMINISTRATIVE}/organizational-policies`,
   MEETING_AGENDAS = `${ADMINISTRATIVE}/meeting-agendas`,
+
+  //Legal documents
   LEGAL_DOCUMENTS = `${ADMINISTRATIVE}/legal-documents`,
+  DOCUMENTS_CREATE = `${ADMINISTRATIVE}/legal-documents/create`,
 
   //Human Resource Records
   HUMAN_RESOURCE = "/human-resources",

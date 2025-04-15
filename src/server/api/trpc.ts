@@ -6,11 +6,13 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { initTRPC } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
+import { auth } from "@/lib/auth";
 import { db } from "@/server/db";
+import { headers } from "next/headers";
 
 /**
  * 1. CONTEXT
@@ -25,8 +27,13 @@ import { db } from "@/server/db";
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
   return {
     db,
+    session,
     ...opts,
   };
 };
@@ -96,6 +103,23 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
   return result;
 });
 
+const isAuthenticated = t.middleware(async ({ ctx, next }) => {
+  if (!ctx) {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "Not authenticated" });
+  }
+  return next();
+});
+
+const isAdmin = t.middleware(async ({ ctx, next }) => {
+  if (!ctx.session) {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "Not authenticated" });
+  }
+  if (ctx.session.user.role?.toLowerCase() !== "admin") {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "Not authorized" });
+  }
+  return next();
+});
+
 /**
  * Public (unauthenticated) procedure
  *
@@ -104,3 +128,20 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  * are logged in.
  */
 export const publicProcedure = t.procedure.use(timingMiddleware);
+
+/**
+ * Protected (authenticated) procedure
+ *
+ * If you want a query or mutation to ONLY be accessible to logged in users, use this. It verifies
+ * the session is active and guarantees `ctx.session.user` is not null.
+ */
+export const protectedProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(isAuthenticated);
+
+/**
+ * Admin Procedure
+ *
+ * If you want a query or mutation to ONLY be accessible to admins, use this.
+ */
+export const adminProcedure = t.procedure.use(timingMiddleware).use(isAdmin);
