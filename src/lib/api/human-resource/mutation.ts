@@ -1,26 +1,27 @@
 import { employee as employeeTable, employeeTraining as employeeTrainingTable } from "@/server/db/schema";
-import { db } from "@/server/db";
+import { db, InferInsertModel } from "@/server/db";
 import { generateUUID } from "@/lib/utils";
 
-export const createEmployee = async (employee) => {
+type Employee = InferInsertModel<typeof employeeTable>;
+type EmployeeTraining = InferInsertModel<typeof employeeTrainingTable>;
+
+export const createEmployee = async (employee: Employee) => {
   try {
-    return await db.insert(employeeTable).values({
-      id: generateUUID(),
-      ...employee
-    })
+    const result = await db.insert(employeeTable)
+      .values(employee)
       .returning()
-      .run();
+      .all();
+
+      return result[0] ?? null;
   } catch (error) {
     console.log(error);
   }
 }
 
-export const createEmployeeTraining = async (employeeTraining) => {
+export const createEmployeeTraining = async (employeeTraining: EmployeeTraining) => {
   try {
-    return await db.insert(employeeTrainingTable).values({
-      id: generateUUID(),
-      ...employeeTraining
-    })
+    return await db.insert(employeeTrainingTable)
+      .values(employeeTraining)
       .returning()
       .run();
   } catch (error) {

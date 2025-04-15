@@ -4,17 +4,18 @@ import {
   session as sessionTable, 
   verification as verificationTable 
 } from "@/server/db/schema";
-import { db, InferSelectModel } from "@/server/db";
+import { db, InferInsertModel } from "@/server/db";
 import { generateUUID } from "@/lib/utils";
 
-export type newUser = InferSelectModel<typeof userTable>
+type User = InferInsertModel<typeof userTable>;
+type Account = InferInsertModel<typeof accountTable>;
+type Session = InferInsertModel<typeof sessionTable>;
+type Verification = InferInsertModel<typeof verificationTable>;
 
-export const createUser = async (user): Promise<newUser | null> => {
+export const createUser = async (user: User)=> {
   try {
-    const result = await db.insert(userTable).values({
-      id: generateUUID(),
-      ...user
-    })
+    const result = await db.insert(userTable)
+      .values(user)
       .returning()
       .all();
     return result[0] ?? null;
@@ -24,16 +25,16 @@ export const createUser = async (user): Promise<newUser | null> => {
   }
 }
 
-export const createAccount = async (account) => {
+export const createAccount = async (account: Account) => {
   try {
-    return await db.insert(accountTable).values({
-      id: generateUUID(),
-      ...account
-    })
+    const result = await db.insert(accountTable)
+      .values(account)
       .returning()
-      .run();
+      .all();
+    return result[0] ?? null;
   } catch (error) {
     console.log(error);
+    return null;
   }
 }
 
