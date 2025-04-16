@@ -1,13 +1,20 @@
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
-import { getAllOrganizationalPolicies,
+import { generateUUID } from "@/lib/utils";
+import { DOCUMENT_TYPE } from "@/constants/document";
+import { DOCUMENT_ORIGIN } from "@/constants/document";
+import { 
+  getAllOrganizationalPolicies,
   getAllMeetingAgendas,
-  getAllLegalDocuments } from "@/lib/api/administrative/query";
-import { createOrganizationalPolicy, 
+  getAllLegalDocuments 
+} from "@/lib/api/administrative/query";
+import { 
+  createOrganizationalPolicy, 
   deleteOrganizationalPolicy, 
   editOrganizationalPolicy, 
   createMeetingAgenda,
-  createLegalDocument } from "@/lib/api/administrative/mutation";
+  createLegalDocument 
+} from "@/lib/api/administrative/mutation";
 
 export const administrativeRouter = createTRPCRouter({
   getAllOrganizationalPolicies: protectedProcedure.query(async () => {
@@ -22,7 +29,7 @@ export const administrativeRouter = createTRPCRouter({
     description: z.string(),
   })).mutation(async ({ input }) => {
     try {
-      return await createOrganizationalPolicy(input);
+      return await createOrganizationalPolicy({id: generateUUID(), ...input});
     } catch (error) {
       console.log(error);
     }
@@ -50,15 +57,17 @@ export const administrativeRouter = createTRPCRouter({
    * Legal Documents
    */
   createLegalDocument: protectedProcedure.input(z.object({
-    documentType: z.string(),
+    documentType: z.enum(DOCUMENT_TYPE),
     documentNumber: z.string(),
-    documentOrigin: z.string(),
+    documentOrigin: z.enum(DOCUMENT_ORIGIN),
     issuerId: z.string(),
     issueDate: z.string().transform((val) => new Date(val)),
     expiryDate: z.string().optional().transform((val) => (val ? new Date(val) : undefined))
   })).mutation(async ({ input }) => {
     try {
-      return await createLegalDocument(input);
+      return await createLegalDocument({
+        id: generateUUID(),
+        ...input});
     } catch (error) {
       console.log(error);
       throw new Error("Error creating legal document");
@@ -86,7 +95,9 @@ export const administrativeRouter = createTRPCRouter({
     })
   ).mutation(async ({ input }) => {
     try {
-      return await createMeetingAgenda(input);
+      return await createMeetingAgenda({
+        id: generateUUID(),
+        ...input});
     } catch (error) {
       console.log(error);
       throw new Error("Error creating meeting agenda");
