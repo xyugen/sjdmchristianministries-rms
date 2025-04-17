@@ -3,8 +3,7 @@ import {
   employeeTraining as employeeTrainingTable,
   user as userTable
 } from "@/server/db/schema";
-import { db, eq } from "@/server/db";
-import { role } from "better-auth/plugins/access";
+import { asc, db, eq } from "@/server/db";
 
 export const getAllEmployees = async () => {
   try {
@@ -22,7 +21,8 @@ export const getAllEmployees = async () => {
       contactNumber: employeeTable.contactNumber,
     })
     .from(employeeTable)
-    .innerJoin(userTable, eq(employeeTable.userId, userTable.id));
+    .innerJoin(userTable, eq(employeeTable.userId, userTable.id))
+    .orderBy(asc(userTable.name));
   } catch (error) {
     console.log(error);
   }
@@ -44,11 +44,39 @@ export const getEmployeeByUserId = async (userId: string) => {
 
 export const getEmployeeTrainingsByEmployeeId = async (employeeId: string) => {
   try {
-    return await db
-      .select()
+    const result = await db
+      .select({
+        employeeId: employeeTable.id,
+        employeeName: userTable.name,
+        email: userTable.email,
+        role: userTable.role,
+        trainingId: employeeTrainingTable.id,
+        trainingName: employeeTrainingTable.trainingName,
+        dateCompleted: employeeTrainingTable.dateCompleted,
+      })
       .from(employeeTrainingTable)
+      .innerJoin(employeeTable, eq(employeeTable.id, employeeTrainingTable.employeeId))
+      .innerJoin(userTable, eq(employeeTable.userId, userTable.id))
       .where(eq(employeeTrainingTable.employeeId, employeeId))
-      .all();
+      .orderBy(asc(employeeTrainingTable.dateCompleted));
+
+      if(result.length === 0) {
+        return {};
+      }
+
+      const first = result[0]!;
+
+      return {
+        employeeId: first.employeeId,
+        employeeName: first.employeeName,
+        email: first.email,
+        role: first.role ?? "Pastor",
+        trainings: result.map((training) => ({
+          trainingId: training.trainingId ?? null,
+          trainingName: training.trainingName ?? null,
+          dateCompleted: training.dateCompleted ?? null,
+        })),
+      };
   } catch (error) {
     console.log(error);
   }
@@ -67,7 +95,8 @@ export const getEmployeeTrainingsPerEmployee = async () => {
     })
     .from(employeeTable)
     .innerJoin(userTable, eq(employeeTable.userId, userTable.id))
-    .innerJoin(employeeTrainingTable, eq(employeeTable.id, employeeTrainingTable.employeeId));
+    .innerJoin(employeeTrainingTable, eq(employeeTable.id, employeeTrainingTable.employeeId))
+    .orderBy(asc(userTable.name), asc(employeeTrainingTable.dateCompleted));
 
     const groupedResult = result.reduce((acc, curr) => {
       const employeeId = curr.employeeId;

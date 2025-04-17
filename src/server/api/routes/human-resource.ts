@@ -86,30 +86,15 @@ export const humanResourceRouter = createTRPCRouter({
   createEmployeeTraining: protectedProcedure
     .input(
       z.object({
-        email: z.string(),
+        employeeId: z.string(),
         trainingName: z.string(),
         dateCompleted: z.string().optional().transform((val) => (val ? new Date(val) : undefined)),
       })
     ).mutation(async ({ input }) => {
       try {
-        const user = await getUserByEmail(input.email);
-        if (!user) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "User does not exist",
-          })
-        }
-        const employee = await getEmployeeByUserId(user.id);
-        if(!employee) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Employee does not exist",
-          })
-        }
-
         return await createEmployeeTraining({
           id: generateUUID(),
-          employeeId: employee.id,
+          employeeId: input.employeeId,
           trainingName: input.trainingName,
           dateCompleted: input.dateCompleted,
         });
@@ -117,36 +102,14 @@ export const humanResourceRouter = createTRPCRouter({
         console.log(error);
       }
   }),
-  getEmployeeTrainingsByEmail: protectedProcedure
+  getEmployeeTrainingsByEmployeeId: protectedProcedure
     .input(
       z.object({
-        email: z.string(),
+        employeeId: z.string(),
       })
     ).mutation(async ({ input }) => {
       try {
-        const user = await getUserByEmail(input.email);
-        if (!user) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "User does not exist",
-          })
-        }
-        const employee = await getEmployeeByUserId(user.id);
-        if(!employee) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Employee does not exist",
-          })
-        }
-        const trainings = await getEmployeeTrainingsByEmployeeId(employee.id);
-
-        return {
-          employeeId: employee.id,
-          employeeName: user.name,
-          email: user.email,
-          role: user.role,
-          trainings,
-        }
+        return await getEmployeeTrainingsByEmployeeId(input.employeeId);
       } catch (error) {
         console.log(error);
       }
