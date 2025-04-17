@@ -1,7 +1,7 @@
 import { organizationalPolicies as orgPoliciesTable,
   meetingAgendas as meetingAgendasTable,
   legalDocuments as legalDocumentsTable } from "@/server/db/schema";
-import { db } from "@/server/db";
+import { db, desc } from "@/server/db";
 
 export const getAllOrganizationalPolicies = async () => {
   try {
@@ -13,7 +13,7 @@ export const getAllOrganizationalPolicies = async () => {
 
 export const getAllMeetingAgendas = async () => {
   try {
-    return await db.select().from(meetingAgendasTable).all();
+    return await db.select().from(meetingAgendasTable).orderBy(desc(meetingAgendasTable.meetingDate), desc(meetingAgendasTable.startTime)).all();
   } catch (error) {
     console.log(error);
   }
@@ -21,7 +21,7 @@ export const getAllMeetingAgendas = async () => {
 
 export const getAllLegalDocuments = async () => {
   try {
-    return await db.select().from(legalDocumentsTable).all();
+    return await db.select().from(legalDocumentsTable).orderBy(desc(legalDocumentsTable.issueDate)).all();
   } catch (error) {
     console.log(error);
   }
