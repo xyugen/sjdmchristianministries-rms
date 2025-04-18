@@ -126,6 +126,15 @@ export const getWeeklyFinance = async () => {
                                 Number(lastWeek.find((t) => t.category === "ministry_expense")?.total ?? 0)) /
                                 Math.max(Number(lastWeek.find((t) => t.category === "ministry_expense")?.total ?? 0), 1)) * 100,
         },
+        pastoral_expense: {
+          thisWeekTotal: Number(thisWeek.find((t) => t.category === "pastoral_expense")?.total ?? 0),
+          lastWeekTotal: Number(lastWeek.find((t) => t.category === "pastoral_expense")?.total ?? 0),
+          thisWeekCount: thisWeek.find((t) => t.category === "pastoral_expense")?.count ?? 0,
+          lastWeekCount: lastWeek.find((t) => t.category === "pastoral_expense")?.count ?? 0,
+          totalPercentChange: ((Number(thisWeek.find((t) => t.category === "pastoral_expense")?.total ?? 0) -
+                                Number(lastWeek.find((t) => t.category === "pastoral_expense")?.total ?? 0)) /
+                                Math.max(Number(lastWeek.find((t) => t.category === "pastoral_expense")?.total ?? 0), 1)) * 100,
+        },
       }
 
     return summary;
