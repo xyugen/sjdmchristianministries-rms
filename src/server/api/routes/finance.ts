@@ -1,5 +1,5 @@
 import { createFinancialTransaction } from "@/lib/api/finance/mutation";
-import { getAllFinancialTransactions } from "@/lib/api/finance/query";
+import { getAllFinancialTransactions, getWeeklyFinance } from "@/lib/api/finance/query";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import { generateUUID } from "@/lib/utils";
@@ -29,5 +29,12 @@ export const financeRouter = createTRPCRouter({
       console.log(error);
     }
   }),
-
+  getWeeklyFinance: protectedProcedure.query(async () => {
+    try {
+      const res = getWeeklyFinance();
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  }),
 });
