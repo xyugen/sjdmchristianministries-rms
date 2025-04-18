@@ -1,6 +1,7 @@
-import BreadcrumbLayout from "@/components/breadcrumb/page-breadcrumb";
-import { type Metadata } from "next";
 import React from "react";
+import BreadcrumbLayout from "@/components/breadcrumb/page-breadcrumb";
+import { DonutChart } from "./dashboard_assets/pieChart";
+import { type Metadata } from "next";
 import { ArrowUp, ArrowDown } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -67,8 +68,14 @@ const Page = () => {
           </div>
         ))}
       </div>
+      <div className="mt-1 flex flex-col sm:flex-row">
+        <div className="border-gray mt-5 flex flex-col items-center justify-center rounded-sm border pb-4 sm:flex-row lg:py-2">
+          <DonutChart />
+        </div>
+      </div>
     </div>
   );
 };
 
 export default Page;
+
