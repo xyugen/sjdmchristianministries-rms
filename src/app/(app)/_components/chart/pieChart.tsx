@@ -48,7 +48,7 @@ export function DonutChart() {
   }, []);
 
   return (
-    <Card className="flex flex-col border-none px-8 shadow-none">
+    <Card className="flex flex-col rounded-sm px-12 shadow-none">
       <CardHeader className="items-center pb-0">
         <CardTitle>Total Earnings</CardTitle>
         <CardDescription>January - April 2025</CardDescription>
@@ -73,11 +73,15 @@ export function DonutChart() {
               <Label
                 content={({ viewBox }) => {
                   const viewBoxType = viewBox as { cx: number; cy: number };
-                  if (viewBoxType && "cx" in viewBoxType && "cy" in viewBoxType) {
+                  if (
+                    viewBoxType &&
+                    "cx" in viewBoxType &&
+                    "cy" in viewBoxType
+                  ) {
                     return (
                       <text
                         x={viewBoxType.cx}
-                        y={viewBoxType.cy }
+                        y={viewBoxType.cy}
                         textAnchor="middle"
                         dominantBaseline="middle"
                       >

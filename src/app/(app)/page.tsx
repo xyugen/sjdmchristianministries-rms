@@ -2,7 +2,8 @@ import React from "react";
 import BreadcrumbLayout from "@/components/breadcrumb/page-breadcrumb";
 import { type Metadata } from "next";
 import { ArrowUp, ArrowDown } from "lucide-react";
-import DonutChart from "@/components/chart/pieChart";
+import DonutChart from "./_components/chart/pieChart";
+import UtilityExpenses from "./_components/utility-expenses";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -68,10 +69,9 @@ const Page = () => {
           </div>
         ))}
       </div>
-      <div className="mt-1 flex flex-col sm:flex-row">
-        <div className="border-gray mt-5 flex flex-col items-center justify-center rounded-sm border pb-4 sm:flex-row lg:py-2">
+      <div className="mt-1 flex gap-x-1">
           <DonutChart />
-        </div>
+          <UtilityExpenses/>
       </div>
     </div>
   );
