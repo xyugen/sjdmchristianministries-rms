@@ -1,33 +1,31 @@
-import {
-  user as userTable, 
-  account as accountTable, 
-  session as sessionTable, 
-  verification as verificationTable 
-} from "@/server/db/schema";
-import { db, InferInsertModel } from "@/server/db";
 import { generateUUID } from "@/lib/utils";
+import { db, type InferInsertModel } from "@/server/db";
+import {
+  account as accountTable,
+  session as sessionTable,
+  user as userTable,
+  verification as verificationTable,
+} from "@/server/db/schema";
 
 type User = InferInsertModel<typeof userTable>;
 type Account = InferInsertModel<typeof accountTable>;
 type Session = InferInsertModel<typeof sessionTable>;
 type Verification = InferInsertModel<typeof verificationTable>;
 
-export const createUser = async (user: User)=> {
+export const createUser = async (user: User) => {
   try {
-    const result = await db.insert(userTable)
-      .values(user)
-      .returning()
-      .all();
+    const result = await db.insert(userTable).values(user).returning().all();
     return result[0] ?? null;
   } catch (error) {
     console.log(error);
     return null;
   }
-}
+};
 
 export const createAccount = async (account: Account) => {
   try {
-    const result = await db.insert(accountTable)
+    const result = await db
+      .insert(accountTable)
       .values(account)
       .returning()
       .all();
@@ -36,30 +34,33 @@ export const createAccount = async (account: Account) => {
     console.log(error);
     return null;
   }
-}
+};
 
-export const createSession = async (session) => {
+export const createSession = async (session: Session) => {
+  session = {
+    ...session,
+    id: generateUUID(),
+  };
+
   try {
-    return await db.insert(sessionTable).values({
-      id: generateUUID(),
-      ...session
-    })
-      .returning()
-      .run();
+    return await db.insert(sessionTable).values(session).returning().execute();
   } catch (error) {
     console.log(error);
   }
-}
+};
 
-export const createVerification = async (verification) => {
+export const createVerification = async (verification: Verification) => {
   try {
-    return await db.insert(verificationTable).values({
+    verification = {
+      ...verification,
       id: generateUUID(),
-      ...verification
-    })
+    };
+    return await db
+      .insert(verificationTable)
+      .values(verification)
       .returning()
-      .run();
+      .execute();
   } catch (error) {
     console.log(error);
   }
-}
+};

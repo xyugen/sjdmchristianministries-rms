@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { TrendingUp } from "lucide-react"
-import { Label, Pie, PieChart } from "recharts"
+import { TrendingUp } from "lucide-react";
+import * as React from "react";
+import { Label, Pie, PieChart } from "recharts";
 
 import {
   Card,
@@ -11,45 +11,44 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
-  ChartConfig,
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 const chartData = [
-  { category: "Offering", earnings: 2400, color: "var(--chart-offering)" },  
+  { category: "Offering", earnings: 2400, color: "var(--chart-offering)" },
   { category: "Pledge", earnings: 400, color: "var(--chart-pledge)" },
-  { category: "Donation", earnings: 940, color: "var(--chart-donation)" },  
-]
+  { category: "Donation", earnings: 940, color: "var(--chart-donation)" },
+];
 
 const chartConfig = {
   earnings: {
-   label: "Earnings",
+    label: "Earnings",
   },
   offering: {
-   label: "Offering",
-   color: "hsl(var(--chart-1))",
+    label: "Offering",
+    color: "hsl(var(--chart-1))",
   },
   pledge: {
-   label: "Pledge",
-   color: "hsl(var(--chart-2))",
+    label: "Pledge",
+    color: "hsl(var(--chart-2))",
   },
   donation: {
-   label: "Donation",
-   color: "hsl(var(--chart-3))",
+    label: "Donation",
+    color: "hsl(var(--chart-3))",
   },
-
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 export function DonutChart() {
   const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.earnings, 0)
-  }, [])
+    return chartData.reduce((acc, curr) => acc + curr.earnings, 0);
+  }, []);
 
   return (
-    <Card className="flex flex-col border-none shadow-none px-8">
+    <Card className="flex flex-col border-none px-8 shadow-none">
       <CardHeader className="items-center pb-0">
         <CardTitle>Total Earnings</CardTitle>
         <CardDescription>January - April 2025</CardDescription>
@@ -90,13 +89,13 @@ export function DonutChart() {
                         </tspan>
                         <tspan
                           x={viewBox.cx}
-                          y={(viewBox.cy || 0) + 24}
+                          y={(viewBox.cy ?? 0) + 24}
                           className="fill-muted-foreground"
                         >
                           Earnings
                         </tspan>
                       </text>
-                    )
+                    );
                   }
                 }}
               />
@@ -113,7 +112,7 @@ export function DonutChart() {
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }
 
 export default DonutChart;

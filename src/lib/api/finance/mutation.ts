@@ -1,5 +1,5 @@
 import { financialTransactions as financialTransactionsTable } from "@/server/db/schema";
-import { db, InferInsertModel } from "@/server/db";
+import { db, type InferInsertModel } from "@/server/db";
 
 type FinancialTransaction = InferInsertModel<typeof financialTransactionsTable>;
 

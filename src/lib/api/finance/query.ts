@@ -1,9 +1,9 @@
-import { 
-  financialTransactions as financialTransactionsTable,
+import { between, count, db, desc, eq, sum } from "@/server/db";
+import {
   employee as employeeTable,
+  financialTransactions as financialTransactionsTable,
   user as userTable
 } from "@/server/db/schema";
-import { db, desc, eq, and, between, sum, count } from "@/server/db";
 
 export const getAllFinancialTransactions = async () => {
   try {
