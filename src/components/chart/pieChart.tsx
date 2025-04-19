@@ -72,24 +72,25 @@ export function DonutChart() {
             >
               <Label
                 content={({ viewBox }) => {
-                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                  const viewBoxType = viewBox as { cx: number; cy: number };
+                  if (viewBoxType && "cx" in viewBoxType && "cy" in viewBoxType) {
                     return (
                       <text
-                        x={viewBox.cx}
-                        y={viewBox.cy}
+                        x={viewBoxType.cx}
+                        y={viewBoxType.cy }
                         textAnchor="middle"
                         dominantBaseline="middle"
                       >
                         <tspan
-                          x={viewBox.cx}
-                          y={viewBox.cy}
+                          x={viewBoxType.cx}
+                          y={viewBoxType.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
                           {totalVisitors.toLocaleString()}
                         </tspan>
                         <tspan
-                          x={viewBox.cx}
-                          y={(viewBox.cy ?? 0) + 24}
+                          x={viewBoxType.cx}
+                          y={(viewBoxType.cy ?? 0) + 24}
                           className="fill-muted-foreground"
                         >
                           Earnings

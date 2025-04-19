@@ -1,6 +1,5 @@
 import { employee as employeeTable, employeeTraining as employeeTrainingTable } from "@/server/db/schema";
-import { db, InferInsertModel } from "@/server/db";
-import { generateUUID } from "@/lib/utils";
+import { db, type InferInsertModel } from "@/server/db";
 
 type Employee = InferInsertModel<typeof employeeTable>;
 type EmployeeTraining = InferInsertModel<typeof employeeTrainingTable>;

@@ -1,8 +1,7 @@
 import { organizationalPolicies as orgPoliciesTable, 
   meetingAgendas as meetingAgendasTable,
   legalDocuments as legalDocumentsTable } from "@/server/db/schema";
-import { db, eq, InferInsertModel } from "@/server/db";
-import { generateUUID } from "@/lib/utils";
+import { db, eq, type InferInsertModel } from "@/server/db";
 
 type OrganizationalPolicy = InferInsertModel<typeof orgPoliciesTable>;
 type MeetingAgenda = InferInsertModel<typeof meetingAgendasTable>;

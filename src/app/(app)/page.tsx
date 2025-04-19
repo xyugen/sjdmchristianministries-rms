@@ -1,8 +1,8 @@
 import React from "react";
 import BreadcrumbLayout from "@/components/breadcrumb/page-breadcrumb";
-import { DonutChart } from "./dashboard_assets/pieChart";
 import { type Metadata } from "next";
 import { ArrowUp, ArrowDown } from "lucide-react";
+import DonutChart from "@/components/chart/pieChart";
 
 export const metadata: Metadata = {
   title: "Dashboard",

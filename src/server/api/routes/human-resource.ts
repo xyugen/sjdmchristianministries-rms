@@ -4,11 +4,9 @@ import { ROLES } from "@/constants/roles";
 import { GENDERS } from "@/constants/genders";
 import { MARITAL_STATUSES } from "@/constants/marital-statuses";
 import { createUser, createAccount } from "@/lib/api/auth/mutation";
-import { getUserByEmail } from "@/lib/api/auth/query";
 import { createEmployee, createEmployeeTraining } from "@/lib/api/human-resource/mutation";
-import { getAllEmployees, getEmployeeByUserId, getEmployeeTrainingsByEmployeeId, getEmployeeTrainingsPerEmployee } from "@/lib/api/human-resource/query";
+import { getAllEmployees, getEmployeeTrainingsByEmployeeId, getEmployeeTrainingsPerEmployee } from "@/lib/api/human-resource/query";
 import { generateUUID } from "@/lib/utils";
-import { TRPCError } from "@trpc/server";
 
 export const humanResourceRouter = createTRPCRouter({
   createEmployeeAccount: protectedProcedure
