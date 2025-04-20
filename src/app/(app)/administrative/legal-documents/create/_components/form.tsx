@@ -31,7 +31,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { DOCUMENT_ORIGIN, DOCUMENT_TYPE } from "@/constants/document";
+import {
+  DOCUMENT_ORIGIN,
+  DOCUMENT_TYPE,
+  documentOriginLabels,
+  documentTypeLabels,
+} from "@/constants/document";
 import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
@@ -68,16 +73,6 @@ const CreateDocumentForm = () => {
         toast.error(error.message, { id: toastId });
       }
     }
-  };
-
-  const typeLabels: Record<(typeof DOCUMENT_TYPE)[number], string> = {
-    marriage_certificate: "Marriage Certificate",
-    baptismal_certificate: "Baptismal Certificate",
-  };
-
-  const originLabels: Record<(typeof DOCUMENT_ORIGIN)[number], string> = {
-    issued_by_church: "Issued by Church",
-    issued_to_church: "Issued to Church",
   };
 
   return (
@@ -160,7 +155,7 @@ const CreateDocumentForm = () => {
                       <SelectContent>
                         {DOCUMENT_TYPE.map((type) => (
                           <SelectItem key={type} value={type}>
-                            {typeLabels[type]}
+                            {documentTypeLabels[type]}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -189,7 +184,7 @@ const CreateDocumentForm = () => {
                       <SelectContent>
                         {DOCUMENT_ORIGIN.map((origin) => (
                           <SelectItem key={origin} value={origin}>
-                            {originLabels[origin]}
+                            {documentOriginLabels[origin]}
                           </SelectItem>
                         ))}
                       </SelectContent>
