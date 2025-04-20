@@ -19,19 +19,17 @@ export interface MeetingAgenda {
 
 interface MeetingAgendaTableProps {
   agendas: MeetingAgenda[];
-  className?: string;
 }
 
 const MeetingAgendaTable = ({
   agendas,
-  className,
 }: MeetingAgendaTableProps) => {
   return (
-    <Card className={className}>
+    <Card className="rounded-sm shadow-none">
       <CardHeader>
         <CardTitle>Recent Meeting Agendas</CardTitle>
       </CardHeader>
-      <CardContent className="p-0">
+      <CardContent className="px-4">
         <Table>
           <TableHeader>
             <TableRow className="border-b border-gray-200">
