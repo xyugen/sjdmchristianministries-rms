@@ -90,7 +90,7 @@ const Page = () => {
   ];
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex w-full flex-col gap-1">
       <BreadcrumbLayout currentPage="Dashboard" />
       {/* Stat Cards */}
       <div className="border-gray mt-5 flex flex-col items-center justify-center rounded-sm border pb-4 sm:flex-row lg:py-2">

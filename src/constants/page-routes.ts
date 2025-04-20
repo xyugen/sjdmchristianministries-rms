@@ -19,4 +19,5 @@ export enum PageRoutes {
 
   //Financial Records
   FINANCIAL= "/financial",
+  FINANCIAL_CREATE = `${FINANCIAL}/create`
 }

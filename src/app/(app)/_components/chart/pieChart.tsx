@@ -12,12 +12,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import {
   type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+
+
 const chartData = [
   { category: "Offering", earnings: 2400, color: "var(--chart-offering)" },
   { category: "Pledge", earnings: 400, color: "var(--chart-pledge)" },
