@@ -1,6 +1,5 @@
 import { type Metadata } from "next";
 import * as React from "react";
-import { Separator } from "@/components/ui/separator";
 import BreadcrumbLayout from "@/components/breadcrumb/page-breadcrumb";
 import { columns, type EmployeeProfile } from "./_components/columns";
 import { DataTable } from "@/components/table/data-table";

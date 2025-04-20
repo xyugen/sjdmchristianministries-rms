@@ -5,15 +5,17 @@ import CreateDocumentForm from "./_components/form";
 
 const Page = () => {
   return (
-    <div>
-        <PageBreadCrumb
-          subPage="Create"
-          currentPage="Legal Documents"
-          parentPage="Administrative Records"
-        />
+    <div className="w-full">
+      <PageBreadCrumb
+        subPage="Create"
+        currentPage="Legal Documents"
+        parentPage="Administrative Records"
+      />
 
-      <FormHeader />
-      <CreateDocumentForm/>  
+      <div className="mx-auto w-full px-4 lg:max-w-6xl">
+        <FormHeader />
+        <CreateDocumentForm />
+      </div>
     </div>
   );
 };

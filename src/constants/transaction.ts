@@ -7,6 +7,7 @@ export const TRANSACTION_CATEGORY = [
   "representation_expense",
   "utility_expense",
   "ministry_expense",
+  "pastoral_expense"
 ] as const;
 
 export type TransactionType = (typeof TRANSACTION_TYPE)[number];

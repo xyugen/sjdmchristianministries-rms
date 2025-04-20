@@ -1,17 +1,16 @@
 import { organizationalPolicies as orgPoliciesTable, 
   meetingAgendas as meetingAgendasTable,
   legalDocuments as legalDocumentsTable } from "@/server/db/schema";
-import { db } from "@/server/db";
-import { eq } from "@/server/db";
-import { generateUUID } from "@/lib/utils";
+import { db, eq, type InferInsertModel } from "@/server/db";
 
+type OrganizationalPolicy = InferInsertModel<typeof orgPoliciesTable>;
+type MeetingAgenda = InferInsertModel<typeof meetingAgendasTable>;
+type LegalDocument = InferInsertModel<typeof legalDocumentsTable>;
 
-export const createOrganizationalPolicy = async (organizationalPolicy) => {
+export const createOrganizationalPolicy = async (organizationalPolicy: OrganizationalPolicy) => {
   try {
-    return await db.insert(orgPoliciesTable).values({
-      id: generateUUID(),
-      ...organizationalPolicy
-    })
+    return await db.insert(orgPoliciesTable)
+      .values(organizationalPolicy)
       .returning()
       .run();
   } catch (error) {
@@ -42,12 +41,10 @@ export const deleteOrganizationalPolicy = async (id: string) => {
   }
 }
 
-export const createMeetingAgenda = async (meetingAgenda) => {
+export const createMeetingAgenda = async (meetingAgenda: MeetingAgenda) => {
   try {
-    return await db.insert(meetingAgendasTable).values({
-      id: generateUUID(),
-      ...meetingAgenda
-    })
+    return await db.insert(meetingAgendasTable)
+      .values(meetingAgenda)
       .returning()
       .run();
   } catch (error) {
@@ -55,14 +52,14 @@ export const createMeetingAgenda = async (meetingAgenda) => {
   }
 }
 
-export const createLegalDocument = async (legalDocument) => {
+export const createLegalDocument = async (legalDocument: LegalDocument) => {
   try {
-    return await db.insert(legalDocumentsTable).values({
-      id: generateUUID(),
-      ...legalDocument
-    })
+    const res = await db.insert(legalDocumentsTable)
+      .values(legalDocument)
       .returning()
       .run();
+      console.log(res);
+      return res;
   } catch (error) {
     console.log(error);
   }

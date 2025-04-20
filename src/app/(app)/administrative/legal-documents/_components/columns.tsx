@@ -1,7 +1,15 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  type DocumentOrigin,
+  documentOriginLabels,
+  type DocumentType,
+  documentTypeLabels,
+} from "@/constants/document";
+import { type legalDocuments as legalDocumentsTable } from "@/server/db/schema";
 import { type ColumnDef } from "@tanstack/react-table";
+import { type InferSelectModel } from "drizzle-orm";
 export type Document = {
   issuedBy: string;
   docType: string;
@@ -10,7 +18,11 @@ export type Document = {
   expiryDate: Date;
 };
 
-export const columns: ColumnDef<Document>[] = [
+type LegalDocument = InferSelectModel<typeof legalDocumentsTable> & {
+  employeeName: string;
+};
+
+export const columns: ColumnDef<LegalDocument>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -34,23 +46,33 @@ export const columns: ColumnDef<Document>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "issuedBy",
+    accessorKey: "documentNumber",
+    header: "Document Number",
+  },
+  {
+    accessorKey: "employeeName",
     header: "Issued By",
   },
   {
-    accessorKey: "docType",
+    accessorKey: "documentType",
     header: "Document Type",
+    cell: ({ getValue }) => {
+      return documentTypeLabels[getValue() as DocumentType];
+    },
   },
   {
-    accessorKey: "docNumber",
-    header: "Document Number",
+    accessorKey: "documentOrigin",
+    header: "Document Origin",
+    cell: ({ getValue }) => {
+      return documentOriginLabels[getValue() as DocumentOrigin];
+    },
   },
   {
     accessorKey: "issueDate",
     header: "Issue Date",
     cell: ({ getValue }) => {
       const rawDate = new Date(getValue() as string);
-      const formattedDate = rawDate.toLocaleDateString("en-US");  
+      const formattedDate = rawDate.toLocaleDateString("en-US");
       return formattedDate;
     },
   },
@@ -59,7 +81,7 @@ export const columns: ColumnDef<Document>[] = [
     header: "Expiry Date",
     cell: ({ getValue }) => {
       const rawDate = new Date(getValue() as string);
-      const formattedDate = rawDate.toLocaleDateString("en-US");  
+      const formattedDate = rawDate.toLocaleDateString("en-US");
       return formattedDate;
     },
   },
