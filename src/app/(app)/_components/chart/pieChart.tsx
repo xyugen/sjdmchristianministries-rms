@@ -86,8 +86,8 @@ export function DonutChart() {
                         dominantBaseline="middle"
                       >
                         <tspan
-                          x={viewBox.cx}
-                          y={viewBox.cy}
+                          x={viewBoxType.cx}
+                          y={viewBoxType.cy}
                           className="fill-foreground text-2xl font-bold"
                         >
                           {"₱ "+totalEarnings.toLocaleString()}
