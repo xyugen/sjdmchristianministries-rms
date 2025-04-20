@@ -1,16 +1,17 @@
-
 import BreadcrumbLayout from "@/components/breadcrumb/page-breadcrumb";
 import React from "react";
+import Header from "./_components/table-header";
+import TransactionsTable from "./_components/data-table";
 
 const Page = () => {
   return (
-    <div className="flex flex-col">
-      <BreadcrumbLayout
-        currentPage="Financial Records"
-      />
-      
+    <div className="container mx-auto">
+      <BreadcrumbLayout currentPage="Financial Records" />
+
+      <Header />
+      <TransactionsTable/>
     </div>
-  )
-}
+  );
+};
 
 export default Page;
