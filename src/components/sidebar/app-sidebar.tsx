@@ -16,7 +16,7 @@ import { AppUserSidebar } from "./app-user-sidebar";
 export function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarHeader className="p-1.5 text-center text-lg font-medium">
+      <SidebarHeader className="p-1.5 text-center text-lg font-bold text-black">
         SJDM Christian Ministry
       </SidebarHeader>
 

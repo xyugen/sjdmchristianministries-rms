@@ -19,7 +19,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 const chartData = [
-  { category: "Offering", earnings: 2400, color: "var(--chart-offering)" },  
+  { category: "Offering", earnings: 3400, color: "var(--chart-offering)" },  
   { category: "Pledge", earnings: 400, color: "var(--chart-pledge)" },
   { category: "Donation", earnings: 940, color: "var(--chart-donation)" },  
 ]
@@ -44,7 +44,7 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function DonutChart() {
-  const totalVisitors = React.useMemo(() => {
+  const totalEarnings = React.useMemo(() => {
     return chartData.reduce((acc, curr) => acc + curr.earnings, 0)
   }, [])
 
@@ -68,7 +68,7 @@ export function DonutChart() {
               data={chartData}
               dataKey="earnings"
               nameKey="category"
-              innerRadius={60}
+              innerRadius={63}
               strokeWidth={5}
             >
               <Label
@@ -84,9 +84,9 @@ export function DonutChart() {
                         <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
+                          className="fill-foreground text-2xl font-bold"
                         >
-                          {totalVisitors.toLocaleString()}
+                          {"₱ "+totalEarnings.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBox.cx}

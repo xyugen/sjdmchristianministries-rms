@@ -52,7 +52,7 @@ const Page = () => {
               {stat.currency && <h1>₱</h1>}
               {stat.value}
               <span
-                className={`ml-2 flex items-center text-sm ${
+                className={`flex items-center text-sm ${
                   stat.isPositive ? "text-green-500" : "text-yellow-500"
                 }`}
               >
@@ -71,6 +71,8 @@ const Page = () => {
       <div className="mt-1 flex flex-col sm:flex-row">
         <div className="border-gray mt-5 flex flex-col items-center justify-center rounded-sm border pb-4 sm:flex-row lg:py-2">
           <DonutChart />
+        </div>
+        <div className="border-gray ml-2 mt-5 flex flex-col items-center justify-center rounded-sm border pb-4 sm:flex-row lg:py-2">
         </div>
       </div>
     </div>

@@ -48,7 +48,7 @@ const SampleDocuments = [
 
 function Page() {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <BreadcrumbLayout
         currentPage="Employee Profiles"
         parentPage="Human Resources Records"
