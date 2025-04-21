@@ -51,7 +51,7 @@ export function DonutChart() {
   }, [])
 
   return (
-    <Card className="flex flex-col rounded-sm px-12 shadow-none">
+    <Card className="flex flex-col rounded-sm px-12 border-none shadow-none">
       <CardHeader className="items-center pb-0">
         <CardTitle>Total Earnings</CardTitle>
         <CardDescription>January - April 2025</CardDescription>
