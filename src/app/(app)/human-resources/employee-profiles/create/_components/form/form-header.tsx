@@ -10,7 +10,7 @@ const FormHeader = () => {
   const router = useRouter();
 
   const handleBackButton = () => {
-    router.push("");
+    router.push(PageRoutes.EMPLOYEE_PROFILES);
   };
 
   return (

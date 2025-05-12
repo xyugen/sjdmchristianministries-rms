@@ -1,6 +1,7 @@
 import React from "react";
 import PageBreadCrumb from "@/components/breadcrumb/page-breadcrumb";
 import FormHeader from "./_components/form/form-header";
+import { EmployeeForm } from "./_components/form/employee-form";
 
 const Page = () => {
   return (
@@ -12,6 +13,7 @@ const Page = () => {
       />
 
       <FormHeader/>
+      <EmployeeForm/>
     </div>
   );
 };

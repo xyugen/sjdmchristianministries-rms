@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { format } from "date-fns";
-import { CalendarIcon, Loader2 } from "lucide-react";
+import { CalendarIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -48,7 +47,7 @@ import {
 } from "@/constants/transaction";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
-import { create } from "domain";
+
 type TransactionFormValues = z.infer<typeof transactionSchema>;
 
 const TransactionForm = () => {
@@ -284,8 +283,8 @@ const TransactionForm = () => {
                         ? "Loading..."
                         : employees?.map((employee) => (
                             <SelectItem
-                              key={employee.employeeId}
-                              value={employee.employeeId}
+                              key={employee.id}
+                              value={employee.id}
                             >
                               {employee.name}
                             </SelectItem>

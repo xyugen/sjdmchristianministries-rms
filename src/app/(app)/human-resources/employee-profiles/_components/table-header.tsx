@@ -10,7 +10,7 @@ const Header = () => {
   const router = useRouter();
 
   const handleCreateEmployee =  () => {
-     router.push("");
+     router.push(PageRoutes.EMPLOYEE_PROFILES_CREATE);
   }
 
   return (
