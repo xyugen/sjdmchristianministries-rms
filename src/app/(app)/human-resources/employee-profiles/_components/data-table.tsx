@@ -1,28 +1,26 @@
 "use client";
+
 import React from "react";
 import { columns } from "./columns";
 import { DataTable } from "@/components/table/data-table";
 import { DataTableSkeleton } from "@/components/table/data-table-skeletion";
-import { TRANSACTION_TYPE , TransactionTypeLabels } from "@/constants/transaction";
+import { ROLES, RoleTypeLabels } from "@/constants/roles";
 import { api } from "@/trpc/react";
 
-
-const TransactionsTable = () => {
-
-  const { data, isLoading } = 
-  api.finance.getAllFinancialTransactions.useQuery();
+const EmployeeTable = () => {
+  const { data, isLoading } = api.humanResource.getAllEmployees.useQuery();
 
   return (
     <div className="mt-6">
-      {!isLoading && data? (
+      {!isLoading && data ? (
         <DataTable
           columns={columns}
           data={data}
-          filteredTitle="recordedById"
-          filteredColumn="type"
+          filteredTitle="ID"
+          filteredColumn="roles"
           options={
-            TRANSACTION_TYPE.map((type) => ({
-              label: TransactionTypeLabels[type],
+            ROLES.map((type) => ({
+              label: RoleTypeLabels[type],
               value: type,
             })) || []
           }
@@ -34,5 +32,4 @@ const TransactionsTable = () => {
   );
 };
 
-export default TransactionsTable;
-
+export default EmployeeTable;

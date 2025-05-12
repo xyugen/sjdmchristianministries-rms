@@ -5,8 +5,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import type {
   TRANSACTION_CATEGORY
 } from "@/constants/transaction";
-import { InferSelectModel } from "@/server/db";
-import { financialTransactions } from "@/server/db/schema";
+import type { InferSelectModel } from "@/server/db";
+import type { financialTransactions } from "@/server/db/schema";
 import { type ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 

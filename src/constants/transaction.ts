@@ -13,14 +13,9 @@ export const TRANSACTION_CATEGORY = [
 export type TransactionType = (typeof TRANSACTION_TYPE)[number];
 export type TransactionCategory = (typeof TRANSACTION_CATEGORY)[number];
 
-export const TransactionOption = [
-  {
-    label: "Inflow",
-    value: "inflow",
-  },
-  {
-    label: "Outflow",
-    value: "outflow",
-  },
-];
+export const TransactionTypeLabels: Record<TransactionType, string> = {
+  inflow: "Inflow",
+  outflow: "Outflow",
+};
+
 
