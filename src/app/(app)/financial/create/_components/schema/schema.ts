@@ -6,14 +6,13 @@ import {
 } from "@/constants/transaction";
 
 export const transactionSchema = z.object({
-  id: z.string().optional(),
   recordedById: z.string({
     required_error: "Please select who recorded this transaction",
   }),
-  type: z.enum(TRANSACTION_TYPE as unknown as [string, ...string[]], {
+  type: z.enum(TRANSACTION_TYPE, {
     required_error: "Please select a transaction type",
   }),
-  category: z.enum(TRANSACTION_CATEGORY as unknown as [string, ...string[]], {
+  category: z.enum(TRANSACTION_CATEGORY, {
     required_error: "Please select a category",
   }),
   description: z.string().min(3, {

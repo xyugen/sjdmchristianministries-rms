@@ -24,10 +24,7 @@ export const getAllFinancialTransactions = async () => {
       .leftJoin(userTable, eq(userTable.id, employeeTable.userId))
       .orderBy(desc(financialTransactionsTable.transactionDate));
 
-    return {
-      outflows: result.filter((transaction) => transaction.type === "outflow"),
-      inflows: result.filter((transaction) => transaction.type === "inflow"),
-    }
+    return result;
   } catch (error) {
     console.log(error);
   }

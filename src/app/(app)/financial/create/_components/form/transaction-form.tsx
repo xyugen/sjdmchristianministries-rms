@@ -46,18 +46,16 @@ import {
   TRANSACTION_CATEGORY,
   TRANSACTION_TYPE,
 } from "@/constants/transaction";
-
+import { api } from "@/trpc/react";
+import { toast } from "sonner";
+import { create } from "domain";
 type TransactionFormValues = z.infer<typeof transactionSchema>;
 
 const TransactionForm = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const {mutateAsync, isPending} = api.finance.createFinancialTransaction.useMutation();
 
-  //TODO: Fetch all the employee
-  const [employees, setEmployees] = useState([
-    { id: "emp-001", name: "John Doe" },
-    { id: "emp-002", name: "Jane Smith" },
-    { id: "emp-003", name: "Bob Johnson" },
-  ]);
+  const { data: employees, isLoading: isEmployeesLoading } =
+    api.humanResource.getAllEmployees.useQuery();
 
   const form = useForm<TransactionFormValues>({
     resolver: zodResolver(transactionSchema),
@@ -72,10 +70,22 @@ const TransactionForm = () => {
     },
   });
 
-  const onSubmit = async (data: TransactionFormValues) => {
-    setIsSubmitting(true);
-
-    //TODO: handle submission here
+  const onSubmit = async (values:  z.infer<typeof transactionSchema>) => {
+    const toastId = toast.loading("Adding document...");
+    try {
+      const response = await mutateAsync({
+        ...values,
+      });
+      if (response) {
+        toast.success("Document added successfully!", { id: toastId });
+        form.reset();
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error);
+        toast.error(error.message, { id: toastId });
+      }
+    }
   };
 
   return (
@@ -99,7 +109,7 @@ const TransactionForm = () => {
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
-                      disabled={isSubmitting}
+                      disabled={isPending}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -131,7 +141,7 @@ const TransactionForm = () => {
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
-                      disabled={isSubmitting}
+                      disabled={isPending}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -171,7 +181,7 @@ const TransactionForm = () => {
                     <Input
                       placeholder="Enter a brief description"
                       {...field}
-                      disabled={isSubmitting}
+                      disabled={isPending}
                     />
                   </FormControl>
                   <FormDescription>
@@ -195,7 +205,7 @@ const TransactionForm = () => {
                         step="0.01"
                         placeholder="0.00"
                         {...field}
-                        disabled={isSubmitting}
+                        disabled={isPending}
                       />
                     </FormControl>
                     <FormDescription>
@@ -221,7 +231,7 @@ const TransactionForm = () => {
                               "w-full pl-3 text-left font-normal",
                               !field.value && "text-muted-foreground",
                             )}
-                            disabled={isSubmitting}
+                            disabled={isPending}
                           >
                             {field.value ? (
                               format(field.value, "PPP")
@@ -262,7 +272,7 @@ const TransactionForm = () => {
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
-                    disabled={isSubmitting}
+                    disabled={isPending}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -270,11 +280,16 @@ const TransactionForm = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {employees.map((employee) => (
-                        <SelectItem key={employee.id} value={employee.id}>
-                          {employee.name}
-                        </SelectItem>
-                      ))}
+                      {isEmployeesLoading
+                        ? "Loading..."
+                        : employees?.map((employee) => (
+                            <SelectItem
+                              key={employee.employeeId}
+                              value={employee.employeeId}
+                            >
+                              {employee.name}
+                            </SelectItem>
+                          ))}
                     </SelectContent>
                   </Select>
                   <FormDescription>
@@ -296,7 +311,7 @@ const TransactionForm = () => {
                       placeholder="Enter any additional details about this transaction"
                       className="min-h-[100px]"
                       {...field}
-                      disabled={isSubmitting}
+                      disabled={isPending}
                     />
                   </FormControl>
                   <FormDescription>
@@ -308,11 +323,8 @@ const TransactionForm = () => {
             />
           </CardContent>
           <CardFooter className="flex justify-end">
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting && (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              )}
-              Create Transaction
+            <Button type="submit" disabled={isPending}>
+              {isPending ? "Submitting..." : "Create Transaction" }
             </Button>
           </CardFooter>
         </form>
