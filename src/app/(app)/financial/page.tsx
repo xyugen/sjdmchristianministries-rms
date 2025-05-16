@@ -5,7 +5,7 @@ import TransactionsTable from "./_components/data-table";
 
 const Page = () => {
   return (
-    <div className="container mx-auto">
+    <div className="mx-auto w-full px-4">
       <BreadcrumbLayout currentPage="Financial Records" />
 
       <Header />
