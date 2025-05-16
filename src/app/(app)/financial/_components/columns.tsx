@@ -2,9 +2,8 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import type {
-  TRANSACTION_CATEGORY
-} from "@/constants/transaction";
+import type { TRANSACTION_CATEGORY } from "@/constants/transaction";
+import { cn } from "@/lib/utils";
 import type { InferSelectModel } from "@/server/db";
 import type { financialTransactions } from "@/server/db/schema";
 import { type ColumnDef } from "@tanstack/react-table";
@@ -42,7 +41,7 @@ export const columns: ColumnDef<Transaction>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "recordedById",
+    accessorKey: "employeeName",
     header: "Recorded By",
   },
   {
@@ -81,7 +80,7 @@ export const columns: ColumnDef<Transaction>[] = [
     cell: ({ getValue }) => {
       const description = getValue() as string;
 
-     return <div className="font-medium">{description}</div>
+      return <div className="font-medium">{description}</div>;
     },
   },
   {
@@ -90,8 +89,8 @@ export const columns: ColumnDef<Transaction>[] = [
     cell: ({ getValue }) => {
       return (
         <Badge
-          className="rounded-full"
-          variant={getValue() === "inflow" ? "default" : "destructive"}
+          className={cn("w-16 text-nowrap text-center")}
+          variant={getValue() === "inflow" ? "green" : "destructive"}
         >
           {getValue() === "inflow" ? "Inflow" : "Outflow"}
         </Badge>
@@ -105,7 +104,9 @@ export const columns: ColumnDef<Transaction>[] = [
       const value = row.getValue("type");
 
       return (
-        <div className={`${value === "inflow" ? "text-green-600" : "text-red-600"} text-nowrap`}>
+        <div
+          className={`${value === "inflow" ? "text-green-700" : "text-red-600"} text-nowrap`}
+        >
           {value === "inflow" ? "+ " : "- "}
           {formatCurrency(getValue() as number)}
         </div>
