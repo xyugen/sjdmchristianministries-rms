@@ -1,5 +1,3 @@
-import { Landmark, Home } from "lucide-react";
-
 import {
   Sidebar,
   SidebarContent,
@@ -8,8 +6,9 @@ import {
   SidebarHeader,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
-
 import { PageRoutes } from "@/constants/page-routes";
+import { Home, Landmark } from "lucide-react";
+import Link from "next/link";
 import AppMainSidebar from "./app-main-sidebar";
 import { AppUserSidebar } from "./app-user-sidebar";
 
@@ -23,10 +22,10 @@ export function AppSidebar() {
       <SidebarContent className="mt-4">
         <SidebarGroup>
           <SidebarMenuButton asChild>
-            <a href={PageRoutes.DASHBOARD}>
+            <Link href={PageRoutes.DASHBOARD}>
               <Home />
               <span>Dashboard</span>
-            </a>
+            </Link>
           </SidebarMenuButton>
         </SidebarGroup>
 
@@ -36,16 +35,16 @@ export function AppSidebar() {
 
         <SidebarGroup>
           <SidebarMenuButton asChild>
-            <a href={PageRoutes.FINANCIAL}>
+            <Link href={PageRoutes.FINANCIAL}>
               <Landmark />
               <span>Financial</span>
-            </a>
+            </Link>
           </SidebarMenuButton>
         </SidebarGroup>
-       </SidebarContent>
-       
+      </SidebarContent>
+
       <SidebarFooter>
-        <AppUserSidebar/>
+        <AppUserSidebar />
       </SidebarFooter>
     </Sidebar>
   );
