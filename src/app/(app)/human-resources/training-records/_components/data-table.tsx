@@ -1,123 +1,49 @@
-"use client";
 
-import {
-  type ColumnDef,
-  type ColumnFiltersState,
-  flexRender,
-  getPaginationRowModel,
-  getCoreRowModel,
-  getFilteredRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import React from "react";
+import type { EmployeeTrainingRecord } from "./columns";
+import { columns } from "./columns";
+import { DataTable } from "@/components/table/data-table";
+import { DataTableSkeleton } from "@/components/table/data-table-skeletion";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-}
-export function DataTable<TData extends object, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
-    state: {
-      columnFilters,
+async function getData(): Promise<EmployeeTrainingRecord[]> {
+  return [
+    {
+      id: 1,
+      employee_id: 1,
+      training_name: "Training 1",
+      date_completed: new Date("2022-11-22"),
     },
-  });
+    {
+      id: 2,
+      employee_id: 1,
+      training_name: "Training 2",
+      date_completed: new Date("2022-11-25"),
+    },
+    {
+      id: 3,
+      employee_id: 2,
+      training_name: "Training 3",
+      date_completed: new Date("2022-11-28"),
+    },
+  ]
+}
 
+const EmployeeTrainingRecord = async () => {
+   // remove this and apply the api
+  const data = await getData();
+ 
   return (
-    <div>
-      {/* <DataTableToolbar table={table} /> */}
-      <div>
-        <Table className="w-full max-w-full sm:w-[95vw] sm:max-w-[1000px]">
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-2">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
-      </div>
+    <div className="mt-6">
+
+        <DataTable
+          columns={columns}
+          data={data}
+          filteredTitle="id"
+          filteredColumn="role"
+        />
+
     </div>
   );
-}
+};
+
+export default EmployeeTrainingRecord;
