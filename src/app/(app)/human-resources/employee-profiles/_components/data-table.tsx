@@ -16,8 +16,8 @@ const EmployeeTable = () => {
         <DataTable
           columns={columns}
           data={data}
-          filteredTitle="ID"
-          filteredColumn="roles"
+          filteredTitle="name"
+          filteredColumn="role"
           options={
             ROLES.map((type) => ({
               label: RoleTypeLabels[type],

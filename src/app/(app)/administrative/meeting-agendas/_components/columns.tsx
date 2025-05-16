@@ -1,19 +1,12 @@
-"use client";
-
-import { type ColumnDef } from "@tanstack/react-table";
-import type { InferSelectModel } from "@/server/db";
-import type { employee } from "@/server/db/schema";
-import { DataTableRowActions } from "./table-row-actions";
 import { Checkbox } from "@/components/ui/checkbox";
-import type { RoleType } from "@/constants/roles";
+import { type InferSelectModel } from "@/server/db";
+import { meetingAgendas } from "@/server/db/schema";
+import { type ColumnDef } from "@tanstack/react-table";
+import { DataTableRowActions } from "./table-row-actions";
 
-type Employees = InferSelectModel<typeof employee> & {
-  name: string;
-  role: RoleType | null;
-  email: string;
-};
+type meetingAgendas = InferSelectModel<typeof meetingAgendas>;
 
-export const columns: ColumnDef<Employees>[] = [
+export const columns: ColumnDef<meetingAgendas>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -37,20 +30,12 @@ export const columns: ColumnDef<Employees>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "name",
-    header: "Name",
+    accessorKey: "agenda",
+    header: "Agenda",
   },
   {
-    accessorKey: "email",
-    header: "Email",
-  },
-  {
-    accessorKey: "role",
-    header: "Role",
-  },
-  {
-    accessorKey: "birthDate",
-    header: "Birth Date",
+    accessorKey: "meetingDate",
+    header: "Meeting Date",
     cell: ({ getValue }) => {
       const rawDate = new Date(getValue() as string);
       const formattedDate = rawDate.toLocaleDateString("en-US");
@@ -58,25 +43,30 @@ export const columns: ColumnDef<Employees>[] = [
     },
   },
   {
-    accessorKey: "gender",
-    header: "Gender",
-  },
-
-  {
-    accessorKey: "marital_status",
-    header: "Marital Status",
-  },
-  {
-    accessorKey: "nationality",
-    header: "Nationality",
+    accessorKey: "startTime",
+    header: "Start Time",
+    cell: ({ getValue }) => {
+      const rawDate = new Date(getValue() as string);
+      const formattedDate = rawDate.toLocaleDateString("en-US");
+      return formattedDate;
+    },
   },
   {
-    accessorKey: "address",
-    header: "Address",
+    accessorKey: "endTime",
+    header: "End Time",
+    cell: ({ getValue }) => {
+      const rawDate = new Date(getValue() as string);
+      const formattedDate = rawDate.toLocaleDateString("en-US");
+      return formattedDate;
+    },
   },
   {
-    accessorKey: "contact_number",
-    header: "Contact Number",
+    accessorKey: "presidingOfficer",
+    header: "Presiding Officer",
+  },
+  {
+    accessorKey: "summary",
+    header: "Summary",
   },
   {
     id: "actions",

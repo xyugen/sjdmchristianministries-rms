@@ -1,7 +1,6 @@
-import React from "react";
 import PageBreadCrumb from "@/components/breadcrumb/page-breadcrumb";
 import FormHeader from "./_components/form/form-header";
-import { EmployeeForm } from "./_components/form/employee-form";
+import MeetingAgendasForm from "./_components/form/meeting-agendas-form";
 
 const Page = () => {
   return (
@@ -9,11 +8,11 @@ const Page = () => {
       <PageBreadCrumb
         subPage="Create"
         currentPage="Legal Documents"
-        parentPage="Administrative Records"
+        parentPage="Administrative "
       />
 
       <FormHeader />
-      <EmployeeForm />
+      <MeetingAgendasForm />
     </div>
   );
 };

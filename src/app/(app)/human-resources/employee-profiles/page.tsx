@@ -15,8 +15,8 @@ function Page() {
         currentPage="Employee Profiles"
         parentPage="Human Resources Records"
       />
-      <Header/>
-      <EmployeeTable/>
+      <Header />
+      <EmployeeTable />
     </div>
   );
 }
