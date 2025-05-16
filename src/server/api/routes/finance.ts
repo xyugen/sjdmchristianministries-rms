@@ -4,22 +4,15 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import { generateUUID } from "@/lib/utils";
 import { TRANSACTION_TYPE, TRANSACTION_CATEGORY } from "@/constants/transaction";
+import { transactionSchema } from "@/app/(app)/financial/create/_components/schema/schema";
 
 
 export const financeRouter = createTRPCRouter({
-  createFinancialTransaction: protectedProcedure.input(z.object({
-    recordedById: z.string(),
-    type: z.enum(TRANSACTION_TYPE),
-    category: z.enum(TRANSACTION_CATEGORY),
-    description: z.string(),
-    amount: z.number(),
-    transactionDate: z.string().transform((val) => new Date(val)),
-    details: z.string().optional(),
-  })).mutation(async ({ input }) => {
+  createFinancialTransaction: protectedProcedure.input(transactionSchema).mutation(async ({ input }) => {
     try {
       return await createFinancialTransaction({id: generateUUID(), ...input});
     } catch (error) {
-      console.log(error);
+      console.log("failed to create transaction", error);
     }
   }),
   getAllFinancialTransactions: protectedProcedure.query(async () => {

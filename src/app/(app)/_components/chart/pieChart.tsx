@@ -22,7 +22,7 @@ import {
 
 
 const chartData = [
-  { category: "Offering", earnings: 2400, color: "var(--chart-offering)" },
+  { category: "Offering", earnings: 3400, color: "var(--chart-offering)" },  
   { category: "Pledge", earnings: 400, color: "var(--chart-pledge)" },
   { category: "Donation", earnings: 940, color: "var(--chart-donation)" },
 ];
@@ -46,12 +46,12 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function DonutChart() {
-  const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.earnings, 0);
-  }, []);
+  const totalEarnings = React.useMemo(() => {
+    return chartData.reduce((acc, curr) => acc + curr.earnings, 0)
+  }, [])
 
   return (
-    <Card className="flex flex-col rounded-sm px-12 shadow-none">
+    <Card className="flex flex-col rounded-sm px-12 border-none shadow-none">
       <CardHeader className="items-center pb-0">
         <CardTitle>Total Earnings</CardTitle>
         <CardDescription>January - April 2025</CardDescription>
@@ -70,7 +70,7 @@ export function DonutChart() {
               data={chartData}
               dataKey="earnings"
               nameKey="category"
-              innerRadius={60}
+              innerRadius={63}
               strokeWidth={5}
             >
               <Label
@@ -91,9 +91,9 @@ export function DonutChart() {
                         <tspan
                           x={viewBoxType.cx}
                           y={viewBoxType.cy}
-                          className="fill-foreground text-3xl font-bold"
+                          className="fill-foreground text-2xl font-bold"
                         >
-                          {totalVisitors.toLocaleString()}
+                          {"₱ "+totalEarnings.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBoxType.cx}

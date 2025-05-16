@@ -3,9 +3,10 @@
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import type {
-  Transaction,
-  TRANSACTION_CATEGORY,
+  TRANSACTION_CATEGORY
 } from "@/constants/transaction";
+import type { InferSelectModel } from "@/server/db";
+import type { financialTransactions } from "@/server/db/schema";
 import { type ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 
@@ -15,6 +16,7 @@ const formatCurrency = (amount: number) => {
     currency: "PHP",
   }).format(amount);
 };
+type Transaction = InferSelectModel<typeof financialTransactions>;
 
 export const columns: ColumnDef<Transaction>[] = [
   {

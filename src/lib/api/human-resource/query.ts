@@ -9,11 +9,12 @@ export const getAllEmployees = async () => {
   try {
     return await db
     .select({
-      employeeId: employeeTable.id,
+      id: employeeTable.id,
       userId: employeeTable.userId,
       name: userTable.name,
       email: userTable.email,
       role: userTable.role,
+      birthDate: employeeTable.birthDate,
       gender: employeeTable.gender,
       maritalStatus: employeeTable.maritalStatus,
       nationality: employeeTable.nationality,
