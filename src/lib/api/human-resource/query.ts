@@ -43,6 +43,20 @@ export const getEmployeeByUserId = async (userId: string) => {
   }
 }
 
+export const getEmployeeByEmployeeId = async (employeeId: string) => {
+  try {
+    const result = await db
+      .select()
+      .from(employeeTable)
+      .where(eq(employeeTable.id, employeeId))
+      .limit(1);
+    return result[0] ?? null;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
 export const getEmployeeTrainingsByEmployeeId = async (employeeId: string) => {
   try {
     const result = await db

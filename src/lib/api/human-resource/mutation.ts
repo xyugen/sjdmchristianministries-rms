@@ -7,12 +7,17 @@ type Employee = InferInsertModel<typeof employeeTable>;
 type EmployeeTraining = InferInsertModel<typeof employeeTrainingTable>;
 
 type TypeEditEmployee = {
-  gender?: GenderType | undefined;
-  maritalStatus?: MaritalStatusType | undefined;
-  birthDate?: Date | undefined;
-  nationality?: string | undefined;
-  address?: string | undefined;
-  contactNumber?: string | undefined;
+  gender?: GenderType;
+  maritalStatus?: MaritalStatusType;
+  birthDate?: Date;
+  nationality?: string;
+  address?: string;
+  contactNumber?: string;
+}
+
+type TypeEditEmployeeTraining = {
+  trainingName?: string;
+  dateCompleted?: Date;
 }
 
 export const createEmployee = async (employee: Employee) => {
@@ -44,6 +49,18 @@ export const createEmployeeTraining = async (employeeTraining: EmployeeTraining)
   try {
     return await db.insert(employeeTrainingTable)
       .values(employeeTraining)
+      .returning()
+      .run();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const editEmployeeTraining = async (id: string, employeeTraining: TypeEditEmployeeTraining) => {
+  try {
+    return await db.update(employeeTrainingTable)
+      .set(employeeTraining)
+      .where(eq(employeeTrainingTable.id, id))
       .returning()
       .run();
   } catch (error) {
