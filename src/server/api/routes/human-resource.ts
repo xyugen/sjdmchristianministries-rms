@@ -4,13 +4,17 @@ import { ROLES } from "@/constants/roles";
 import { GENDERS } from "@/constants/genders";
 import { MARITAL_STATUSES } from "@/constants/marital-statuses";
 import { createUser, createAccount } from "@/lib/api/auth/mutation";
-import { createEmployee, createEmployeeTraining } from "@/lib/api/human-resource/mutation";
+import {
+  createEmployee,
+  createEmployeeTraining,
+  editEmployeeInfo,
+} from "@/lib/api/human-resource/mutation";
 import {
   getAllEmployees,
+  getAllEmployeeTrainings,
   getEmployeeTrainingsByEmployeeId,
   getEmployeeTrainingsPerEmployee,
 } from "@/lib/api/human-resource/query";
-import { editEmployeeInfo } from "@/lib/api/human-resource/mutation";
 import { generateUUID } from "@/lib/utils";
 
 export const humanResourceRouter = createTRPCRouter({
@@ -18,21 +22,22 @@ export const humanResourceRouter = createTRPCRouter({
     .input(
       z.object({
         // user fields
-          name: z.string(),
-          email: z.string(),
-          role: z.enum(ROLES),
-          emailVerified: z.boolean(),
+        name: z.string(),
+        email: z.string(),
+        role: z.enum(ROLES),
+        emailVerified: z.boolean(),
         // employee fields
-          birthDate: z.string().transform((val) => new Date(val)),
-          gender: z.enum(GENDERS),
-          maritalStatus: z.enum(MARITAL_STATUSES),
-          nationality: z.string(),
-          address: z.string(),
-          contactNumber: z.string(),
+        birthDate: z.string().transform((val) => new Date(val)),
+        gender: z.enum(GENDERS),
+        maritalStatus: z.enum(MARITAL_STATUSES),
+        nationality: z.string(),
+        address: z.string(),
+        contactNumber: z.string(),
         // account fields
-          password: z.string(),
-      })
-    ).mutation(async ({ input }) => {
+        password: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
       try {
         const newUser = await createUser({
           id: generateUUID(),
@@ -77,15 +82,14 @@ export const humanResourceRouter = createTRPCRouter({
       } catch (error) {
         console.log(error);
       }
-  }),
+    }),
 
-  getAllEmployees: protectedProcedure
-    .query(async () => {
-      try {
-        return await getAllEmployees();
-      } catch (error) {
-        console.log(error);
-      }
+  getAllEmployees: protectedProcedure.query(async () => {
+    try {
+      return await getAllEmployees();
+    } catch (error) {
+      console.log(error);
+    }
   }),
   editEmployeeInfo: protectedProcedure
     .input(
@@ -94,28 +98,35 @@ export const humanResourceRouter = createTRPCRouter({
         data: z.object({
           gender: z.enum(GENDERS).optional(),
           maritalStatus: z.enum(MARITAL_STATUSES).optional(),
-          birthDate: z.string().optional().transform((val) => (val ? new Date(val) : undefined)),
+          birthDate: z
+            .string()
+            .optional()
+            .transform((val) => (val ? new Date(val) : undefined)),
           nationality: z.string().optional(),
           address: z.string().optional(),
           contactNumber: z.string().optional(),
-        })
-      })
-    ).mutation(async ({ input }) => {
+        }),
+      }),
+    )
+    .mutation(async ({ input }) => {
       try {
         return await editEmployeeInfo(input.employeeId, input.data);
       } catch (error) {
         console.log(error);
       }
-    }
-  ),
+    }),
   createEmployeeTraining: protectedProcedure
     .input(
       z.object({
         employeeId: z.string(),
         trainingName: z.string(),
-        dateCompleted: z.string().optional().transform((val) => (val ? new Date(val) : undefined)),
-      })
-    ).mutation(async ({ input }) => {
+        dateCompleted: z
+          .string()
+          .optional()
+          .transform((val) => (val ? new Date(val) : undefined)),
+      }),
+    )
+    .mutation(async ({ input }) => {
       try {
         return await createEmployeeTraining({
           id: generateUUID(),
@@ -126,21 +137,20 @@ export const humanResourceRouter = createTRPCRouter({
       } catch (error) {
         console.log(error);
       }
-    }
-  ),
+    }),
   getEmployeeTrainingsByEmployeeId: protectedProcedure
     .input(
       z.object({
         employeeId: z.string(),
-      })
-    ).mutation(async ({ input }) => {
+      }),
+    )
+    .mutation(async ({ input }) => {
       try {
         return await getEmployeeTrainingsByEmployeeId(input.employeeId);
       } catch (error) {
         console.log(error);
       }
-    }
-  ),
+    }),
   getEmployeeTrainingsPerEmployee: protectedProcedure.query(async () => {
     try {
       return await getEmployeeTrainingsPerEmployee();
@@ -154,5 +164,5 @@ export const humanResourceRouter = createTRPCRouter({
     } catch (error) {
       console.log(error);
     }
-  })
-})
+  }),
+});
