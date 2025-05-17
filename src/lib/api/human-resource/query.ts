@@ -143,6 +143,7 @@ export const getAllEmployeeTrainings = async () => {
   try {
     return await db
     .select({
+      id: employeeTrainingTable.id,
       employeeId: employeeTable.id,
       name: userTable.name,
       trainingName: employeeTrainingTable.trainingName,
