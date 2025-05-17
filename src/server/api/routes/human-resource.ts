@@ -73,6 +73,7 @@ export const humanResourceRouter = createTRPCRouter({
         console.log(error);
       }
   }),
+
   getAllEmployees: protectedProcedure
     .query(async () => {
       try {
