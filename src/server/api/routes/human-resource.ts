@@ -4,7 +4,7 @@ import { ROLES } from "@/constants/roles";
 import { GENDERS } from "@/constants/genders";
 import { MARITAL_STATUSES } from "@/constants/marital-statuses";
 import { createUser, createAccount } from "@/lib/api/auth/mutation";
-import { createEmployee, createEmployeeTraining } from "@/lib/api/human-resource/mutation";
+import { createEmployee, createEmployeeTraining, editEmployeeInfo } from "@/lib/api/human-resource/mutation";
 import { getAllEmployees, getAllEmployeeTrainings, getEmployeeTrainingsByEmployeeId, getEmployeeTrainingsPerEmployee } from "@/lib/api/human-resource/query";
 import { generateUUID } from "@/lib/utils";
 
