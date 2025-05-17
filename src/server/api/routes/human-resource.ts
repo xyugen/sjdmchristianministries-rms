@@ -3,9 +3,9 @@ import { z } from "zod";
 import { ROLES } from "@/constants/roles";
 import { GENDERS } from "@/constants/genders";
 import { MARITAL_STATUSES } from "@/constants/marital-statuses";
-import { createUser, createAccount } from "@/lib/api/auth/mutation";
-import { createEmployee, createEmployeeTraining, editEmployeeInfo } from "@/lib/api/human-resource/mutation";
-import { getAllEmployees, getAllEmployeeTrainings, getEmployeeTrainingsByEmployeeId, getEmployeeTrainingsPerEmployee } from "@/lib/api/human-resource/query";
+import { createUser, createAccount, editUser } from "@/lib/api/auth/mutation";
+import { createEmployee, createEmployeeTraining, editEmployeeInfo, editEmployeeTraining } from "@/lib/api/human-resource/mutation";
+import { getAllEmployees, getAllEmployeeTrainings, getEmployeeByEmployeeId, getEmployeeTrainingsByEmployeeId, getEmployeeTrainingsPerEmployee } from "@/lib/api/human-resource/query";
 import { generateUUID } from "@/lib/utils";
 
 export const humanResourceRouter = createTRPCRouter({
@@ -13,19 +13,19 @@ export const humanResourceRouter = createTRPCRouter({
     .input(
       z.object({
         // user fields
-          name: z.string(),
-          email: z.string(),
-          role: z.enum(ROLES),
-          emailVerified: z.boolean(),
+        name: z.string(),
+        email: z.string(),
+        role: z.enum(ROLES),
+        emailVerified: z.boolean(),
         // employee fields
-          birthDate: z.string().transform((val) => new Date(val)),
-          gender: z.enum(GENDERS),
-          maritalStatus: z.enum(MARITAL_STATUSES),
-          nationality: z.string(),
-          address: z.string(),
-          contactNumber: z.string(),
+        birthDate: z.string().transform((val) => new Date(val)),
+        gender: z.enum(GENDERS),
+        maritalStatus: z.enum(MARITAL_STATUSES),
+        nationality: z.string(),
+        address: z.string(),
+        contactNumber: z.string(),
         // account fields
-          password: z.string(),
+        password: z.string(),
       })
     ).mutation(async ({ input }) => {
       try {
@@ -72,7 +72,7 @@ export const humanResourceRouter = createTRPCRouter({
       } catch (error) {
         console.log(error);
       }
-  }),
+    }),
 
   getAllEmployees: protectedProcedure
     .query(async () => {
@@ -81,28 +81,40 @@ export const humanResourceRouter = createTRPCRouter({
       } catch (error) {
         console.log(error);
       }
-  }),
+    }),
   editEmployeeInfo: protectedProcedure
     .input(
       z.object({
         employeeId: z.string(),
-        data: z.object({
-          gender: z.enum(GENDERS).optional(),
-          maritalStatus: z.enum(MARITAL_STATUSES).optional(),
-          birthDate: z.string().optional().transform((val) => (val ? new Date(val) : undefined)),
-          nationality: z.string().optional(),
-          address: z.string().optional(),
-          contactNumber: z.string().optional(),
-        })
+        // user fields
+        name: z.string().optional(),
+        email: z.string().optional(),
+        role: z.enum(ROLES).optional(),
+        // employee fields
+        gender: z.enum(GENDERS).optional(),
+        maritalStatus: z.enum(MARITAL_STATUSES).optional(),
+        birthDate: z.string().optional().transform((val) => (val ? new Date(val) : undefined)),
+        nationality: z.string().optional(),
+        address: z.string().optional(),
+        contactNumber: z.string().optional(),
       })
     ).mutation(async ({ input }) => {
       try {
-        return await editEmployeeInfo(input.employeeId, input.data);
+        const { employeeId, name, email, role, ...employeeData } = input;
+        const userData = { name, email, role };
+
+        const employee = await getEmployeeByEmployeeId(employeeId);
+
+        if (!employee) { throw new Error("Employee not found"); }
+
+        const editedEmployee = await editEmployeeInfo(employeeId, employeeData);
+        const editedUser = await editUser(employee.userId, userData);
+
+        return { editedEmployee, editedUser };
       } catch (error) {
         console.log(error);
       }
-    }
-  ),
+    }),
   createEmployeeTraining: protectedProcedure
     .input(
       z.object({
@@ -122,7 +134,7 @@ export const humanResourceRouter = createTRPCRouter({
         console.log(error);
       }
     }
-  ),
+    ),
   getEmployeeTrainingsByEmployeeId: protectedProcedure
     .input(
       z.object({
@@ -135,7 +147,7 @@ export const humanResourceRouter = createTRPCRouter({
         console.log(error);
       }
     }
-  ),
+    ),
   getEmployeeTrainingsPerEmployee: protectedProcedure.query(async () => {
     try {
       return await getEmployeeTrainingsPerEmployee();
@@ -149,5 +161,21 @@ export const humanResourceRouter = createTRPCRouter({
     } catch (error) {
       console.log(error);
     }
-  })
+  }),
+  editEmployeeTraining: protectedProcedure
+    .input(
+      z.object({
+        employeeTrainingId: z.string(),
+        trainingName: z.string().optional(),
+        dateCompleted: z.string().optional().transform((val) => (val ? new Date(val) : undefined)),
+      })
+    ).mutation(async ({ input }) => {
+      try {
+        const { employeeTrainingId, ...training } = input;
+        return await editEmployeeTraining(employeeTrainingId, training);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  ),
 })
