@@ -67,3 +67,14 @@ export const editEmployeeTraining = async (id: string, employeeTraining: TypeEdi
     console.log(error);
   }
 }
+
+export const deleteEmployeeTraining = async (id: string) => {
+  try {
+    return await db.delete(employeeTrainingTable)
+      .where(eq(employeeTrainingTable.id, id))
+      .returning()
+      .run();
+  } catch (error) {
+    console.log(error);
+  }
+}
