@@ -143,11 +143,9 @@ export const getAllEmployeeTrainings = async () => {
   try {
     return await db
     .select({
+      id: employeeTrainingTable.id,
       employeeId: employeeTable.id,
       name: userTable.name,
-      email: userTable.email,
-      role: userTable.role,
-      trainingId: employeeTrainingTable.id,
       trainingName: employeeTrainingTable.trainingName,
       dateCompleted: employeeTrainingTable.dateCompleted,
     })
