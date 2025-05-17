@@ -5,7 +5,12 @@ import { GENDERS } from "@/constants/genders";
 import { MARITAL_STATUSES } from "@/constants/marital-statuses";
 import { createUser, createAccount } from "@/lib/api/auth/mutation";
 import { createEmployee, createEmployeeTraining } from "@/lib/api/human-resource/mutation";
-import { getAllEmployees, getAllEmployeeTrainings, getEmployeeTrainingsByEmployeeId, getEmployeeTrainingsPerEmployee } from "@/lib/api/human-resource/query";
+import {
+  getAllEmployees,
+  getEmployeeTrainingsByEmployeeId,
+  getEmployeeTrainingsPerEmployee,
+} from "@/lib/api/human-resource/query";
+import { editEmployeeInfo } from "@/lib/api/human-resource/mutation";
 import { generateUUID } from "@/lib/utils";
 
 export const humanResourceRouter = createTRPCRouter({
@@ -82,6 +87,27 @@ export const humanResourceRouter = createTRPCRouter({
         console.log(error);
       }
   }),
+  editEmployeeInfo: protectedProcedure
+    .input(
+      z.object({
+        employeeId: z.string(),
+        data: z.object({
+          gender: z.enum(GENDERS).optional(),
+          maritalStatus: z.enum(MARITAL_STATUSES).optional(),
+          birthDate: z.string().optional().transform((val) => (val ? new Date(val) : undefined)),
+          nationality: z.string().optional(),
+          address: z.string().optional(),
+          contactNumber: z.string().optional(),
+        })
+      })
+    ).mutation(async ({ input }) => {
+      try {
+        return await editEmployeeInfo(input.employeeId, input.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  ),
   createEmployeeTraining: protectedProcedure
     .input(
       z.object({
@@ -100,7 +126,8 @@ export const humanResourceRouter = createTRPCRouter({
       } catch (error) {
         console.log(error);
       }
-  }),
+    }
+  ),
   getEmployeeTrainingsByEmployeeId: protectedProcedure
     .input(
       z.object({
