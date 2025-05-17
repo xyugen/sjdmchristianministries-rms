@@ -1,9 +1,9 @@
-import { 
+import { asc, db, eq } from "@/server/db";
+import {
   employee as employeeTable,
   employeeTraining as employeeTrainingTable,
   user as userTable
 } from "@/server/db/schema";
-import { asc, db, eq } from "@/server/db";
 
 export const getAllEmployees = async () => {
   try {
@@ -134,6 +134,27 @@ export const getEmployeeTrainingsPerEmployee = async () => {
 
     return Object.values(groupedResult);
 
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const getAllEmployeeTrainings = async () => {
+  try {
+    return await db
+    .select({
+      employeeId: employeeTable.id,
+      name: userTable.name,
+      email: userTable.email,
+      role: userTable.role,
+      trainingId: employeeTrainingTable.id,
+      trainingName: employeeTrainingTable.trainingName,
+      dateCompleted: employeeTrainingTable.dateCompleted,
+    })
+    .from(employeeTable)
+    .innerJoin(userTable, eq(employeeTable.userId, userTable.id))
+    .innerJoin(employeeTrainingTable, eq(employeeTable.id, employeeTrainingTable.employeeId))
+    .orderBy(asc(userTable.name), asc(employeeTrainingTable.dateCompleted));
   } catch (error) {
     console.log(error);
   }
