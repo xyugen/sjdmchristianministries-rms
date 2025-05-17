@@ -9,7 +9,7 @@ import { api } from "@/trpc/react";
 
 const TransactionsTable = () => {
 
-  const { data, isLoading } = 
+  const { data, isLoading } =
   api.finance.getAllFinancialTransactions.useQuery();
 
   return (
@@ -18,7 +18,7 @@ const TransactionsTable = () => {
         <DataTable
           columns={columns}
           data={data}
-          filteredTitle="recordedById"
+          filteredTitle="employeeName"
           filteredColumn="type"
           options={
             TRANSACTION_TYPE.map((type) => ({
@@ -35,4 +35,3 @@ const TransactionsTable = () => {
 };
 
 export default TransactionsTable;
-
