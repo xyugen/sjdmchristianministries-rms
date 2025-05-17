@@ -3,8 +3,8 @@ import { z } from "zod";
 import { ROLES } from "@/constants/roles";
 import { GENDERS } from "@/constants/genders";
 import { MARITAL_STATUSES } from "@/constants/marital-statuses";
-import { createUser, createAccount, editUser } from "@/lib/api/auth/mutation";
-import { createEmployee, createEmployeeTraining, editEmployeeInfo, editEmployeeTraining } from "@/lib/api/human-resource/mutation";
+import { createUser, createAccount, editUser, deleteUser } from "@/lib/api/auth/mutation";
+import { createEmployee, createEmployeeTraining, editEmployeeInfo, editEmployeeTraining, deleteEmployeeTraining } from "@/lib/api/human-resource/mutation";
 import { getAllEmployees, getAllEmployeeTrainings, getEmployeeByEmployeeId, getEmployeeTrainingsByEmployeeId, getEmployeeTrainingsPerEmployee } from "@/lib/api/human-resource/query";
 import { generateUUID } from "@/lib/utils";
 
@@ -125,8 +125,25 @@ export const humanResourceRouter = createTRPCRouter({
       } catch (error) {
         console.log(error);
       }
-    }),
-    }),
+    }
+  ),
+  deleteEmployee: protectedProcedure
+    .input(
+      z.object({
+        employeeId: z.string(),
+      })
+    ).mutation(async ({ input }) => {
+      try {
+        const employee = await getEmployeeByEmployeeId(input.employeeId);
+
+        if (!employee) { throw new Error("Employee not found"); }
+
+        return await deleteUser(employee.userId);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  ),
   createEmployeeTraining: protectedProcedure
     .input(
       z.object({
@@ -190,6 +207,19 @@ export const humanResourceRouter = createTRPCRouter({
       try {
         const { employeeTrainingId, ...training } = input;
         return await editEmployeeTraining(employeeTrainingId, training);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  ),
+  deleteEmployeeTraining: protectedProcedure
+    .input(
+      z.object({
+        employeeTrainingId: z.string(),
+      })
+    ).mutation(async ({ input }) => {
+      try {
+        return await deleteEmployeeTraining(input.employeeTrainingId);
       } catch (error) {
         console.log(error);
       }
