@@ -43,6 +43,18 @@ export const editUser = async (id: string, user: TypeEditUser) => {
   }
 }
 
+export const deleteUser = async (id: string) => {
+  try {
+    return await db
+    .delete(userTable)
+    .where(eq(userTable.id, id))
+    .returning()
+    .run();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export const createAccount = async (account: Account) => {
   try {
     const result = await db
