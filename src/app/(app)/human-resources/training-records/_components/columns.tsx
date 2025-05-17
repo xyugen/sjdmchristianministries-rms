@@ -1,29 +1,24 @@
 "use client";
 
+import { type employeeTraining as employeeTrainingTable } from "@/server/db/schema";
 import { type ColumnDef } from "@tanstack/react-table";
+import { type InferSelectModel } from "drizzle-orm";
 
-export type EmployeeTrainingRecord = {
-  id: number;
-  employee_id: number;
-  training_name: string;
-  date_completed: Date;
+type EmployeeTraining = InferSelectModel<typeof employeeTrainingTable> & {
+  name: string;
 };
 
-export const columns: ColumnDef<EmployeeTrainingRecord>[] = [
+export const columns: ColumnDef<EmployeeTraining>[] = [
   {
-    accessorKey: "id",
-    header: "ID",
+    accessorKey: "name",
+    header: "Name",
   },
   {
-    accessorKey: "employee_id",
-    header: "Employee ID",
-  },
-  {
-    accessorKey: "training_name",
+    accessorKey: "trainingName",
     header: "Training",
   },
   {
-    accessorKey: "date_completed",
+    accessorKey: "dateCompleted",
     header: "Date Completed",
     cell: ({ getValue }) => {
       const rawDate = new Date(getValue() as string);

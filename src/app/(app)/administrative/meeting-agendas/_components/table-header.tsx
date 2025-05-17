@@ -9,15 +9,15 @@ import React from "react";
 const Header = () => {
   const router = useRouter();
 
-  const handleCreateDocuments = () => {
-    router.push(PageRoutes.DOCUMENTS_CREATE);
+  const handleCreateMeetingAgendas = () => {
+    router.push(PageRoutes.MEETING_AGENDAS_CREATE);
   };
 
   return (
     <div className="flex justify-end">
-      <Button onClick={handleCreateDocuments} title="Add documents">
+      <Button onClick={handleCreateMeetingAgendas} title="Add Meeting Agenda">
         <CirclePlus />
-        <span>Add Documents</span>
+        <span>Add Meeting Agendas</span>
       </Button>
     </div>
   );

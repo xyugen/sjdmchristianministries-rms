@@ -6,7 +6,7 @@ import {
 } from "@/server/db/schema";
 
 export const getAllEmployees = async () => {
-  try {
+try {
     return await db
     .select({
       id: employeeTable.id,
@@ -110,7 +110,7 @@ export const getEmployeeTrainingsPerEmployee = async () => {
           trainings: [],
         };
       }
-      
+
       if (curr.trainingId) {
         acc[employeeId].trainings.push({
           trainingId: curr.trainingId,
@@ -143,11 +143,9 @@ export const getAllEmployeeTrainings = async () => {
   try {
     return await db
     .select({
+      id: employeeTrainingTable.id,
       employeeId: employeeTable.id,
       name: userTable.name,
-      email: userTable.email,
-      role: userTable.role,
-      trainingId: employeeTrainingTable.id,
       trainingName: employeeTrainingTable.trainingName,
       dateCompleted: employeeTrainingTable.dateCompleted,
     })

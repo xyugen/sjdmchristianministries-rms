@@ -6,8 +6,8 @@ import {
 } from "@/server/db/schema";
 
 export const getAllFinancialTransactions = async () => {
-  try {
-    const result = await 
+  try { 
+    const result = await
       db.select({
         id: financialTransactionsTable.id,
         recordedById: financialTransactionsTable.recordedById,
@@ -57,7 +57,7 @@ export const getWeeklyFinance = async () => {
       .from(financialTransactionsTable)
       .where(between(financialTransactionsTable.transactionDate, startOfThisWeek, now))
       .groupBy(financialTransactionsTable.category);
-      
+
     const lastWeek = await db
       .select({
         category: financialTransactionsTable.category,

@@ -18,8 +18,9 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
+
   return (
-    <DropdownMenu>
+     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
@@ -35,7 +36,9 @@ export function DataTableRowActions<TData>({
           <Pencil />
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="flex justify-between">
+        <DropdownMenuItem
+          className="flex justify-between"
+        >
           <span>Delete</span>
           <Delete />
         </DropdownMenuItem>
