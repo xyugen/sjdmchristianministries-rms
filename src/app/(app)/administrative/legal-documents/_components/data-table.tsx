@@ -10,15 +10,13 @@ const LegalDocumentsTable = () => {
   const { data, isLoading } =
     api.administrative.getAllLegalDocuments.useQuery();
 
-  console.log(data);
-
   return (
     <div className="mt-6 w-full">
       {!isLoading && data ? (
         <DataTable
           columns={columns}
           data={data}
-          filteredTitle="issuedBy"
+          filteredTitle="employeeName"
           filteredColumn="documentType"
           options={
             DOCUMENT_TYPE.map((type) => ({

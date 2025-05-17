@@ -15,8 +15,11 @@ export enum PageRoutes {
   //Human Resource Records
   HUMAN_RESOURCE = "/human-resources",
   EMPLOYEE_PROFILES = `${HUMAN_RESOURCE}/employee-profiles`,
+  EMPLOYEE_PROFILES_CREATE = `${HUMAN_RESOURCE}/employee-profiles/create`,
+
   TRAINING_RECORDS = `${HUMAN_RESOURCE}/training-records`,
 
   //Financial Records
   FINANCIAL= "/financial",
+  FINANCIAL_CREATE = `${FINANCIAL}/create`
 }

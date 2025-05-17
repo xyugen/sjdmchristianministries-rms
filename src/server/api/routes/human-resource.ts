@@ -5,12 +5,7 @@ import { GENDERS } from "@/constants/genders";
 import { MARITAL_STATUSES } from "@/constants/marital-statuses";
 import { createUser, createAccount } from "@/lib/api/auth/mutation";
 import { createEmployee, createEmployeeTraining } from "@/lib/api/human-resource/mutation";
-import { 
-  getAllEmployees, 
-  getEmployeeTrainingsByEmployeeId, 
-  getEmployeeTrainingsPerEmployee,  
-} from "@/lib/api/human-resource/query";
-import { editEmployeeInfo } from "@/lib/api/human-resource/mutation";
+import { getAllEmployees, getAllEmployeeTrainings, getEmployeeTrainingsByEmployeeId, getEmployeeTrainingsPerEmployee } from "@/lib/api/human-resource/query";
 import { generateUUID } from "@/lib/utils";
 
 export const humanResourceRouter = createTRPCRouter({
@@ -143,6 +138,13 @@ export const humanResourceRouter = createTRPCRouter({
   getEmployeeTrainingsPerEmployee: protectedProcedure.query(async () => {
     try {
       return await getEmployeeTrainingsPerEmployee();
+    } catch (error) {
+      console.log(error);
+    }
+  }),
+  getAllEmployeeTrainings: protectedProcedure.query(async () => {
+    try {
+      return await getAllEmployeeTrainings();
     } catch (error) {
       console.log(error);
     }
