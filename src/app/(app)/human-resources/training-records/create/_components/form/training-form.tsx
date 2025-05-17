@@ -88,7 +88,7 @@ export function TrainingForm() {
             )} />
             <FormField name="dateCompleted" control={form.control} render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>Date</FormLabel>
+                <FormLabel>Date Completed</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button variant={"outline"} className="w-[240px] justify-start text-left font-normal">
