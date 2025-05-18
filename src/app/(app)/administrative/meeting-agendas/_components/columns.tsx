@@ -47,7 +47,10 @@ export const columns: ColumnDef<meetingAgendas>[] = [
     header: "Start Time",
     cell: ({ getValue }) => {
       const rawDate = new Date(getValue() as string);
-      const formattedDate = rawDate.toLocaleDateString("en-US");
+      const formattedDate = rawDate.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
       return formattedDate;
     },
   },
@@ -56,7 +59,10 @@ export const columns: ColumnDef<meetingAgendas>[] = [
     header: "End Time",
     cell: ({ getValue }) => {
       const rawDate = new Date(getValue() as string);
-      const formattedDate = rawDate.toLocaleDateString("en-US");
+      const formattedDate = rawDate.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
       return formattedDate;
     },
   },
