@@ -8,6 +8,7 @@ import type { InferSelectModel } from "@/server/db";
 import type { financialTransactions } from "@/server/db/schema";
 import { type ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
+import { DataTableRowActions } from "./table-row-actions";
 
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat("en-US", {
@@ -116,5 +117,9 @@ export const columns: ColumnDef<Transaction>[] = [
   {
     accessorKey: "details",
     header: "Details",
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <DataTableRowActions row={row} />,
   },
 ];
