@@ -1,14 +1,15 @@
 import { createDocumentSchema } from "@/app/(app)/administrative/legal-documents/create/_components/schema";
+import { DOCUMENT_ORIGIN, DOCUMENT_TYPE } from "@/constants/document";
 import {
   createLegalDocument,
   createMeetingAgenda,
   createOrganizationalPolicy,
-  deleteOrganizationalPolicy,
-  deleteMeetingAgenda,
   deleteLegalDocument,
-  editOrganizationalPolicy,
+  deleteMeetingAgenda,
+  deleteOrganizationalPolicy,
+  editLegalDocument,
   editMeetingAgenda,
-  editLegalDocument
+  editOrganizationalPolicy,
 } from "@/lib/api/administrative/mutation";
 import {
   getAllLegalDocuments,
@@ -115,8 +116,7 @@ export const administrativeRouter = createTRPCRouter({
     .input(z.object({ id: z.string() }))
     .mutation(async ({ input }) => {
       return await deleteLegalDocument(input.id);
-    }
-  ),
+    }),
 
   /**
    * Meeting Agendas
@@ -175,8 +175,5 @@ export const administrativeRouter = createTRPCRouter({
     .input(z.object({ id: z.string() }))
     .mutation(async ({ input }) => {
       return await deleteMeetingAgenda(input.id);
-    }
-  ),
-
-
+    }),
 });
