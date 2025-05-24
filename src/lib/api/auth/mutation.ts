@@ -1,5 +1,5 @@
 import { generateUUID } from "@/lib/utils";
-import { db, type InferInsertModel } from "@/server/db";
+import { db, type InferInsertModel, eq } from "@/server/db";
 import {
   account as accountTable,
   session as sessionTable,
@@ -7,10 +7,18 @@ import {
   verification as verificationTable,
 } from "@/server/db/schema";
 
+import { RoleType } from "@/constants/roles";
+
 type User = InferInsertModel<typeof userTable>;
 type Account = InferInsertModel<typeof accountTable>;
 type Session = InferInsertModel<typeof sessionTable>;
 type Verification = InferInsertModel<typeof verificationTable>;
+
+type TypeEditUser = {
+  name?: string;
+  email?: string;
+  role?: RoleType;
+}
 
 export const createUser = async (user: User) => {
   try {
@@ -21,6 +29,31 @@ export const createUser = async (user: User) => {
     return null;
   }
 };
+
+export const editUser = async (id: string, user: TypeEditUser) => {
+  try {
+    return await db
+      .update(userTable)
+      .set(user)
+      .where(eq(userTable.id, id))
+      .returning()
+      .run();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const deleteUser = async (id: string) => {
+  try {
+    return await db
+    .delete(userTable)
+    .where(eq(userTable.id, id))
+    .returning()
+    .run();
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 export const createAccount = async (account: Account) => {
   try {

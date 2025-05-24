@@ -14,6 +14,7 @@ import {
 import { generateUUID } from "@/lib/utils";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { DOCUMENT_ORIGIN, DOCUMENT_TYPE } from "@/constants/document";
 
 export const administrativeRouter = createTRPCRouter({
   getAllOrganizationalPolicies: protectedProcedure.query(async () => {
@@ -67,7 +68,16 @@ export const administrativeRouter = createTRPCRouter({
    * Legal Documents
    */
   createLegalDocument: protectedProcedure
-    .input(createDocumentSchema)
+    .input(
+      z.object({
+        documentType: z.enum(DOCUMENT_TYPE),
+        documentNumber: z.string(),
+        documentOrigin: z.enum(DOCUMENT_ORIGIN),
+        issuerId: z.string().optional(),
+        issueDate: z.string().transform((val) => new Date(val)),
+        expiryDate: z.string().optional().transform((val) => (val ? new Date(val) : undefined)),
+      })
+    )
     .mutation(async ({ input }) => {
       try {
         return await createLegalDocument({
@@ -93,15 +103,9 @@ export const administrativeRouter = createTRPCRouter({
   createMeetingAgenda: protectedProcedure
     .input(
       z.object({
-        meetingDate: z.string().transform((val) => new Date(val)),
-        startTime: z
-          .string()
-          .optional()
-          .transform((val) => (val ? new Date(val) : undefined)),
-        endTime: z
-          .string()
-          .optional()
-          .transform((val) => (val ? new Date(val) : undefined)),
+        meetingDate: z.date(),
+        startTime: z.date().optional(),
+        endTime: z.date().optional(),
         presidingOfficer: z.string(),
         agenda: z.string(),
         summary: z.string().optional(),

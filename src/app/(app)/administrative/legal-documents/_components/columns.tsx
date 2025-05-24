@@ -46,6 +46,11 @@ export const columns: ColumnDef<LegalDocument>[] = [
   {
     accessorKey: "employeeName",
     header: "Issued By",
+    cell: ({ getValue }) => {
+      if (!getValue()) return <span className="text-gray-400">N/A</span>;
+
+      return getValue() as string;
+    },
   },
   {
     accessorKey: "documentType",
@@ -84,6 +89,7 @@ export const columns: ColumnDef<LegalDocument>[] = [
   },
   {
     accessorKey: "actions",
+    header: undefined,
     cell: ({ row }) => <DataTableRowActions row={row} />,
   },
 ];

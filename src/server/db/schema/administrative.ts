@@ -19,7 +19,6 @@ export const legalDocuments = createTable("legal_documents", {
   documentNumber: text("document_number", { mode: "text" }),
   documentOrigin: text("document_origin", { enum: DOCUMENT_ORIGIN }).notNull(),
   issuerId: text("issuer_id", { mode: "text" })
-    .notNull()
     .references(() => employee.id, { onDelete: "cascade" }),
   issueDate: int("issue_date", { mode: "timestamp" }).notNull(),
   expiryDate: int("expiry_date", { mode: "timestamp" }),
