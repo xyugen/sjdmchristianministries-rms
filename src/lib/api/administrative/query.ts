@@ -44,11 +44,8 @@ export const getAllLegalDocuments = async () => {
         employeeName: usersTable.name,
       })
       .from(legalDocumentsTable)
-      .innerJoin(
-        employeeTable,
-        eq(employeeTable.id, legalDocumentsTable.issuerId),
-      )
-      .innerJoin(usersTable, eq(usersTable.id, employeeTable.userId))
+      .leftJoin(employeeTable, eq(employeeTable.id, legalDocumentsTable.issuerId))
+      .leftJoin(usersTable, eq(usersTable.id, employeeTable.userId))
       .orderBy(desc(legalDocumentsTable.issueDate))
       .all();
   } catch (error) {
