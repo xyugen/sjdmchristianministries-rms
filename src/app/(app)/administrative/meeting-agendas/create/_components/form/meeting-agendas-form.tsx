@@ -54,9 +54,9 @@ const MeetingAgendasForm = () => {
     try {
       const response = await mutateAsync({
         ...data,
-        meetingDate: data.meetingDate.toISOString(),
-        startTime: data.startTime?.toISOString(),
-        endTime: data.endTime?.toISOString(),
+        meetingDate: new Date(data.meetingDate),
+        startTime: data.startTime ? new Date(data.startTime) : undefined,
+        endTime: data.endTime ? new Date(data.endTime) : undefined,
       });
 
       if (response) {

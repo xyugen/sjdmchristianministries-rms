@@ -11,13 +11,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { DialogProps } from "@radix-ui/react-dialog";
 import type { Row } from "@tanstack/react-table";
 import { useForm } from "react-hook-form";
@@ -34,15 +27,13 @@ import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
-import { api } from "@/trpc/react";
-import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
 }
 type EditDialogProps<TData> = DialogProps & {
-  onEdit: () => void;
+  onEdit: (data: z.infer<typeof trainingFormSchema>) => void;
   row: DataTableRowActionsProps<TData>["row"];
 };
 export function EditDialog<TData>({
@@ -53,13 +44,10 @@ export function EditDialog<TData>({
   const form = useForm<z.infer<typeof trainingFormSchema>>({
     resolver: zodResolver(trainingFormSchema),
     defaultValues: {
-      employeeId: row.getValue("employeeId"),
       trainingName: row.getValue("trainingName"),
       dateCompleted: row.getValue("dateCompleted"),
     },
   });
-  const { data: employees } = api.humanResource.getAllEmployees.useQuery();
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 
   return (
     <Dialog {...props}>
@@ -70,28 +58,6 @@ export function EditDialog<TData>({
         <div className="mt-2">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onEdit)} className="space-y-6">
-              <FormField
-                name="employeeId"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Employee</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select an employee" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {employees?.map((employee) => (
-                          <SelectItem key={employee.id} value={employee.id}>
-                            {employee.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               <FormField
                 name="trainingName"
                 control={form.control}

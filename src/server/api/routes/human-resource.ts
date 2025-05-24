@@ -103,6 +103,7 @@ export const humanResourceRouter = createTRPCRouter({
     .input(
       z.object({
         employeeId: z.string(),
+        data: z.object({
         // user fields
         name: z.string().optional(),
         email: z.string().optional(),
@@ -118,16 +119,16 @@ export const humanResourceRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       try {
-        const { employeeId, name, email, role, ...employeeData } = input;
+        const { name, email, role, ...employeeData } = input.data;
         const userData = { name, email, role };
 
-        const employee = await getEmployeeByEmployeeId(employeeId);
+        const employee = await getEmployeeByEmployeeId(input.employeeId);
 
         if (!employee) {
           throw new Error("Employee not found");
         }
 
-        const editedEmployee = await editEmployeeInfo(employeeId, employeeData);
+        const editedEmployee = await editEmployeeInfo(input.employeeId, employeeData);
         const editedUser = await editUser(employee.userId, userData);
 
         return { editedEmployee, editedUser };
@@ -211,8 +212,7 @@ export const humanResourceRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       try {
-        const { employeeTrainingId, ...training } = input;
-        return await editEmployeeTraining(employeeTrainingId, training);
+        return await editEmployeeTraining(input.id, input.data);
       } catch (error) {
         console.log(error);
       }

@@ -30,6 +30,10 @@ export const columns: ColumnDef<meetingAgendas>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "id",
+    enableHiding: true,
+  },
+  {
     accessorKey: "agenda",
     header: "Agenda",
   },
@@ -76,6 +80,6 @@ export const columns: ColumnDef<meetingAgendas>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    cell: ({ row, table }) => <DataTableRowActions row={row} table={table} />,
   },
 ];

@@ -34,7 +34,7 @@ export const columns: ColumnDef<EmployeeTraining>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "employeeId",
+    accessorKey: "id",
     enableHiding: true,
   },
   {
@@ -56,6 +56,6 @@ export const columns: ColumnDef<EmployeeTraining>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    cell: ({ row, table }) => <DataTableRowActions row={row} table={table} />,
   },
 ];
