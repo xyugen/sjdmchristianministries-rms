@@ -56,8 +56,7 @@ export function EditDialog<TData>({
   row,
   ...props
 }: EditDialogProps<TData>) {
-  console.log(row.getValue("emailVerified"));
-  const form = useForm<z.infer<typeof employeeFormSchema>>({
+      const form = useForm<z.infer<typeof employeeFormSchema>>({
     resolver: zodResolver(employeeFormSchema),
     defaultValues: {
       name: row.getValue("name"),

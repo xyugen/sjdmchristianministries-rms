@@ -8,7 +8,8 @@ import { ROLES, RoleTypeLabels } from "@/constants/roles";
 import { api } from "@/trpc/react";
 
 const EmployeeTable = () => {
-  const { data, isLoading } = api.humanResource.getAllEmployees.useQuery();
+  const { data, isLoading, refetch } =
+    api.humanResource.getAllEmployees.useQuery();
 
   return (
     <div className="mt-6">
@@ -24,6 +25,7 @@ const EmployeeTable = () => {
               value: type,
             })) || []
           }
+          refetch={refetch}
         />
       ) : (
         <DataTableSkeleton />
