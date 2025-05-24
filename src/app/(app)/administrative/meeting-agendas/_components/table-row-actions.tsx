@@ -40,10 +40,10 @@ export function DataTableRowActions<TData>({
         id: row.getValue("id"),
       }),
       {
-        loading: "Deleting document...",
+        loading: "Deleting agenda...",
         success: () => {
           (table.options.meta as { refetch: () => void }).refetch();
-          return "Document deleted successfully!";
+          return "Agendas deleted successfully!";
         },
         error: (error: unknown) => {
           return (error as Error).message;
@@ -65,8 +65,11 @@ export function DataTableRowActions<TData>({
         },
       }),
       {
-        loading: "Deleting document...",
-        success: "Document deleted successfully!",
+        loading: "Editing agendas...",
+        success: () => {
+          (table.options.meta as { refetch: () => void }).refetch();
+          return "Agendas edited successfully!";
+        },
         error: (error: unknown) => {
           return (error as Error).message;
         },

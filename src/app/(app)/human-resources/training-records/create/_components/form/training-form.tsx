@@ -54,7 +54,7 @@ export function TrainingForm() {
     try {
       await mutateAsync({
         ...data,
-        dateCompleted: format(data.dateCompleted, "yyyy-MM-dd"),
+        dateCompleted: new Date(data.dateCompleted),
       });
       toast.success("Training recorded successfully!", { id: toastId });
       form.reset();

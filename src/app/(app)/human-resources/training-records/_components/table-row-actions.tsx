@@ -1,6 +1,6 @@
 "use client";
 
-import type { Row } from "@tanstack/react-table";
+import type { Row, Table } from "@tanstack/react-table";
 import { Delete, Pencil, MoreHorizontal } from "lucide-react";
 import {
   DropdownMenu,
@@ -13,24 +13,67 @@ import { Button } from "@/components/ui/button";
 import { EditDialog } from "./action-dialogs/edit-dialog";
 import { useState } from "react";
 import { DeleteDialog } from "./action-dialogs/delete-dialog";
+import { api } from "@/trpc/react";
+import { z } from "zod";
+import { trainingFormSchema } from "../create/_components/schema/schema";
+import { toast } from "sonner";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
+  table: Table<TData>;
 }
 
 export function DataTableRowActions<TData>({
   row,
+  table,
 }: DataTableRowActionsProps<TData>) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
+  const { mutateAsync: editMutation } =
+    api.humanResource.editEmployeeTraining.useMutation();
+  const { mutateAsync: deleteMutation } =
+    api.humanResource.deleteEmployeeTraining.useMutation();
+
   const handleDelete = async () => {
-    //TODO: add delete logic
+    toast.promise(
+      deleteMutation({
+        employeeTrainingId: row.getValue("id"),
+      }),
+      {
+        loading: "Deleting training record...",
+        success: () => {
+          (table.options.meta as { refetch: () => void }).refetch();
+          return "Training record deleted successfully!";
+        },
+        error: (error: unknown) => {
+          return (error as Error).message;
+        },
+      },
+    );
 
     setIsDeleteDialogOpen(false);
   };
 
-  const handleEdit = async () => {
-    //TODO: add edit logic
+  const handleEdit = async (data: z.infer<typeof trainingFormSchema>) => {
+    toast.promise(
+      editMutation({
+        id: row.getValue("id"),
+        data: {
+          ...data,
+          dateCompleted: new Date(data.dateCompleted),
+        },
+      }),
+      {
+        loading: "Editing agendas...",
+        success: () => {
+          (table.options.meta as { refetch: () => void }).refetch();
+          return "Agendas edited successfully!";
+        },
+        error: (error: unknown) => {
+          return (error as Error).message;
+        },
+      },
+    );
 
     setIsEditDialogOpen(false);
   };

@@ -7,13 +7,18 @@ import { DataTableSkeleton } from "@/components/table/data-table-skeletion";
 import { api } from "@/trpc/react";
 
 const EmployeeTrainingTable = () => {
-  const { data, isLoading } =
+  const { data, isLoading, refetch } =
     api.humanResource.getAllEmployeeTrainings.useQuery();
 
   return (
     <div className="mt-6">
       {!isLoading && data ? (
-        <DataTable columns={columns} data={data} filteredTitle="name" />
+        <DataTable
+          columns={columns}
+          data={data}
+          filteredTitle="name"
+          refetch={refetch}
+        />
       ) : (
         <DataTableSkeleton />
       )}
