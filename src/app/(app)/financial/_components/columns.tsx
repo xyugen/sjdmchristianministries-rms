@@ -42,6 +42,10 @@ export const columns: ColumnDef<Transaction>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "id",
+    enableHiding: true,
+  },
+  {
     accessorKey: "recordedById",
     enableHiding: true,
   },
@@ -124,6 +128,6 @@ export const columns: ColumnDef<Transaction>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    cell: ({ row, table }) => <DataTableRowActions row={row} table={table} />,
   },
 ];

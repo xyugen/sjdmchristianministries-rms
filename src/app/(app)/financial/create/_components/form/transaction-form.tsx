@@ -51,7 +51,8 @@ import { toast } from "sonner";
 type TransactionFormValues = z.infer<typeof transactionSchema>;
 
 const TransactionForm = () => {
-  const {mutateAsync, isPending} = api.finance.createFinancialTransaction.useMutation();
+  const { mutateAsync, isPending } =
+    api.finance.createFinancialTransaction.useMutation();
 
   const { data: employees, isLoading: isEmployeesLoading } =
     api.humanResource.getAllEmployees.useQuery();
@@ -69,7 +70,7 @@ const TransactionForm = () => {
     },
   });
 
-  const onSubmit = async (values:  z.infer<typeof transactionSchema>) => {
+  const onSubmit = async (values: z.infer<typeof transactionSchema>) => {
     const toastId = toast.loading("Adding document...");
     try {
       const response = await mutateAsync({
@@ -282,10 +283,7 @@ const TransactionForm = () => {
                       {isEmployeesLoading
                         ? "Loading..."
                         : employees?.map((employee) => (
-                            <SelectItem
-                              key={employee.id}
-                              value={employee.id}
-                            >
+                            <SelectItem key={employee.id} value={employee.id}>
                               {employee.name}
                             </SelectItem>
                           ))}
@@ -323,7 +321,7 @@ const TransactionForm = () => {
           </CardContent>
           <CardFooter className="flex justify-end">
             <Button type="submit" disabled={isPending}>
-              {isPending ? "Submitting..." : "Create Transaction" }
+              {isPending ? "Submitting..." : "Create Transaction"}
             </Button>
           </CardFooter>
         </form>

@@ -1,6 +1,6 @@
 "use client";
 
-import type { Row } from "@tanstack/react-table";
+import type { Row, Table } from "@tanstack/react-table";
 import { Delete, Pencil, MoreHorizontal } from "lucide-react";
 import {
   DropdownMenu,
@@ -13,23 +13,46 @@ import { Button } from "@/components/ui/button";
 import { EditDialog } from "./action-dialogs/edit-dialog";
 import { useState } from "react";
 import { DeleteDialog } from "./action-dialogs/delete-dialog";
+import { api } from "@/trpc/react";
+import { z } from "zod";
+import { toast } from "sonner";
+import { createDocumentSchema } from "../create/_components/schema";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
+  table: Table<TData>;
 }
 
 export function DataTableRowActions<TData>({
   row,
+  table,
 }: DataTableRowActionsProps<TData>) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
+  const { mutateAsync: deleteMutation } =
+    api.administrative.deleteLegalDocument.useMutation();
+
   const handleDelete = async () => {
-    //TODO: add delete logic
+    toast.promise(
+      deleteMutation({
+        id: row.getValue("id"),
+      }),
+      {
+        loading: "Deleting document...",
+        success: () => {
+          (table.options.meta as { refetch: () => void }).refetch();
+          return "Document deleted successfully!";
+        },
+        error: (error: unknown) => {
+          return (error as Error).message;
+        },
+      },
+    );
 
     setIsDeleteDialogOpen(false);
   };
 
-  const handleEdit = async () => {
+  const handleEdit = async (data: z.infer<typeof createDocumentSchema>) => {
     //TODO: add edit logic
 
     setIsEditDialogOpen(false);

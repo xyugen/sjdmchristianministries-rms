@@ -7,12 +7,14 @@ import {
 import { DialogProps } from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
 import type { Row } from "@tanstack/react-table";
+import { z } from "zod";
+import { createDocumentSchema } from "../../create/_components/schema";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
 }
 type EditDialogProps<TData> = DialogProps & {
-  onEdit: () => void;
+  onEdit: (data: z.infer<typeof createDocumentSchema>) => void;
   row: DataTableRowActionsProps<TData>["row"];
 };
 export function EditDialog<TData>({
