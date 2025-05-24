@@ -21,6 +21,7 @@ import {
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DataTableToolbar } from "./data-table-toolbar";
+import { QueryObserverResult } from "@tanstack/react-query";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -31,6 +32,7 @@ interface DataTableProps<TData, TValue> {
     label: string;
     value: string;
   }[];
+  refetch?: () => Promise<QueryObserverResult<TData[] | undefined, unknown>>;
 }
 
 export function DataTable<TData, TValue>({
@@ -39,6 +41,7 @@ export function DataTable<TData, TValue>({
   filteredTitle,
   filteredColumn,
   options,
+  refetch,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState({});
@@ -53,11 +56,15 @@ export function DataTable<TData, TValue>({
     state: {
       columnFilters,
       columnVisibility: {
+        id: false,
         recordedById: false,
         employeeId: false,
       },
     },
     onColumnVisibilityChange: setColumnVisibility,
+    meta: {
+      refetch,
+    },
   });
 
   return (

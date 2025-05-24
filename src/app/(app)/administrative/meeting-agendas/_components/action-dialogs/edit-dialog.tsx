@@ -36,7 +36,7 @@ interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
 }
 type EditDialogProps<TData> = DialogProps & {
-  onEdit: () => void;
+  onEdit: (data: z.infer<typeof formSchema>) => void;
   row: DataTableRowActionsProps<TData>["row"];
 };
 export function EditDialog<TData>({
