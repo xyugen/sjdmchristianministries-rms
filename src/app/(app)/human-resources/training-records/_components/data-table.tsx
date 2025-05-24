@@ -16,8 +16,7 @@ const EmployeeTrainingTable = () => {
         <DataTable
           columns={columns}
           data={data}
-          filteredTitle="id"
-          filteredColumn="role"
+          filteredTitle="name"
         />
       ) : (
         <DataTableSkeleton />
