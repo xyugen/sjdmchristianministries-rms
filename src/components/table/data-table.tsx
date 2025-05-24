@@ -59,6 +59,7 @@ export function DataTable<TData, TValue>({
         id: false,
         recordedById: false,
         employeeId: false,
+        password: false,
       },
     },
     onColumnVisibilityChange: setColumnVisibility,

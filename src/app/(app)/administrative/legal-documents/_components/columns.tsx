@@ -40,6 +40,10 @@ export const columns: ColumnDef<LegalDocument>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "id",
+    enableHiding: true,
+  },
+  {
     accessorKey: "documentNumber",
     header: "Document Number",
   },
@@ -90,6 +94,6 @@ export const columns: ColumnDef<LegalDocument>[] = [
   {
     accessorKey: "actions",
     header: undefined,
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    cell: ({ row, table }) => <DataTableRowActions row={row} table={table} />,
   },
 ];

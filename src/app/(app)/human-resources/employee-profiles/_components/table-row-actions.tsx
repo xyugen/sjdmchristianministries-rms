@@ -1,6 +1,6 @@
 "use client";
 
-import type { Row } from "@tanstack/react-table";
+import type { Row, Table } from "@tanstack/react-table";
 import { Delete, Pencil, MoreHorizontal } from "lucide-react";
 import {
   DropdownMenu,
@@ -16,6 +16,7 @@ import { DeleteDialog } from "./action-dialogs/delete-dialog";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
+  table: Table<TData>;
 }
 
 export function DataTableRowActions<TData>({
