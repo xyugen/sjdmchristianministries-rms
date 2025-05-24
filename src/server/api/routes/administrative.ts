@@ -14,7 +14,6 @@ import {
 import { generateUUID } from "@/lib/utils";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-import { DOCUMENT_ORIGIN, DOCUMENT_TYPE } from "@/constants/document";
 
 export const administrativeRouter = createTRPCRouter({
   getAllOrganizationalPolicies: protectedProcedure.query(async () => {
@@ -68,16 +67,7 @@ export const administrativeRouter = createTRPCRouter({
    * Legal Documents
    */
   createLegalDocument: protectedProcedure
-    .input(
-      z.object({
-        documentType: z.enum(DOCUMENT_TYPE),
-        documentNumber: z.string(),
-        documentOrigin: z.enum(DOCUMENT_ORIGIN),
-        issuerId: z.string().optional(),
-        issueDate: z.string().transform((val) => new Date(val)),
-        expiryDate: z.string().optional().transform((val) => (val ? new Date(val) : undefined)),
-      })
-    )
+    .input(createDocumentSchema)
     .mutation(async ({ input }) => {
       try {
         return await createLegalDocument({
