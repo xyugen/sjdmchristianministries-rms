@@ -13,11 +13,7 @@ const EmployeeTrainingTable = () => {
   return (
     <div className="mt-6">
       {!isLoading && data ? (
-        <DataTable
-          columns={columns}
-          data={data}
-          filteredTitle="name"
-        />
+        <DataTable columns={columns} data={data} filteredTitle="name" />
       ) : (
         <DataTableSkeleton />
       )}
