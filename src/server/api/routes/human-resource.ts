@@ -17,18 +17,8 @@ export const humanResourceRouter = createTRPCRouter({
         email: z.string(),
         role: z.enum(ROLES),
         emailVerified: z.boolean(),
-        name: z.string(),
-        email: z.string(),
-        role: z.enum(ROLES),
-        emailVerified: z.boolean(),
         // employee fields
-        birthDate: z.string().transform((val) => new Date(val)),
-        gender: z.enum(GENDERS),
-        maritalStatus: z.enum(MARITAL_STATUSES),
-        nationality: z.string(),
-        address: z.string(),
-        contactNumber: z.string(),
-        birthDate: z.string().transform((val) => new Date(val)),
+        birthDate: z.date(),
         gender: z.enum(GENDERS),
         maritalStatus: z.enum(MARITAL_STATUSES),
         nationality: z.string(),
@@ -83,7 +73,6 @@ export const humanResourceRouter = createTRPCRouter({
         console.log(error);
       }
     }),
-    }),
 
   getAllEmployees: protectedProcedure
     .query(async () => {
@@ -97,6 +86,7 @@ export const humanResourceRouter = createTRPCRouter({
     .input(
       z.object({
         employeeId: z.string(),
+        data: z.object({
         // user fields
         name: z.string().optional(),
         email: z.string().optional(),
@@ -104,21 +94,22 @@ export const humanResourceRouter = createTRPCRouter({
         // employee fields
         gender: z.enum(GENDERS).optional(),
         maritalStatus: z.enum(MARITAL_STATUSES).optional(),
-        birthDate: z.string().optional().transform((val) => (val ? new Date(val) : undefined)),
+        birthDate: z.date().optional(),
         nationality: z.string().optional(),
         address: z.string().optional(),
         contactNumber: z.string().optional(),
+        })
       })
     ).mutation(async ({ input }) => {
       try {
-        const { employeeId, name, email, role, ...employeeData } = input;
+        const { name, email, role, ...employeeData } = input.data;
         const userData = { name, email, role };
 
-        const employee = await getEmployeeByEmployeeId(employeeId);
+        const employee = await getEmployeeByEmployeeId(input.employeeId);
 
         if (!employee) { throw new Error("Employee not found"); }
 
-        const editedEmployee = await editEmployeeInfo(employeeId, employeeData);
+        const editedEmployee = await editEmployeeInfo(input.employeeId, employeeData);
         const editedUser = await editUser(employee.userId, userData);
 
         return { editedEmployee, editedUser };
@@ -149,13 +140,9 @@ export const humanResourceRouter = createTRPCRouter({
       z.object({
         employeeId: z.string(),
         trainingName: z.string(),
-        dateCompleted: z
-          .string()
-          .optional()
-          .transform((val) => (val ? new Date(val) : undefined)),
-      }),
-    )
-    .mutation(async ({ input }) => {
+        dateCompleted: z.date().optional()
+      })
+    ).mutation(async ({ input }) => {
       try {
         return await createEmployeeTraining({
           id: generateUUID(),
@@ -199,14 +186,15 @@ export const humanResourceRouter = createTRPCRouter({
   editEmployeeTraining: protectedProcedure
     .input(
       z.object({
-        employeeTrainingId: z.string(),
-        trainingName: z.string().optional(),
-        dateCompleted: z.string().optional().transform((val) => (val ? new Date(val) : undefined)),
+        id: z.string(),
+        data: z.object({
+          trainingName: z.string().optional(),
+          dateCompleted: z.date().optional(),
+        })
       })
     ).mutation(async ({ input }) => {
       try {
-        const { employeeTrainingId, ...training } = input;
-        return await editEmployeeTraining(employeeTrainingId, training);
+        return await editEmployeeTraining(input.id, input.data);
       } catch (error) {
         console.log(error);
       }
