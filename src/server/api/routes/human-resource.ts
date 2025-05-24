@@ -18,7 +18,7 @@ export const humanResourceRouter = createTRPCRouter({
         role: z.enum(ROLES),
         emailVerified: z.boolean(),
         // employee fields
-        birthDate: z.string().transform((val) => new Date(val)),
+        birthDate: z.date(),
         gender: z.enum(GENDERS),
         maritalStatus: z.enum(MARITAL_STATUSES),
         nationality: z.string(),
@@ -93,7 +93,7 @@ export const humanResourceRouter = createTRPCRouter({
         // employee fields
         gender: z.enum(GENDERS).optional(),
         maritalStatus: z.enum(MARITAL_STATUSES).optional(),
-        birthDate: z.string().optional().transform((val) => (val ? new Date(val) : undefined)),
+        birthDate: z.date().optional(),
         nationality: z.string().optional(),
         address: z.string().optional(),
         contactNumber: z.string().optional(),
@@ -138,7 +138,7 @@ export const humanResourceRouter = createTRPCRouter({
       z.object({
         employeeId: z.string(),
         trainingName: z.string(),
-        dateCompleted: z.string().optional().transform((val) => (val ? new Date(val) : undefined)),
+        dateCompleted: z.date().optional()
       })
     ).mutation(async ({ input }) => {
       try {
@@ -185,7 +185,7 @@ export const humanResourceRouter = createTRPCRouter({
       z.object({
         employeeTrainingId: z.string(),
         trainingName: z.string().optional(),
-        dateCompleted: z.string().optional().transform((val) => (val ? new Date(val) : undefined)),
+        dateCompleted: z.date().optional(),
       })
     ).mutation(async ({ input }) => {
       try {

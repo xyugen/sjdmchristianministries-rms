@@ -74,8 +74,8 @@ export const administrativeRouter = createTRPCRouter({
         documentNumber: z.string(),
         documentOrigin: z.enum(DOCUMENT_ORIGIN),
         issuerId: z.string().optional(),
-        issueDate: z.string().transform((val) => new Date(val)),
-        expiryDate: z.string().optional().transform((val) => (val ? new Date(val) : undefined)),
+        issueDate: z.date(),
+        expiryDate: z.date(),
       })
     )
     .mutation(async ({ input }) => {
@@ -103,15 +103,9 @@ export const administrativeRouter = createTRPCRouter({
   createMeetingAgenda: protectedProcedure
     .input(
       z.object({
-        meetingDate: z.string().transform((val) => new Date(val)),
-        startTime: z
-          .string()
-          .optional()
-          .transform((val) => (val ? new Date(val) : undefined)),
-        endTime: z
-          .string()
-          .optional()
-          .transform((val) => (val ? new Date(val) : undefined)),
+        meetingDate: z.date(),
+        startTime: z.date().optional(),
+        endTime: z.date().optional(),
         presidingOfficer: z.string(),
         agenda: z.string(),
         summary: z.string().optional(),
