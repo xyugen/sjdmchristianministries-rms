@@ -21,7 +21,7 @@ import {
   getEmployeeTrainingsByEmployeeId,
   getEmployeeTrainingsPerEmployee,
 } from "@/lib/api/human-resource/query";
-import { generateUUID } from "@/lib/utils";
+import { coerceDateRequired, coerceDateOptional, generateUUID } from "@/lib/utils";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
@@ -35,7 +35,7 @@ export const humanResourceRouter = createTRPCRouter({
         role: z.enum(ROLES),
         emailVerified: z.boolean(),
         // employee fields
-        birthDate: z.date(),
+        birthDate: coerceDateOptional(),
         gender: z.enum(GENDERS),
         maritalStatus: z.enum(MARITAL_STATUSES),
         nationality: z.string(),
@@ -110,7 +110,7 @@ export const humanResourceRouter = createTRPCRouter({
           // employee fields
           gender: z.enum(GENDERS).optional(),
           maritalStatus: z.enum(MARITAL_STATUSES).optional(),
-          birthDate: z.date().optional(),
+          birthDate: coerceDateOptional(),
           nationality: z.string().optional(),
           address: z.string().optional(),
           contactNumber: z.string().optional(),
@@ -163,7 +163,7 @@ export const humanResourceRouter = createTRPCRouter({
       z.object({
         employeeId: z.string(),
         trainingName: z.string(),
-        dateCompleted: z.date().optional(),
+        dateCompleted: coerceDateOptional(),
       }),
     )
     .mutation(async ({ input }) => {
@@ -208,10 +208,12 @@ export const humanResourceRouter = createTRPCRouter({
   editEmployeeTraining: protectedProcedure
     .input(
       z.object({
-        employeeTrainingId: z.string(),
-        trainingName: z.string().optional(),
-        dateCompleted: z.date().optional(),
-      }),
+        id: z.string(),
+        data: z.object({
+          trainingName: z.string().optional(),
+          dateCompleted: coerceDateOptional(),
+        })
+      })
     )
     .mutation(async ({ input }) => {
       try {
