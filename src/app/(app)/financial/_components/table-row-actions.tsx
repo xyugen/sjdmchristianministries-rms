@@ -29,49 +29,50 @@ export function DataTableRowActions<TData>({
 }: DataTableRowActionsProps<TData>) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
-  //   const { mutateAsync: editMutation } = api.finance.editFinancialTransaction.useMutation();
-  //   const { mutateAsync: deleteMutation } =
-  //     api.finance.deleteFinancialTransaction.useMutation();
+  const { mutateAsync: editMutation } =
+    api.finance.editFinancialTransaction.useMutation();
+  const { mutateAsync: deleteMutation } =
+    api.finance.deleteFinancialTransaction.useMutation();
 
   const handleDelete = async () => {
-    // toast.promise(
-    //   deleteMutation({
-    //     id: row.getValue("id"),
-    //   }),
-    //   {
-    //     loading: "Deleting transaction...",
-    //     success: () => {
-    //       (table.options.meta as { refetch: () => void }).refetch();
-    //       return "Transaction deleted successfully!";
-    //     },
-    //     error: (error: unknown) => {
-    //       return (error as Error).message;
-    //     },
-    //   },
-    // );
+    toast.promise(
+      deleteMutation({
+        id: row.getValue("id"),
+      }),
+      {
+        loading: "Deleting transaction...",
+        success: () => {
+          (table.options.meta as { refetch: () => void }).refetch();
+          return "Transaction deleted successfully!";
+        },
+        error: (error: unknown) => {
+          return (error as Error).message;
+        },
+      },
+    );
 
     setIsDeleteDialogOpen(false);
   };
 
-  const handleEdit = async (values: z.infer<typeof transactionSchema>) => {
-    // toast.promise(
-    //   editMutation({
-    //     id: row.getValue("id"),
-    //     data: {
-
-    //     },
-    //   }),
-    //   {
-    //     loading: "Editing transaction...",
-    //     success: () => {
-    //       (table.options.meta as { refetch: () => void }).refetch();
-    //       return "Transaction edited successfully!";
-    //     },
-    //     error: (error: unknown) => {
-    //       return (error as Error).message;
-    //     },
-    //   },
-    // );
+  const handleEdit = async (data: z.infer<typeof transactionSchema>) => {
+    toast.promise(
+      editMutation({
+        id: row.getValue("id"),
+        data: {
+          ...data,
+        },
+      }),
+      {
+        loading: "Editing transaction...",
+        success: () => {
+          (table.options.meta as { refetch: () => void }).refetch();
+          return "Transaction edited successfully!";
+        },
+        error: (error: unknown) => {
+          return (error as Error).message;
+        },
+      },
+    );
 
     setIsEditDialogOpen(false);
   };
