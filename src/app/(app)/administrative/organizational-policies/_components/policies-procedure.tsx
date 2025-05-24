@@ -33,6 +33,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
+import { PolicyListSkeletons, PolicyGridSkeletons } from "./policies-skeleton";
 
 export default function PoliciesProcedure() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -43,7 +44,7 @@ export default function PoliciesProcedure() {
   const [editTitle, setEditTitle] = useState("");
   const [editDescription, setEditDescription] = useState("");
 
-  const { data, refetch } =
+  const { data, refetch, isLoading } =
     api.administrative.getAllOrganizationalPolicies.useQuery();
 
   const updatePolicyMutation =
@@ -99,6 +100,7 @@ export default function PoliciesProcedure() {
       deletePolicyMutation.mutate({ id: deletingPolicy.id });
     }
   };
+
   const saveEdit = () => {
     if (editingPolicy && editTitle.trim() && editDescription.trim()) {
       updatePolicyMutation.mutate(
@@ -144,87 +146,95 @@ export default function PoliciesProcedure() {
           </TabsList>
 
           <TabsContent value="list">
-            <div className="space-y-4">
-              {filteredPolicies.map((policy) => (
-                <Card
-                  key={policy.id}
-                  className="cursor-pointer transition-shadow hover:shadow-md"
-                  onClick={() => setSelectedPolicy(policy)}
-                >
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg">
-                          {policy.title}
-                        </CardTitle>
-                        <CardDescription className="mt-1">
-                          {policy.description}
-                        </CardDescription>
+            {isLoading ? (
+              <PolicyListSkeletons count={5} />
+            ) : (
+              <div className="space-y-4">
+                {filteredPolicies.map((policy) => (
+                  <Card
+                    key={policy.id}
+                    className="cursor-pointer shadow-none transition-shadow hover:shadow-md"
+                    onClick={() => setSelectedPolicy(policy)}
+                  >
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <CardTitle className="text-lg">
+                            {policy.title}
+                          </CardTitle>
+                          <CardDescription className="mt-1">
+                            {policy.description}
+                          </CardDescription>
+                        </div>
+                        <div className="ml-4 flex items-center space-x-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => handleEdit(policy, e)}
+                            disabled={updatePolicyMutation.isPending}
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => handleDelete(policy, e)}
+                            disabled={deletePolicyMutation.isPending}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </div>
-                      <div className="ml-4 flex items-center space-x-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={(e) => handleEdit(policy, e)}
-                          disabled={updatePolicyMutation.isPending}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={(e) => handleDelete(policy, e)}
-                          disabled={deletePolicyMutation.isPending}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardHeader>
-                </Card>
-              ))}
-            </div>
+                    </CardHeader>
+                  </Card>
+                ))}
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="grid">
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {filteredPolicies.map((policy) => (
-                <Card
-                  key={policy.id}
-                  className="cursor-pointer transition-shadow hover:shadow-md"
-                  onClick={() => setSelectedPolicy(policy)}
-                >
-                  <CardHeader>
-                    <div className="mb-2 flex items-start justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg">
-                          {policy.title}
-                        </CardTitle>
+            {isLoading ? (
+              <PolicyGridSkeletons count={6} />
+            ) : (
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {filteredPolicies.map((policy) => (
+                  <Card
+                    key={policy.id}
+                    className="cursor-pointer shadow-none transition-shadow hover:shadow-md"
+                    onClick={() => setSelectedPolicy(policy)}
+                  >
+                    <CardHeader>
+                      <div className="mb-2 flex items-start justify-between">
+                        <div className="flex-1">
+                          <CardTitle className="text-lg">
+                            {policy.title}
+                          </CardTitle>
+                        </div>
+                        <div className="flex space-x-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => handleEdit(policy, e)}
+                            disabled={updatePolicyMutation.isPending}
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => handleDelete(policy, e)}
+                            disabled={deletePolicyMutation.isPending}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </div>
-                      <div className="flex space-x-1">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={(e) => handleEdit(policy, e)}
-                          disabled={updatePolicyMutation.isPending}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={(e) => handleDelete(policy, e)}
-                          disabled={deletePolicyMutation.isPending}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                    <CardDescription>{policy.description}</CardDescription>
-                  </CardHeader>
-                </Card>
-              ))}
-            </div>
+                      <CardDescription>{policy.description}</CardDescription>
+                    </CardHeader>
+                  </Card>
+                ))}
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </div>
