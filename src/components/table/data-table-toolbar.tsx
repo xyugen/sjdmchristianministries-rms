@@ -16,31 +16,32 @@ interface DataTableToolbarProps<TData> {
     value: string;
   }[];
 }
+import { Search } from "lucide-react";
 
 export const DataTableToolbar = <TData,>({
   table,
   filteredTitle,
   filteredColumn,
-  options
+  options,
 }: DataTableToolbarProps<TData>) => {
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
-    <div className="flex items-center justify-between gap-x-2 mb-1.5">
+    <div className="mb-1.5 flex items-center justify-between gap-x-2">
       <div className="flex flex-1 items-center space-x-2">
-        <Input
-          placeholder={`Search ${filteredTitle}...`}
-          value={
-            (table.getColumn(filteredTitle)?.getFilterValue() as string) ??
-            ""
-          }
-          onChange={(event) =>
-            table
-              .getColumn(filteredTitle)
-              ?.setFilterValue(event.target.value)
-          }
-          className="h-8 w-[150px] lg:w-[250px]"
-        />
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
+          <Input
+            placeholder={`Search ${filteredTitle}...`}
+            value={
+              (table.getColumn(filteredTitle)?.getFilterValue() as string) ?? ""
+            }
+            onChange={(event) =>
+              table.getColumn(filteredTitle)?.setFilterValue(event.target.value)
+            }
+            className="h-8 w-[150px] pl-10 lg:w-[250px]"
+          />
+        </div>
         {filteredColumn && options && table.getColumn(filteredColumn) && (
           <DataTableFacetedFilter
             column={table.getColumn(filteredColumn)}
@@ -59,7 +60,7 @@ export const DataTableToolbar = <TData,>({
           </Button>
         )}
       </div>
-        <DataTableViewOptions table={table} />
+      <DataTableViewOptions table={table} />
     </div>
   );
-}
+};
