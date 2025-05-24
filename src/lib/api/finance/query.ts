@@ -1,4 +1,5 @@
-import { between, count, db, desc, eq, sum } from "@/server/db";
+import { TRANSACTION_TYPE } from "@/constants/transaction";
+import { db, desc, eq, sum } from "@/server/db";
 import {
   employee as employeeTable,
   financialTransactions as financialTransactionsTable,
@@ -30,111 +31,25 @@ export const getAllFinancialTransactions = async () => {
   }
 }
 
-export const getWeeklyFinance = async () => {
+
+export const getCurrentFund = async () => {
   try {
-    const now = new Date();
-    const day = now.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
-
-    // Get Monday of this week
-    const startOfThisWeek = new Date(now);
-    startOfThisWeek.setDate(now.getDate() - ((day + 6) % 7)); // Monday of this week
-    startOfThisWeek.setHours(0, 0, 0, 0);
-
-    // Get Monday of last week
-    const startOfLastWeek = new Date(startOfThisWeek);
-    startOfLastWeek.setDate(startOfLastWeek.getDate() - 7);
-
-    // Get end of last week (Sunday 23:59:59)
-    const endOfLastWeek = new Date(startOfThisWeek);
-    endOfLastWeek.setMilliseconds(-1); // One millisecond before this week's Monday
-
-    const thisWeek = await db
-      .select({
-        category: financialTransactionsTable.category,
-        total: sum(financialTransactionsTable.amount),
-        count: count(financialTransactionsTable.id),
-      })
+    const inflows = await db
+      .select({sum: sum(financialTransactionsTable.amount)})
       .from(financialTransactionsTable)
-      .where(between(financialTransactionsTable.transactionDate, startOfThisWeek, now))
-      .groupBy(financialTransactionsTable.category);
+      .where(eq(financialTransactionsTable.type, TRANSACTION_TYPE[0]));
 
-    const lastWeek = await db
-      .select({
-        category: financialTransactionsTable.category,
-        total: sum(financialTransactionsTable.amount),
-        count: count(financialTransactionsTable.id),
-      })
+    const outflows = await db
+      .select({sum: sum(financialTransactionsTable.amount)})
       .from(financialTransactionsTable)
-      .where(between(financialTransactionsTable.transactionDate, startOfLastWeek, endOfLastWeek))
-      .groupBy(financialTransactionsTable.category);
+      .where(eq(financialTransactionsTable.type, TRANSACTION_TYPE[1]));
 
-      const summary = {
-        offering: {
-          thisWeekTotal: Number(thisWeek.find((t) => t.category === "offering")?.total ?? 0),
-          lastWeekTotal: Number(lastWeek.find((t) => t.category === "offering")?.total ?? 0),
-          thisWeekCount: thisWeek.find((t) => t.category === "offering")?.count ?? 0,
-          lastWeekCount: lastWeek.find((t) => t.category === "offering")?.count ?? 0,
-          totalPercentChange: ((Number(thisWeek.find((t) => t.category === "offering")?.total ?? 0) -
-                                Number(lastWeek.find((t) => t.category === "offering")?.total ?? 0)) /
-                                Math.max(Number(lastWeek.find((t) => t.category === "offering")?.total ?? 0), 1)) * 100,
-        },
-        pledge: {
-          thisWeekTotal: Number(thisWeek.find((t) => t.category === "pledge")?.total ?? 0),
-          lastWeekTotal: Number(lastWeek.find((t) => t.category === "pledge")?.total ?? 0),
-          thisWeekCount: thisWeek.find((t) => t.category === "pledge")?.count ?? 0,
-          lastWeekCount: lastWeek.find((t) => t.category === "pledge")?.count ?? 0,
-          totalPercentChange: ((Number(thisWeek.find((t) => t.category === "pledge")?.total ?? 0) -
-                                Number(lastWeek.find((t) => t.category === "pledge")?.total ?? 0)) /
-                                Math.max(Number(lastWeek.find((t) => t.category === "pledge")?.total ?? 0), 1)) * 100,
-        },
-        donation: {
-          thisWeekTotal: Number(thisWeek.find((t) => t.category === "donation")?.total ?? 0),
-          lastWeekTotal: Number(lastWeek.find((t) => t.category === "donation")?.total ?? 0),
-          thisWeekCount: thisWeek.find((t) => t.category === "donation")?.count ?? 0,
-          lastWeekCount: lastWeek.find((t) => t.category === "donation")?.count ?? 0,
-          totalPercentChange: ((Number(thisWeek.find((t) => t.category === "donation")?.total ?? 0) -
-                                Number(lastWeek.find((t) => t.category === "donation")?.total ?? 0)) /
-                                Math.max(Number(lastWeek.find((t) => t.category === "donation")?.total ?? 0), 1)) * 100,
-        },
-        representation_expense: {
-          thisWeekTotal: Number(thisWeek.find((t) => t.category === "representation_expense")?.total ?? 0),
-          lastWeekTotal: Number(lastWeek.find((t) => t.category === "representation_expense")?.total ?? 0),
-          thisWeekCount: thisWeek.find((t) => t.category === "representation_expense")?.count ?? 0,
-          lastWeekCount: lastWeek.find((t) => t.category === "representation_expense")?.count ?? 0,
-          totalPercentChange: ((Number(thisWeek.find((t) => t.category === "representation_expense")?.total ?? 0) -
-                                Number(lastWeek.find((t) => t.category === "representation_expense")?.total ?? 0)) /
-                                Math.max(Number(lastWeek.find((t) => t.category === "representation_expense")?.total ?? 0), 1)) * 100,
-        },
-        utility_expense: {
-          thisWeekTotal: Number(thisWeek.find((t) => t.category === "utility_expense")?.total ?? 0),
-          lastWeekTotal: Number(lastWeek.find((t) => t.category === "utility_expense")?.total ?? 0),
-          thisWeekCount: thisWeek.find((t) => t.category === "utility_expense")?.count ?? 0,
-          lastWeekCount: lastWeek.find((t) => t.category === "utility_expense")?.count ?? 0,
-          totalPercentChange: ((Number(thisWeek.find((t) => t.category === "utility_expense")?.total ?? 0) -
-                                Number(lastWeek.find((t) => t.category === "utility_expense")?.total ?? 0)) /
-                                Math.max(Number(lastWeek.find((t) => t.category === "utility_expense")?.total ?? 0), 1)) * 100,
-        },
-        ministry_expense: {
-          thisWeekTotal: Number(thisWeek.find((t) => t.category === "ministry_expense")?.total ?? 0),
-          lastWeekTotal: Number(lastWeek.find((t) => t.category === "ministry_expense")?.total ?? 0),
-          thisWeekCount: thisWeek.find((t) => t.category === "ministry_expense")?.count ?? 0,
-          lastWeekCount: lastWeek.find((t) => t.category === "ministry_expense")?.count ?? 0,
-          totalPercentChange: ((Number(thisWeek.find((t) => t.category === "ministry_expense")?.total ?? 0) -
-                                Number(lastWeek.find((t) => t.category === "ministry_expense")?.total ?? 0)) /
-                                Math.max(Number(lastWeek.find((t) => t.category === "ministry_expense")?.total ?? 0), 1)) * 100,
-        },
-        pastoral_expense: {
-          thisWeekTotal: Number(thisWeek.find((t) => t.category === "pastoral_expense")?.total ?? 0),
-          lastWeekTotal: Number(lastWeek.find((t) => t.category === "pastoral_expense")?.total ?? 0),
-          thisWeekCount: thisWeek.find((t) => t.category === "pastoral_expense")?.count ?? 0,
-          lastWeekCount: lastWeek.find((t) => t.category === "pastoral_expense")?.count ?? 0,
-          totalPercentChange: ((Number(thisWeek.find((t) => t.category === "pastoral_expense")?.total ?? 0) -
-                                Number(lastWeek.find((t) => t.category === "pastoral_expense")?.total ?? 0)) /
-                                Math.max(Number(lastWeek.find((t) => t.category === "pastoral_expense")?.total ?? 0), 1)) * 100,
-        },
-      }
+    const inflowValue = Number(inflows[0]?.sum);
+    const outflowValue = Number(outflows[0]?.sum);
 
-    return summary;
+    console.log("inflow: ", inflowValue, "\noutflow:", outflowValue);
+
+    return {currentFund: inflowValue - outflowValue};
   } catch (error) {
     console.log(error);
   }
