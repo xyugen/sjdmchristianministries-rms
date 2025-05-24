@@ -320,7 +320,9 @@ export default function PoliciesProcedure() {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogTitle>
+              Are you sure you want to delete?
+            </AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone. This will permanently delete the
               policy "{deletingPolicy?.title}".
@@ -335,7 +337,9 @@ export default function PoliciesProcedure() {
               className="bg-red-600 hover:bg-red-700"
               disabled={deletePolicyMutation.isPending}
             >
-              {deletePolicyMutation.isPending ? "Deleting..." : "Delete"}
+              {deletePolicyMutation.isPending
+                ? "Deleting..."
+                : "Yes, delete it"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
