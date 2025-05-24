@@ -4,7 +4,11 @@ import {
   createMeetingAgenda,
   createOrganizationalPolicy,
   deleteOrganizationalPolicy,
+  deleteMeetingAgenda,
+  deleteLegalDocument,
   editOrganizationalPolicy,
+  editMeetingAgenda,
+  editLegalDocument
 } from "@/lib/api/administrative/mutation";
 import {
   getAllLegalDocuments,
@@ -96,6 +100,33 @@ export const administrativeRouter = createTRPCRouter({
       console.log(error);
     }
   }),
+  editLegalDocument: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        data: z.object({
+          documentType: z.enum(DOCUMENT_TYPE).optional(),
+          documentNumber: z.string().optional(),
+          documentOrigin: z.enum(DOCUMENT_ORIGIN).optional(),
+          issuerId: z.string().optional(),
+          issueDate: z.date().optional(),
+          expiryDate: z.date().optional(),
+        }),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      try {
+        return await editLegalDocument(input.id, input.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }),
+  deleteLegalDocument: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input }) => {
+      return await deleteLegalDocument(input.id);
+    }
+  ),
 
   /**
    * Meeting Agendas
@@ -129,4 +160,33 @@ export const administrativeRouter = createTRPCRouter({
       console.log(error);
     }
   }),
+  editMeetingAgenda: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        data: z.object({
+          meetingDate: z.date().optional(),
+          startTime: z.date().optional(),
+          endTime: z.date().optional(),
+          presidingOfficer: z.string().optional(),
+          agenda: z.string().optional(),
+          summary: z.string().optional(),
+        }),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      try {
+        return await editMeetingAgenda(input.id, input.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }),
+  deleteMeetingAgenda: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input }) => {
+      return await deleteMeetingAgenda(input.id);
+    }
+  ),
+  
+
 });
