@@ -91,7 +91,6 @@ export const humanResourceRouter = createTRPCRouter({
         console.log(error);
       }
     }),
-
   getAllEmployees: protectedProcedure.query(async () => {
     try {
       return await getAllEmployees();
@@ -104,17 +103,18 @@ export const humanResourceRouter = createTRPCRouter({
       z.object({
         employeeId: z.string(),
         data: z.object({
-        // user fields
-        name: z.string().optional(),
-        email: z.string().optional(),
-        role: z.enum(ROLES).optional(),
-        // employee fields
-        gender: z.enum(GENDERS).optional(),
-        maritalStatus: z.enum(MARITAL_STATUSES).optional(),
-        birthDate: z.date().optional(),
-        nationality: z.string().optional(),
-        address: z.string().optional(),
-        contactNumber: z.string().optional(),
+          // user fields
+          name: z.string().optional(),
+          email: z.string().optional(),
+          role: z.enum(ROLES).optional(),
+          // employee fields
+          gender: z.enum(GENDERS).optional(),
+          maritalStatus: z.enum(MARITAL_STATUSES).optional(),
+          birthDate: z.date().optional(),
+          nationality: z.string().optional(),
+          address: z.string().optional(),
+          contactNumber: z.string().optional(),
+        }),
       }),
     )
     .mutation(async ({ input }) => {
@@ -128,7 +128,10 @@ export const humanResourceRouter = createTRPCRouter({
           throw new Error("Employee not found");
         }
 
-        const editedEmployee = await editEmployeeInfo(input.employeeId, employeeData);
+        const editedEmployee = await editEmployeeInfo(
+          input.employeeId,
+          employeeData,
+        );
         const editedUser = await editUser(employee.userId, userData);
 
         return { editedEmployee, editedUser };
@@ -212,6 +215,7 @@ export const humanResourceRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       try {
+        // FIXME: @darvey-trinidad input .id and .data is not defined
         return await editEmployeeTraining(input.id, input.data);
       } catch (error) {
         console.log(error);
