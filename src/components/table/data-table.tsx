@@ -54,6 +54,7 @@ export function DataTable<TData, TValue>({
       columnFilters,
       columnVisibility: {
         recordedById: false,
+        employeeId: false,
       },
     },
     onColumnVisibilityChange: setColumnVisibility,
