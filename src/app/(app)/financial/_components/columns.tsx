@@ -42,6 +42,10 @@ export const columns: ColumnDef<Transaction>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "recordedById",
+    enableHiding: true,
+  },
+  {
     accessorKey: "employeeName",
     header: "Recorded By",
   },
