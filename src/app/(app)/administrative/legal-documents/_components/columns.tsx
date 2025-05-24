@@ -10,6 +10,7 @@ import {
 import { type legalDocuments as legalDocumentsTable } from "@/server/db/schema";
 import { type ColumnDef } from "@tanstack/react-table";
 import { type InferSelectModel } from "drizzle-orm";
+import { DataTableRowActions } from "./table-row-actions";
 
 type LegalDocument = InferSelectModel<typeof legalDocumentsTable> & {
   employeeName: string;
@@ -73,11 +74,16 @@ export const columns: ColumnDef<LegalDocument>[] = [
     accessorKey: "expiryDate",
     header: "Expiry Date",
     cell: ({ getValue }) => {
-      if (!getValue()) return <span className="text-gray-400">Non-Expiring</span>;
+      if (!getValue())
+        return <span className="text-gray-400">Non-Expiring</span>;
 
       const rawDate = new Date(getValue() as string);
       const formattedDate = rawDate.toLocaleDateString("en-US");
       return formattedDate;
     },
+  },
+  {
+    accessorKey: "actions",
+    cell: ({ row }) => <DataTableRowActions row={row} />,
   },
 ];
