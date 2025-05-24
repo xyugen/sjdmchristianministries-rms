@@ -7,7 +7,7 @@ import { api } from "@/trpc/react";
 import { columns } from "./columns";
 
 const LegalDocumentsTable = () => {
-  const { data, isLoading } =
+  const { data, isLoading, refetch } =
     api.administrative.getAllLegalDocuments.useQuery();
 
   return (
@@ -27,6 +27,7 @@ const LegalDocumentsTable = () => {
               value: type,
             })) || []
           }
+          refetch={refetch}
         />
       ) : (
         <DataTableSkeleton />
