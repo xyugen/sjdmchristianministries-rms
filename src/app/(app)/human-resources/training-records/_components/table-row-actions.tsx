@@ -57,7 +57,7 @@ export function DataTableRowActions<TData>({
   const handleEdit = async (data: z.infer<typeof trainingFormSchema>) => {
     toast.promise(
       editMutation({
-        employeeTrainingId: row.getValue("id"),
+        id: row.getValue("id"),
         data: {
           ...data,
           dateCompleted: new Date(data.dateCompleted),

@@ -16,7 +16,6 @@ import type { Row } from "@tanstack/react-table";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { trainingFormSchema } from "../../create/_components/schema/schema";
 import {
   Popover,
   PopoverContent,
@@ -28,6 +27,7 @@ import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
+import { trainingFormSchema } from "../../create/_components/schema/schema";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -36,6 +36,7 @@ type EditDialogProps<TData> = DialogProps & {
   onEdit: (data: z.infer<typeof trainingFormSchema>) => void;
   row: DataTableRowActionsProps<TData>["row"];
 };
+
 export function EditDialog<TData>({
   onEdit,
   row,
@@ -44,6 +45,7 @@ export function EditDialog<TData>({
   const form = useForm<z.infer<typeof trainingFormSchema>>({
     resolver: zodResolver(trainingFormSchema),
     defaultValues: {
+      employeeId: row.getValue("employeeId"),
       trainingName: row.getValue("trainingName"),
       dateCompleted: row.getValue("dateCompleted"),
     },
