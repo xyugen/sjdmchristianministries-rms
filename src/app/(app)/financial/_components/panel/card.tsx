@@ -1,10 +1,9 @@
+"use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { api } from "@/trpc/react";
 import { HandCoins } from "lucide-react";
 export const BalanceCard = () => {
-  // Temporary data lang to alv, ayusin mo to
-  const data = 12345.67;
-
+  const { data, isLoading } = api.finance.getCurrentFund.useQuery();
   return (
     <Card className="my-3 shadow">
       <CardHeader>
@@ -16,10 +15,12 @@ export const BalanceCard = () => {
       <CardContent>
         <div className="flex flex-row items-center">
           <div className="text-3xl font-semibold">
-            {data.toLocaleString("en-PH", {
-              style: "currency",
-              currency: "PHP",
-            })}
+            {isLoading || !data
+              ? "Loading..."
+              : (data.currentFund as number).toLocaleString("en-PH", {
+                  style: "currency",
+                  currency: "PHP",
+                })}
           </div>
         </div>
       </CardContent>
