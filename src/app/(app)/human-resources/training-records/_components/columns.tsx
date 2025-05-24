@@ -1,14 +1,42 @@
 "use client";
 
+import { Checkbox } from "@/components/ui/checkbox";
 import { type employeeTraining as employeeTrainingTable } from "@/server/db/schema";
 import { type ColumnDef } from "@tanstack/react-table";
 import { type InferSelectModel } from "drizzle-orm";
+import { DataTableRowActions } from "./table-row-actions";
 
 type EmployeeTraining = InferSelectModel<typeof employeeTrainingTable> & {
   name: string;
 };
 
 export const columns: ColumnDef<EmployeeTraining>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "employeeId",
+    enableHiding: true,
+  },
   {
     accessorKey: "name",
     header: "Name",
@@ -25,5 +53,9 @@ export const columns: ColumnDef<EmployeeTraining>[] = [
       const formattedDate = rawDate.toLocaleDateString("en-US");
       return formattedDate;
     },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <DataTableRowActions row={row} />,
   },
 ];

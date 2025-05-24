@@ -81,7 +81,7 @@ export function TimePickerDemo({
     } else if (!hour && !minute) {
       setDate(undefined);
     }
-  }, [hour, minute, isPM, setDate]);
+  }, [hour, minute, isPM]);
 
   React.useEffect(() => {
     if (date) {

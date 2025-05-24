@@ -41,6 +41,7 @@ export function DataTable<TData, TValue>({
   options,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState({});
 
   const table = useReactTable({
     data,
@@ -51,7 +52,12 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     state: {
       columnFilters,
+      columnVisibility: {
+        recordedById: false,
+        employeeId: false,
+      },
     },
+    onColumnVisibilityChange: setColumnVisibility,
   });
 
   return (
