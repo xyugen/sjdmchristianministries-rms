@@ -19,7 +19,7 @@ import {
   getAllOrganizationalPolicies,
   getLegalDocumentFileById,
 } from "@/lib/api/administrative/query";
-import { generateUUID } from "@/lib/utils";
+import { coerceDateOptional, coerceDateRequired, generateUUID } from "@/lib/utils";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
@@ -76,7 +76,16 @@ export const administrativeRouter = createTRPCRouter({
    * Legal Documents
    */
   createLegalDocument: protectedProcedure
-    .input(createDocumentSchema)
+    .input(
+      z.object({
+        documentType: z.enum(DOCUMENT_TYPE),
+        documentNumber: z.string(),
+        documentOrigin: z.enum(DOCUMENT_ORIGIN),
+        issuerId: z.string().optional(),
+        issueDate: coerceDateRequired(),
+        expiryDate: coerceDateOptional(),
+      }),
+    )
     .mutation(async ({ input }) => {
       try {
         return await createLegalDocument({
@@ -104,8 +113,8 @@ export const administrativeRouter = createTRPCRouter({
           documentNumber: z.string().optional(),
           documentOrigin: z.enum(DOCUMENT_ORIGIN).optional(),
           issuerId: z.string().optional(),
-          issueDate: z.date().optional(),
-          expiryDate: z.date().optional(),
+          issueDate: coerceDateOptional(),
+          expiryDate: coerceDateOptional(),
         }),
       }),
     )
@@ -146,9 +155,9 @@ export const administrativeRouter = createTRPCRouter({
   createMeetingAgenda: protectedProcedure
     .input(
       z.object({
-        meetingDate: z.date(),
-        startTime: z.date().optional(),
-        endTime: z.date().optional(),
+        meetingDate: coerceDateRequired(),
+        startTime: coerceDateOptional(),
+        endTime: coerceDateOptional(),
         presidingOfficer: z.string(),
         agenda: z.string(),
         summary: z.string().optional(),
@@ -177,9 +186,9 @@ export const administrativeRouter = createTRPCRouter({
       z.object({
         id: z.string(),
         data: z.object({
-          meetingDate: z.date().optional(),
-          startTime: z.date().optional(),
-          endTime: z.date().optional(),
+          meetingDate: coerceDateOptional(),
+          startTime: coerceDateOptional(),
+          endTime: coerceDateOptional(),
           presidingOfficer: z.string().optional(),
           agenda: z.string().optional(),
           summary: z.string().optional(),

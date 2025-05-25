@@ -33,12 +33,13 @@ import { api } from "@/trpc/react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { trainingFormSchema } from "../schema/schema";
+import { useRouter } from "next/navigation";
+import { PageRoutes } from "@/constants/page-routes";
 
 export function TrainingForm() {
   const { data: employees } = api.humanResource.getAllEmployees.useQuery();
   const { mutateAsync, isPending } =
     api.humanResource.createEmployeeTraining.useMutation();
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 
   const form = useForm({
     resolver: zodResolver(trainingFormSchema),
@@ -48,6 +49,7 @@ export function TrainingForm() {
       dateCompleted: undefined,
     },
   });
+  const router = useRouter();
 
   async function onSubmit(data: z.infer<typeof trainingFormSchema>) {
     const toastId = toast.loading("Recording training...");
@@ -58,6 +60,7 @@ export function TrainingForm() {
       });
       toast.success("Training recorded successfully!", { id: toastId });
       form.reset();
+      router.push(PageRoutes.TRAINING_RECORDS);
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message, { id: toastId });
@@ -118,8 +121,8 @@ export function TrainingForm() {
                         variant={"outline"}
                         className="w-[240px] justify-start text-left font-normal"
                       >
-                        {selectedDate ? (
-                          format(selectedDate, "PPP")
+                        {field.value ? (
+                          format(field.value, "PPP")
                         ) : (
                           <span>Select a date</span>
                         )}

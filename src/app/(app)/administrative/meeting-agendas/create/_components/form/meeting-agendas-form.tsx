@@ -25,7 +25,6 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { formSchema } from "../schema/schema";
-import { TimePickerDemo } from "./time-picker";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
 import {
@@ -35,6 +34,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import TimePicker from "./time-picker";
+import { useRouter } from "next/navigation";
+import { PageRoutes } from "@/constants/page-routes";
 
 const MeetingAgendasForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -47,6 +49,7 @@ const MeetingAgendasForm = () => {
   });
   const { mutateAsync, isPending } =
     api.administrative.createMeetingAgenda.useMutation();
+  const router = useRouter();
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     const toastId = toast.loading("Adding Meeting Agendas...");
@@ -64,6 +67,7 @@ const MeetingAgendasForm = () => {
           id: toastId,
         });
         form.reset();
+        router.push(PageRoutes.MEETING_AGENDAS);
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -148,7 +152,7 @@ const MeetingAgendasForm = () => {
                   <FormItem>
                     <FormLabel>Start Time (Optional)</FormLabel>
                     <FormControl>
-                      <TimePickerDemo
+                      <TimePicker
                         date={field.value}
                         setDate={field.onChange}
                         placeholder="Select start time"
@@ -166,7 +170,7 @@ const MeetingAgendasForm = () => {
                   <FormItem>
                     <FormLabel>End Time (Optional)</FormLabel>
                     <FormControl>
-                      <TimePickerDemo
+                      <TimePicker
                         date={field.value}
                         setDate={field.onChange}
                         placeholder="Select end time"

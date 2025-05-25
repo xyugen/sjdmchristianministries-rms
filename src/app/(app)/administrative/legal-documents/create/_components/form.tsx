@@ -49,6 +49,8 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { type z } from "zod";
 import { createDocumentSchema } from "./schema";
+import { useRouter } from "next/navigation";
+import { PageRoutes } from "@/constants/page-routes";
 
 const CreateDocumentForm = () => {
   const { mutateAsync, isPending } =
@@ -63,6 +65,7 @@ const CreateDocumentForm = () => {
   const form = useForm<z.infer<typeof createDocumentSchema>>({
     resolver: zodResolver(createDocumentSchema),
   });
+  const router = useRouter();
 
   const onSubmit = async (values: z.infer<typeof createDocumentSchema>) => {
     const toastId = toast.loading("Adding document...");
@@ -73,6 +76,7 @@ const CreateDocumentForm = () => {
       if (response?.lastInsertRowid) {
         toast.success("Document added successfully!", { id: toastId });
         form.reset();
+        router.push(PageRoutes.LEGAL_DOCUMENTS);
       }
     } catch (error) {
       if (error instanceof Error) {

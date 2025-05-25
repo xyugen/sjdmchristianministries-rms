@@ -14,16 +14,16 @@ import {
 import { Input } from "@/components/ui/input";
 
 interface TimePickerProps {
-  date?: Date;
-  setDate: (date?: Date) => void;
-  placeholder?: string;
+  date: Date | null | undefined;
+  setDate: (date: Date | null | undefined) => void;
+  placeholder: string;
 }
 
-export function TimePickerDemo({
+const TimePicker: React.FC<TimePickerProps> = ({
   date,
   setDate,
-  placeholder = "Select time",
-}: TimePickerProps) {
+  placeholder,
+}) => {
   const minuteRef = React.useRef<HTMLInputElement>(null);
   const hourRef = React.useRef<HTMLInputElement>(null);
   const [hour, setHour] = React.useState<string>(
@@ -38,9 +38,12 @@ export function TimePickerDemo({
 
   const handleHourChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    // Allow empty string or valid hour values (0-23)
     if (
       value === "" ||
-      (Number.parseInt(value) >= 0 && Number.parseInt(value) <= 23)
+      (/^\d{1,2}$/.test(value) &&
+        Number.parseInt(value) >= 0 &&
+        Number.parseInt(value) <= 23)
     ) {
       setHour(value);
       if (value.length === 2) {
@@ -51,9 +54,13 @@ export function TimePickerDemo({
 
   const handleMinuteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    // Allow empty string, single digit, or valid two-digit minutes (0-59)
     if (
       value === "" ||
-      (Number.parseInt(value) >= 0 && Number.parseInt(value) <= 59)
+      /^\d$/.test(value) || // Single digit
+      (/^\d{2}$/.test(value) &&
+        Number.parseInt(value) >= 0 &&
+        Number.parseInt(value) <= 59) // Two digits 0-59
     ) {
       setMinute(value);
     }
@@ -64,7 +71,8 @@ export function TimePickerDemo({
   };
 
   React.useEffect(() => {
-    if (hour && minute) {
+    if (hour && minute && minute.length === 2) {
+      // Only update when minute is complete
       const newHour =
         isPM && Number.parseInt(hour) < 12
           ? Number.parseInt(hour) + 12
@@ -81,7 +89,7 @@ export function TimePickerDemo({
     } else if (!hour && !minute) {
       setDate(undefined);
     }
-  }, [hour, minute, isPM]);
+  }, [hour, minute, isPM, setDate]);
 
   React.useEffect(() => {
     if (date) {
@@ -155,4 +163,6 @@ export function TimePickerDemo({
       </PopoverContent>
     </Popover>
   );
-}
+};
+
+export default TimePicker;
