@@ -6,10 +6,10 @@ export const BalanceCard = () => {
   const data = 12345.67;
 
   return (
-    <Card className="my-3">
+    <Card className="my-3 shadow">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <HandCoins className="size-6" />
+          <HandCoins className="size-6 text-blue-600" />
           Current Balance
         </CardTitle>
       </CardHeader>
