@@ -2,7 +2,7 @@
 
 import { TrendingUp } from "lucide-react";
 import * as React from "react";
-import { Label, Pie, PieChart } from "recharts";
+import { Label, Pie, PieChart, Cell } from "recharts";
 
 import {
   Card,
@@ -20,11 +20,10 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-
 const chartData = [
-  { category: "Offering", earnings: 3400, color: "var(--chart-offering)" },  
-  { category: "Pledge", earnings: 400, color: "var(--chart-pledge)" },
-  { category: "Donation", earnings: 940, color: "var(--chart-donation)" },
+  { category: "Offering", earnings: 400, color: "var(--color-offering)" },
+  { category: "Pledge", earnings: 400, color: "var(--color-pledge)" },
+  { category: "Donation", earnings: 540, color: "var(--color-donation)" },
 ];
 
 const chartConfig = {
@@ -47,11 +46,11 @@ const chartConfig = {
 
 export function DonutChart() {
   const totalEarnings = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.earnings, 0)
-  }, [])
+    return chartData.reduce((acc, curr) => acc + curr.earnings, 0);
+  }, []);
 
   return (
-    <Card className="flex flex-col rounded-sm px-12 border-none shadow-none">
+    <Card className="flex flex-col rounded-sm border-none px-12 shadow-none">
       <CardHeader className="items-center pb-0">
         <CardTitle>Total Earnings</CardTitle>
         <CardDescription>January - April 2025</CardDescription>
@@ -73,6 +72,9 @@ export function DonutChart() {
               innerRadius={63}
               strokeWidth={5}
             >
+              {chartData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
               <Label
                 content={({ viewBox }) => {
                   const viewBoxType = viewBox as { cx: number; cy: number };
@@ -93,7 +95,7 @@ export function DonutChart() {
                           y={viewBoxType.cy}
                           className="fill-foreground text-2xl font-bold"
                         >
-                          {"₱ "+totalEarnings.toLocaleString()}
+                          {"₱ " + totalEarnings.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBoxType.cx}

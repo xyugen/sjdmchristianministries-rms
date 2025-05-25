@@ -1,11 +1,13 @@
+"use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, HandCoins, BookMarked } from "lucide-react";
-
-const users = 6;
-const donations = 2000;
-const pledges = 1000;
+import { api } from "@/trpc/react";
 
 export const InfoCard = () => {
+  const { data: users, isLoading } = api.auth.getAllUserCount.useQuery();
+  const donations = 2000;
+  const pledges = 1000;
+
   return (
     <div className="border-r-1 grid grid-cols-3 gap-3">
       <Card className="my-3 shadow-none">
@@ -17,7 +19,9 @@ export const InfoCard = () => {
         </CardHeader>
         <CardContent>
           <div className="flex flex-row items-center">
-            <div className="text-3xl font-semibold">{users}</div>
+            <div className="text-3xl font-semibold">
+              {isLoading ? "..." : users}
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -25,7 +29,7 @@ export const InfoCard = () => {
       <Card className="my-3 shadow-none">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-lg">
-            <HandCoins className="size-6 text-red-600" />
+            <HandCoins className="size-6 text-red-500" />
             Donations
           </CardTitle>
         </CardHeader>
@@ -44,7 +48,7 @@ export const InfoCard = () => {
       <Card className="my-3 shadow-none">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-lg">
-            <BookMarked className="size-6 text-blue-600" />
+            <BookMarked className="size-6 text-blue-500" />
             Pledges
           </CardTitle>
         </CardHeader>
