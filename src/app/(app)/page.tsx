@@ -1,10 +1,11 @@
 import React from "react";
 import BreadcrumbLayout from "@/components/breadcrumb/page-breadcrumb";
 import { type Metadata } from "next";
-import { ArrowUp, ArrowDown } from "lucide-react";
+import { ArrowUp, ArrowDown, User } from "lucide-react";
 import DonutChart from "./_components/chart/pieChart";
 import UtilityExpenses from "./_components/utility-expenses";
 import { InfoCard } from "./_components/panel/info-card";
+import { UserCard } from "./_components/panel/user-card";
 import MeetingAgendaTable, {
   type MeetingAgenda,
 } from "./_components/table/meeting-agendas";
@@ -70,9 +71,13 @@ const Page = () => {
     <div className="flex w-full flex-col gap-1">
       <BreadcrumbLayout currentPage="Dashboard" />
       <InfoCard />
-      <div className="border-gray mt-5 flex flex-col items-center justify-center rounded-sm border pb-4 sm:flex-row lg:py-2">
-        <DonutChart />
+      <div className="flex justify-start gap-4">
+        <UserCard />
+        <div className="border-gray flex flex-col items-center justify-center rounded-xl border pb-4 sm:flex-row lg:py-2">
+          <DonutChart />
+        </div>
       </div>
+
       <MeetingAgendaTable agendas={meetingAgendas} />
     </div>
   );

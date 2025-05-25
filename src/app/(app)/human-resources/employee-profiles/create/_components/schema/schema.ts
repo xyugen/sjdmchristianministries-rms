@@ -22,5 +22,8 @@ export const employeeFormSchema = z.object({
   nationality: z.string().min(1, "Nationality is required"),
   address: z.string().min(1, "Address is required"),
   contactNumber: z.string().min(1, "Contact number is required"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .optional(),
 });
