@@ -25,12 +25,14 @@ const MeetingAgendaTable = () => {
   const meetingAgendas = api.administrative.getAllMeetingAgendas.useQuery();
   const agendas = meetingAgendas.data ?? [];
   return (
-    <Card className="rounded-sm shadow-none">
+    <Card className="w-full rounded-xl shadow-none">
       <CardHeader>
-        <CardTitle>Recent Meeting Agendas</CardTitle>
+        <CardTitle className="text-md md:text-lg">
+          Recent Meeting Agendas
+        </CardTitle>
       </CardHeader>
       <CardContent className="px-4">
-        <Table>
+        <Table className="sm:w-full">
           <TableHeader>
             <TableRow className="border-b border-gray-200">
               <TableHead className="font-medium">Date</TableHead>
@@ -42,14 +44,14 @@ const MeetingAgendaTable = () => {
           <TableBody>
             {agendas.slice(0, 5).map((agenda) => (
               <TableRow key={agenda.id} className="border-b border-gray-200">
-                <TableCell className="py-3">
+                <TableCell className="py-3 md:w-1/4">
                   {format(agenda.meetingDate, "yyyy-MM-dd")}
                 </TableCell>
-                <TableCell className="py-3">{agenda.agenda}</TableCell>
-                <TableCell className="py-3">
+                <TableCell className="py-3 md:w-1/4">{agenda.agenda}</TableCell>
+                <TableCell className="py-3 md:w-1/4">
                   {agenda.presidingOfficer}
                 </TableCell>
-                <TableCell className="py-3">
+                <TableCell className="py-3 md:w-1/4">
                   {agenda.startTime && agenda.endTime
                     ? `${formatDate(agenda.startTime, "hh:mm a")} – ${formatDate(agenda.endTime, "hh:mm a")}`
                     : "No date selected"}

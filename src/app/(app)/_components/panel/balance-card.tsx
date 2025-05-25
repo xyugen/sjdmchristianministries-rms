@@ -9,10 +9,10 @@ export const BalanceCard = () => {
     api.finance.getCurrentFund.useQuery();
 
   return (
-    <Card className="w-full shadow-none">
+    <Card className="shadow-none">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-lg font-semibold">
-          <HandCoins className="size-6 text-green-600" />
+        <CardTitle className="text-md flex items-center gap-2 font-semibold md:text-lg">
+          <HandCoins className="size-5 text-green-600 md:size-6" />
           Balance
         </CardTitle>
       </CardHeader>
@@ -22,7 +22,7 @@ export const BalanceCard = () => {
             {isBalanceLoading ? (
               <Skeleton className="h-28 w-28 animate-pulse rounded bg-gray-300" />
             ) : (
-              <div className="flex justify-center text-3xl font-semibold">
+              <div className="flex justify-center text-xl font-semibold md:text-3xl">
                 {balance?.currentFund.toLocaleString("en-PH", {
                   style: "currency",
                   currency: "PHP",
@@ -33,12 +33,14 @@ export const BalanceCard = () => {
               {isBalanceLoading ? (
                 <Skeleton className="h-6 w-40 animate-pulse rounded bg-gray-300" />
               ) : (
-                <h1 className="text-lg font-semibold">Current Balance</h1>
+                <h1 className="text-md font-semibold md:text-lg">
+                  Current Balance
+                </h1>
               )}
               {isBalanceLoading ? (
                 <Skeleton className="mt-1 h-4 w-40 animate-pulse rounded bg-gray-300" />
               ) : (
-                <div className="text-sm text-muted-foreground">
+                <div className="text-xs text-muted-foreground md:text-sm">
                   Current balance of SJDM Christian Ministries
                 </div>
               )}

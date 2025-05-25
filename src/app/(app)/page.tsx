@@ -12,17 +12,16 @@ export const metadata: Metadata = {
 
 const Page = () => {
   return (
-    <div className="flex w-full flex-col gap-1">
+    <div className="flex w-full flex-col space-y-4">
       <BreadcrumbLayout currentPage="Dashboard" />
       <InfoCard />
-      <div className="grid grid-cols-1 gap-4 pb-4 sm:grid-cols-3">
+      <div className="md: mb-4 grid grid-cols-1 gap-3 sm:grid-cols-1 md:grid-cols-3">
         <UserCard />
-        <div className="border-gray flex flex-col items-center justify-center rounded-xl border pb-4 sm:flex-row lg:py-2">
+        <div className="flex flex-col items-center justify-center rounded-xl border border-gray-200">
           <DonutChart />
         </div>
         <BalanceCard />
       </div>
-
       <MeetingAgendaTable />
     </div>
   );
