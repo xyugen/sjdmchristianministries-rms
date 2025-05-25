@@ -31,3 +31,15 @@ export const getAccountByUserId = async (userId: string) => {
     return null;
   }
 };
+
+export const getAllUserCount = async () => {
+  try {
+    const result = await db
+      .select()
+      .from(userTable);
+    return result.length;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};

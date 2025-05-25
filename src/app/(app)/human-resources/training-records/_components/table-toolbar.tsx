@@ -3,7 +3,7 @@
 import { type Table } from "@tanstack/react-table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { DataTableFacetedFilter } from "@/components/table/data-table-faceted-filter";
 
 interface DataTableToolbarProps<TData> {
@@ -18,7 +18,7 @@ const SampleDocuments = [
   },
   {
     label: "Pastor",
-    value: "Pastor",  
+    value: "Pastor",
   },
 ];
 
@@ -28,21 +28,19 @@ export function DataTableToolbar<TData>({
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
-    <div className="flex items-center justify-between gap-x-2 mb-1.5">
+    <div className="mb-1.5 flex items-center justify-between gap-x-2">
       <div className="flex flex-1 items-center space-x-2">
-        <Input
-          placeholder="Search name..."
-          value={
-            (table.getColumn("name")?.getFilterValue() as string) ??
-            ""
-          }
-          onChange={(event) =>
-            table
-              .getColumn("name")
-              ?.setFilterValue(event.target.value)
-          }
-          className="h-8 w-[150px] lg:w-[250px]"
-        />
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
+          <Input
+            placeholder="Search name..."
+            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+              table.getColumn("name")?.setFilterValue(event.target.value)
+            }
+            className="h-8 w-[150px] lg:w-[250px]"
+          />
+        </div>
         {table.getColumn("role") && (
           <DataTableFacetedFilter
             column={table.getColumn("role")}
@@ -64,4 +62,3 @@ export function DataTableToolbar<TData>({
     </div>
   );
 }
-

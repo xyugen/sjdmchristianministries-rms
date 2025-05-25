@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { PageRoutes } from "@/constants/page-routes";
@@ -9,15 +9,13 @@ import React from "react";
 const Header = () => {
   const router = useRouter();
 
-  const handleCreateDocuments =  () => {
-     router.push(PageRoutes.DOCUMENTS_CREATE);
-  }
+  const handleCreateDocuments = () => {
+    router.push(PageRoutes.DOCUMENTS_CREATE);
+  };
 
   return (
     <div className="flex justify-end">
-      <Button onClick={handleCreateDocuments}
-        title="Add documents"
-      >
+      <Button onClick={handleCreateDocuments} title="Add documents">
         <CirclePlus />
         <span>Add Documents</span>
       </Button>

@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import SelectUtility from "./select/select-utility";
 import ExpensesTable from "./table/expenses-table";
+import { monthOptions, utilityOptions } from "@/data/utility-expenses";
 
 interface UtilityExpense {
   id: string;
@@ -13,6 +14,7 @@ interface UtilityExpense {
 }
 
 export default function UtilityExpenses() {
+  //Example Data
   const expenses: UtilityExpense[] = [
     {
       id: "1",
@@ -42,21 +44,6 @@ export default function UtilityExpenses() {
       amount: "PHP 1200",
       date: "4/16/2025",
     },
-  ];
-
-  const utilityOptions = [
-    { value: "all", label: "Utility" },
-    { value: "electric", label: "Electric" },
-    { value: "water", label: "Water" },
-    { value: "internet", label: "Internet" },
-  ];
-
-  const monthOptions = [
-    { value: "current", label: "Month" },
-    { value: "january", label: "January" },
-    { value: "february", label: "February" },
-    { value: "march", label: "March" },
-    { value: "april", label: "April" },
   ];
 
   return (
