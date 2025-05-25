@@ -30,7 +30,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { formSchema } from "../../create/_components/schema/schema";
 import { z } from "zod";
 import { Calendar } from "@/components/ui/calendar";
-import { TimePickerDemo } from "../../create/_components/form/time-picker";
+import TimePicker from "../../create/_components/form/time-picker";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -129,7 +129,7 @@ export function EditDialog<TData>({
                     <FormItem>
                       <FormLabel>Start Time (Optional)</FormLabel>
                       <FormControl>
-                        <TimePickerDemo
+                        <TimePicker
                           date={field.value}
                           setDate={field.onChange}
                           placeholder="Select start time"
@@ -147,7 +147,7 @@ export function EditDialog<TData>({
                     <FormItem>
                       <FormLabel>End Time (Optional)</FormLabel>
                       <FormControl>
-                        <TimePickerDemo
+                        <TimePicker
                           date={field.value}
                           setDate={field.onChange}
                           placeholder="Select end time"
