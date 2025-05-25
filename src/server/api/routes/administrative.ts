@@ -19,6 +19,7 @@ import {
   getLegalDocumentFileById,
 } from "@/lib/api/administrative/query";
 import {
+  coerceDateNullish,
   coerceDateOptional,
   coerceDateRequired,
   generateUUID,
@@ -26,6 +27,8 @@ import {
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+
+export type CreateLegalDocument = z.infer<typeof createDocumentSchema>;
 
 export const administrativeRouter = createTRPCRouter({
   getAllOrganizationalPolicies: protectedProcedure.query(async () => {
@@ -102,14 +105,7 @@ export const administrativeRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string(),
-        data: z.object({
-          documentType: z.enum(DOCUMENT_TYPE).optional(),
-          documentNumber: z.string().optional(),
-          documentOrigin: z.enum(DOCUMENT_ORIGIN).optional(),
-          issuerId: z.string().optional(),
-          issueDate: coerceDateOptional(),
-          expiryDate: coerceDateOptional(),
-        }),
+        data: createDocumentSchema,
       }),
     )
     .mutation(async ({ input }) => {

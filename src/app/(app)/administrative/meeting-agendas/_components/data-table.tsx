@@ -16,6 +16,7 @@ const MeetingAgendasTable = () => {
           columns={columns}
           data={data}
           filteredTitle="agenda"
+          columnVisibility={{ id: false, issuerId: false }}
           refetch={refetch}
         />
       ) : (

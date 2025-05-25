@@ -33,6 +33,8 @@ export function DataTableRowActions<TData>({
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
   const { mutateAsync: deleteMutation } =
     api.administrative.deleteLegalDocument.useMutation();
+  const { mutateAsync: editMutation } =
+    api.administrative.editLegalDocument.useMutation();
 
   const handleDelete = async () => {
     toast.promise(
@@ -55,7 +57,24 @@ export function DataTableRowActions<TData>({
   };
 
   const handleEdit = async (data: z.infer<typeof createDocumentSchema>) => {
-    //TODO: add edit logic
+    toast.promise(
+      editMutation({
+        id: row.getValue("id"),
+        data: {
+          ...data,
+        },
+      }),
+      {
+        loading: "Editing document...",
+        success: () => {
+          (table.options.meta as { refetch: () => void }).refetch();
+          return "Document edited successfully!";
+        },
+        error: (error: unknown) => {
+          return (error as Error).message;
+        },
+      },
+    );
 
     setIsEditDialogOpen(false);
   };

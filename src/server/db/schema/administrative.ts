@@ -25,6 +25,7 @@ export const legalDocuments = createTable("legal_documents", {
     () => legalDocumentFiles.id,
     {
       onDelete: "cascade",
+      onUpdate: "cascade",
     },
   ),
   issueDate: int("issue_date", { mode: "timestamp" }).notNull(),

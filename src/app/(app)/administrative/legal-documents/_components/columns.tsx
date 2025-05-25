@@ -24,6 +24,10 @@ export const columns: ColumnDef<LegalDocument>[] = [
     enableHiding: true,
   },
   {
+    accessorKey: "issuerId",
+    enableHiding: true,
+  },
+  {
     accessorKey: "documentNumber",
     header: "Document Number",
   },
