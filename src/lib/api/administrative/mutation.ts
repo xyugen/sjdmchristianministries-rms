@@ -1,5 +1,6 @@
 import { type DocumentOrigin, type DocumentType } from "@/constants/document";
 import { fileToBuffer, generateUUID } from "@/lib/utils";
+import { CreateLegalDocument } from "@/server/api/routes/administrative";
 import { db, eq, type InferInsertModel } from "@/server/db";
 import {
   legalDocumentFiles as legalDocumentFilesTable,
@@ -27,7 +28,8 @@ type EditLegalDocument = {
   issueDate?: Date;
   documentNumber?: string;
   issuerId?: string;
-  expiryDate?: Date;
+  expiryDate?: Date | null;
+  documentFileId?: string;
 };
 
 export const createOrganizationalPolicy = async (
@@ -128,12 +130,20 @@ export const createLegalDocument = async (legalDocument: LegalDocument) => {
 
 export const editLegalDocument = async (
   id: string,
-  legalDocument: EditLegalDocument,
+  legalDocument: Partial<CreateLegalDocument>,
 ) => {
   try {
     return await db
       .update(legalDocumentsTable)
-      .set(legalDocument)
+      .set({
+        id: id,
+        documentType: legalDocument.documentType,
+        documentOrigin: legalDocument.documentOrigin,
+        issueDate: legalDocument.issueDate,
+        documentNumber: legalDocument.documentNumber,
+        issuerId: legalDocument.issuerId,
+        expiryDate: legalDocument.expiryDate,
+      })
       .where(eq(legalDocumentsTable.id, id))
       .returning()
       .run();

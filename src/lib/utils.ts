@@ -1,5 +1,5 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 import z from "zod";
 
 export function cn(...inputs: ClassValue[]) {
@@ -45,15 +45,16 @@ export async function streamToBuffer(
   return Buffer.concat(chunks);
 }
 
-
 export const coerceDateOptional = () =>
-  z.preprocess((arg) => {
-    if (typeof arg === "string" || arg instanceof Date) {
-      const date = new Date(arg);
-      if (!isNaN(date.getTime())) return date;
-    }
-    return undefined;
-  }, z.date()).optional();
+  z
+    .preprocess((arg) => {
+      if (typeof arg === "string" || arg instanceof Date) {
+        const date = new Date(arg);
+        if (!isNaN(date.getTime())) return date;
+      }
+      return undefined;
+    }, z.date())
+    .optional();
 
 export const coerceDateRequired = () =>
   z.preprocess((arg) => {
@@ -63,3 +64,14 @@ export const coerceDateRequired = () =>
     }
     return undefined;
   }, z.date());
+
+export const coerceDateNullish = () =>
+  z
+    .preprocess((arg) => {
+      if (typeof arg === "string" || arg instanceof Date) {
+        const date = new Date(arg);
+        if (!isNaN(date.getTime())) return date;
+      }
+      return undefined;
+    }, z.date())
+    .nullish();

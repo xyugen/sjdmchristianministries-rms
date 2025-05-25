@@ -49,6 +49,7 @@ export function DataTable<TData, TValue>({
   const [columnVisibilityState, setColumnVisibility] =
     useState<VisibilityState>({
       id: false,
+      issuerId: false,
       recordedById: false,
       employeeId: false,
       password: false,
