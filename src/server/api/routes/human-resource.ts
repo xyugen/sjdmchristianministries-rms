@@ -1,12 +1,7 @@
 import { GENDERS } from "@/constants/genders";
 import { MARITAL_STATUSES } from "@/constants/marital-statuses";
 import { ROLES } from "@/constants/roles";
-import {
-  createAccount,
-  createUser,
-  deleteUser,
-  editUser,
-} from "@/lib/api/auth/mutation";
+import { deleteUser, editUser } from "@/lib/api/auth/mutation";
 import {
   createEmployee,
   createEmployeeTraining,
@@ -21,7 +16,8 @@ import {
   getEmployeeTrainingsByEmployeeId,
   getEmployeeTrainingsPerEmployee,
 } from "@/lib/api/human-resource/query";
-import { coerceDateRequired, coerceDateOptional, generateUUID } from "@/lib/utils";
+import { auth } from "@/lib/auth";
+import { coerceDateOptional, generateUUID } from "@/lib/utils";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
@@ -47,30 +43,28 @@ export const humanResourceRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       try {
-        const newUser = await createUser({
-          id: generateUUID(),
-          name: input.name,
-          email: input.email,
-          emailVerified: input.emailVerified,
-          role: input.role,
+        const newUser = await auth.api.createUser({
+          body: {
+            name: input.name,
+            email: input.email,
+            role: input.role as
+              | "user"
+              | "admin"
+              | ("user" | "admin")[]
+              | undefined,
+            password: input.password,
+          },
         });
 
         if (!newUser) {
           throw new Error("Error creating user");
         }
 
-        const newAccount = await createAccount({
-          id: generateUUID(),
-          userId: newUser.id,
-          accountId: newUser.email,
-          providerId: "credentials",
-          expiresAt: new Date(new Date().setMonth(new Date().getMonth() + 1)),
-          password: input.password,
-        });
+        const { user } = newUser;
 
         const newEmployee = await createEmployee({
           id: generateUUID(),
-          userId: newUser.id,
+          userId: user.id,
           birthDate: input.birthDate,
           gender: input.gender,
           maritalStatus: input.maritalStatus,
@@ -80,12 +74,12 @@ export const humanResourceRouter = createTRPCRouter({
         });
 
         return {
-          userId: newUser.id,
-          accountId: newAccount?.accountId,
+          userId: user.id,
+          // accountId: user.,
           employeeId: newEmployee?.id,
-          name: newUser.name,
-          email: newUser.email,
-          role: newUser.role,
+          name: user.name,
+          email: user.email,
+          role: user.role,
         };
       } catch (error) {
         console.log(error);
@@ -212,8 +206,8 @@ export const humanResourceRouter = createTRPCRouter({
         data: z.object({
           trainingName: z.string().optional(),
           dateCompleted: coerceDateOptional(),
-        })
-      })
+        }),
+      }),
     )
     .mutation(async ({ input }) => {
       try {

@@ -1,15 +1,15 @@
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogHeader,
-  DialogTitle,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
-  DialogClose,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { type DialogProps } from "@radix-ui/react-dialog";
 import { TriangleAlert } from "lucide-react";
-import { DialogProps } from "@radix-ui/react-dialog";
 
 export function DeleteDialog({
   onDelete,

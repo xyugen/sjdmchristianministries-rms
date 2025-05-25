@@ -1,13 +1,22 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
-import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -19,36 +28,27 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import { employeeFormSchema } from "../schema/schema";
+import { Textarea } from "@/components/ui/textarea";
 import { GENDERS } from "@/constants/genders";
 import { MARITAL_STATUSES } from "@/constants/marital-statuses";
+import { PageRoutes } from "@/constants/page-routes";
 import { ROLES } from "@/constants/roles";
 import { api } from "@/trpc/react";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { PageRoutes } from "@/constants/page-routes";
+import { toast } from "sonner";
+import { employeeFormSchema } from "../schema/schema";
 
 type EmployeeFormValues = z.infer<typeof employeeFormSchema>;
 
@@ -189,7 +189,7 @@ export function EmployeeForm() {
                     <FormItem className="flex h-20 flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                       <FormControl>
                         <Checkbox
-                          checked={field.value}
+                          checked={field.value ?? false}
                           onCheckedChange={field.onChange}
                         />
                       </FormControl>

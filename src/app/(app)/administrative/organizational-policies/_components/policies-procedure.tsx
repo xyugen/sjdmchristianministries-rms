@@ -1,23 +1,5 @@
 "use client";
-import { useState } from "react";
-import type React from "react";
 
-import { Search, Edit, Trash2 } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -29,18 +11,42 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/trpc/react";
+import { Edit, Search, Trash2 } from "lucide-react";
+import type React from "react";
+import { useState } from "react";
 import { toast } from "sonner";
-import { PolicyListSkeletons, PolicyGridSkeletons } from "./policies-skeleton";
+import { PolicyGridSkeletons, PolicyListSkeletons } from "./policies-skeleton";
+
+interface Policy {
+  id: string;
+  title: string;
+  description: string;
+}
 
 export default function PoliciesProcedure() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedPolicy, setSelectedPolicy] = useState<any>(null);
-  const [editingPolicy, setEditingPolicy] = useState<any>(null);
+  const [selectedPolicy, setSelectedPolicy] = useState<Policy | null>(null);
+  const [editingPolicy, setEditingPolicy] = useState<Policy | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [deletingPolicy, setDeletingPolicy] = useState<any>(null);
+  const [deletingPolicy, setDeletingPolicy] = useState<Policy | null>(null);
   const [editTitle, setEditTitle] = useState("");
   const [editDescription, setEditDescription] = useState("");
 
@@ -49,9 +55,9 @@ export default function PoliciesProcedure() {
 
   const updatePolicyMutation =
     api.administrative.editOrganizationalPolicy.useMutation({
-      onSuccess: () => {
+      onSuccess: async () => {
         toast.success("Policy updated successfully");
-        refetch();
+        await refetch();
         setIsEditDialogOpen(false);
         setEditingPolicy(null);
         setEditTitle("");
@@ -64,9 +70,9 @@ export default function PoliciesProcedure() {
 
   const deletePolicyMutation =
     api.administrative.deleteOrganizationalPolicy.useMutation({
-      onSuccess: () => {
+      onSuccess: async () => {
         toast.success("Policy deleted successfully");
-        refetch();
+        await refetch();
         setDeletingPolicy(null);
       },
       onError: (error) => {
@@ -82,7 +88,7 @@ export default function PoliciesProcedure() {
       return matchesSearch;
     }) ?? [];
 
-  const handleEdit = (policy: any, e: React.MouseEvent) => {
+  const handleEdit = (policy: Policy, e: React.MouseEvent) => {
     e.stopPropagation();
     setEditingPolicy(policy);
     setEditTitle(policy.title);
@@ -90,7 +96,7 @@ export default function PoliciesProcedure() {
     setIsEditDialogOpen(true);
   };
 
-  const handleDelete = (policy: any, e: React.MouseEvent) => {
+  const handleDelete = (policy: Policy, e: React.MouseEvent) => {
     e.stopPropagation();
     setDeletingPolicy(policy);
   };
@@ -325,7 +331,7 @@ export default function PoliciesProcedure() {
             </AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone. This will permanently delete the
-              policy "{deletingPolicy?.title}".
+              policy &quot;{deletingPolicy?.title}&quot;.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

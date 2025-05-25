@@ -1,6 +1,5 @@
-import { Checkbox } from "@/components/ui/checkbox";
 import { type InferSelectModel } from "@/server/db";
-import { meetingAgendas } from "@/server/db/schema";
+import { type meetingAgendas } from "@/server/db/schema";
 import { type ColumnDef } from "@tanstack/react-table";
 import { DataTableRowActions } from "./table-row-actions";
 

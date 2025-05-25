@@ -1,10 +1,12 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/trpc/react";
 import { HandCoins } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
+
 export const BalanceCard = () => {
   const { data, isLoading } = api.finance.getCurrentFund.useQuery();
+
   return (
     <Card className="my-3 shadow">
       <CardHeader>
@@ -19,7 +21,7 @@ export const BalanceCard = () => {
             {isLoading || !data ? (
               <Skeleton className="h-8 w-40 animate-pulse rounded bg-gray-100" />
             ) : (
-              (data.currentFund as number).toLocaleString("en-PH", {
+              (data.currentFund).toLocaleString("en-PH", {
                 style: "currency",
                 currency: "PHP",
               })

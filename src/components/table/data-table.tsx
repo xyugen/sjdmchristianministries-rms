@@ -28,7 +28,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   filteredTitle: string;
   filteredColumn?: string;
-  columnVisibility: VisibilityState;
+  columnVisibility?: VisibilityState;
   options?: {
     label: string;
     value: string;

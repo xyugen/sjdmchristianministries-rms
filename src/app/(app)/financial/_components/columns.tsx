@@ -1,7 +1,6 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
 import type { TRANSACTION_CATEGORY } from "@/constants/transaction";
 import { cn } from "@/lib/utils";
 import type { InferSelectModel } from "@/server/db";

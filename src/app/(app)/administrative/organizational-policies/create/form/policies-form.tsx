@@ -1,9 +1,6 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { CirclePlus } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -11,15 +8,18 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { api } from "@/trpc/react"
-import { toast } from "sonner"
-import { formSchema } from "../schema/schema"
-import { useForm } from "react-hook-form";
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { CirclePlus } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { type z } from "zod";
+import { formSchema } from "../schema/schema";
 
 const PoliciesForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -60,14 +60,16 @@ const PoliciesForm = () => {
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button>
-          <CirclePlus className="w-4 h-4" />
+          <CirclePlus className="h-4 w-4" />
           Add Policy
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>Add New Policy</DialogTitle>
-          <DialogDescription>Create a new policy or procedure document.</DialogDescription>
+          <DialogDescription>
+            Create a new policy or procedure document.
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="space-y-4">

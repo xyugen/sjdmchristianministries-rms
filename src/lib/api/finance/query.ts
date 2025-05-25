@@ -1,15 +1,15 @@
 import { TRANSACTION_TYPE } from "@/constants/transaction";
-import { between, count, db, desc, eq, sql, sum } from "@/server/db";
+import { between, db, desc, eq, sql, sum } from "@/server/db";
 import {
   employee as employeeTable,
   financialTransactions as financialTransactionsTable,
-  user as userTable
+  user as userTable,
 } from "@/server/db/schema";
 
 export const getAllFinancialTransactions = async () => {
-  try { 
-    const result = await
-      db.select({
+  try {
+    const result = await db
+      .select({
         id: financialTransactionsTable.id,
         recordedById: financialTransactionsTable.recordedById,
         employeeName: userTable.name,
@@ -21,7 +21,10 @@ export const getAllFinancialTransactions = async () => {
         details: financialTransactionsTable.details,
       })
       .from(financialTransactionsTable)
-      .leftJoin(employeeTable, eq(employeeTable.id, financialTransactionsTable.recordedById))
+      .leftJoin(
+        employeeTable,
+        eq(employeeTable.id, financialTransactionsTable.recordedById),
+      )
       .leftJoin(userTable, eq(userTable.id, employeeTable.userId))
       .orderBy(desc(financialTransactionsTable.transactionDate));
 
@@ -29,18 +32,17 @@ export const getAllFinancialTransactions = async () => {
   } catch (error) {
     console.log(error);
   }
-}
-
+};
 
 export const getCurrentFund = async () => {
   try {
     const inflows = await db
-      .select({sum: sum(financialTransactionsTable.amount)})
+      .select({ sum: sum(financialTransactionsTable.amount) })
       .from(financialTransactionsTable)
       .where(eq(financialTransactionsTable.type, TRANSACTION_TYPE[0]));
 
     const outflows = await db
-      .select({sum: sum(financialTransactionsTable.amount)})
+      .select({ sum: sum(financialTransactionsTable.amount) })
       .from(financialTransactionsTable)
       .where(eq(financialTransactionsTable.type, TRANSACTION_TYPE[1]));
 
@@ -49,11 +51,11 @@ export const getCurrentFund = async () => {
 
     console.log("inflow: ", inflowValue, "\noutflow:", outflowValue);
 
-    return {currentFund: inflowValue - outflowValue};
+    return { currentFund: inflowValue - outflowValue };
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 export const getWeeklyInflows = async () => {
   try {
@@ -76,23 +78,42 @@ export const getWeeklyInflows = async () => {
     const thisWeek = await db
       .select({
         category: financialTransactionsTable.category,
-        totalAmount: sql`SUM(${financialTransactionsTable.amount})`.as('totalAmount'),
+        totalAmount: sql`SUM(${financialTransactionsTable.amount})`.as(
+          "totalAmount",
+        ),
       })
       .from(financialTransactionsTable)
-      .where(between(financialTransactionsTable.transactionDate, startOfThisWeek, now))
+      .where(
+        between(
+          financialTransactionsTable.transactionDate,
+          startOfThisWeek,
+          now,
+        ),
+      )
       .groupBy(financialTransactionsTable.category);
 
     const lastWeek = await db
       .select({
         category: financialTransactionsTable.category,
-        totalAmount: sql`SUM(${financialTransactionsTable.amount})`.as('totalAmount'),
+        totalAmount: sql`SUM(${financialTransactionsTable.amount})`.as(
+          "totalAmount",
+        ),
       })
       .from(financialTransactionsTable)
-      .where(between(financialTransactionsTable.transactionDate, startOfLastWeek, endOfLastWeek))
+      .where(
+        between(
+          financialTransactionsTable.transactionDate,
+          startOfLastWeek,
+          endOfLastWeek,
+        ),
+      )
       .groupBy(financialTransactionsTable.category);
 
     // Merge by category
-    const map = new Map<string, { category: string, thisWeekAmount: number, lastWeekAmount: number }>();
+    const map = new Map<
+      string,
+      { category: string; thisWeekAmount: number; lastWeekAmount: number }
+    >();
 
     for (const entry of thisWeek) {
       map.set(entry.category, {
@@ -116,11 +137,13 @@ export const getWeeklyInflows = async () => {
     }
 
     // Compute percentage change
-    const result = Array.from(map.values()).map(item => {
+    const result = Array.from(map.values()).map((item) => {
       const { category, thisWeekAmount, lastWeekAmount } = item;
       const percentChange =
         lastWeekAmount === 0
-          ? (thisWeekAmount === 0 ? 0 : 100) // avoid division by zero
+          ? thisWeekAmount === 0
+            ? 0
+            : 100 // avoid division by zero
           : ((thisWeekAmount - lastWeekAmount) / lastWeekAmount) * 100;
 
       return {

@@ -1,6 +1,5 @@
 "use client";
 
-import { Checkbox } from "@/components/ui/checkbox";
 import { type employeeTraining as employeeTrainingTable } from "@/server/db/schema";
 import { type ColumnDef } from "@tanstack/react-table";
 import { type InferSelectModel } from "drizzle-orm";

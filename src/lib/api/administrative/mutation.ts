@@ -1,6 +1,5 @@
-import { type DocumentOrigin, type DocumentType } from "@/constants/document";
 import { fileToBuffer, generateUUID } from "@/lib/utils";
-import { CreateLegalDocument } from "@/server/api/routes/administrative";
+import { type CreateLegalDocument } from "@/server/api/routes/administrative";
 import { db, eq, type InferInsertModel } from "@/server/db";
 import {
   legalDocumentFiles as legalDocumentFilesTable,
@@ -20,16 +19,6 @@ type EditMeetingAgenda = {
   presidingOfficer?: string;
   agenda?: string;
   summary?: string;
-};
-
-type EditLegalDocument = {
-  documentType?: DocumentType;
-  documentOrigin?: DocumentOrigin;
-  issueDate?: Date;
-  documentNumber?: string;
-  issuerId?: string;
-  expiryDate?: Date | null;
-  documentFileId?: string;
 };
 
 export const createOrganizationalPolicy = async (

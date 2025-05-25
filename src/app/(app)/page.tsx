@@ -1,15 +1,10 @@
-import React from "react";
 import BreadcrumbLayout from "@/components/breadcrumb/page-breadcrumb";
 import { type Metadata } from "next";
-import { ArrowUp, ArrowDown, User } from "lucide-react";
 import DonutChart from "./_components/chart/pieChart";
-import UtilityExpenses from "./_components/utility-expenses";
+import { BalanceCard } from "./_components/panel/balance-card";
 import { InfoCard } from "./_components/panel/info-card";
 import { UserCard } from "./_components/panel/user-card";
-import { BalanceCard } from "./_components/panel/balance-card";
-import MeetingAgendaTable, {
-  type MeetingAgenda,
-} from "./_components/table/meeting-agendas";
+import MeetingAgendaTable from "./_components/table/meeting-agendas";
 
 export const metadata: Metadata = {
   title: "Dashboard",

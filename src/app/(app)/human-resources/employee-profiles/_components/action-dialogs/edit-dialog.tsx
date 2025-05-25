@@ -1,15 +1,12 @@
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
+  DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogContent,
 } from "@/components/ui/dialog";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import type { z } from "zod";
-import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
-import { Calendar } from "@/components/ui/calendar";
 import {
   Form,
   FormControl,
@@ -21,26 +18,29 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
 import { GENDERS } from "@/constants/genders";
 import { MARITAL_STATUSES } from "@/constants/marital-statuses";
 import { ROLES } from "@/constants/roles";
-import { DialogProps } from "@radix-ui/react-dialog";
-import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { type DialogProps } from "@radix-ui/react-dialog";
 import type { Row } from "@tanstack/react-table";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { useForm } from "react-hook-form";
+import type { z } from "zod";
 import { employeeFormSchema } from "../../create/_components/schema/schema";
 
 interface DataTableRowActionsProps<TData> {
@@ -56,7 +56,7 @@ export function EditDialog<TData>({
   row,
   ...props
 }: EditDialogProps<TData>) {
-      const form = useForm<z.infer<typeof employeeFormSchema>>({
+  const form = useForm<z.infer<typeof employeeFormSchema>>({
     resolver: zodResolver(employeeFormSchema),
     defaultValues: {
       name: row.getValue("name"),
@@ -64,12 +64,12 @@ export function EditDialog<TData>({
       role: row.getValue("role"),
       birthDate: new Date(row.getValue("birthDate")),
       gender: row.getValue("gender"),
-      emailVerified: row.getValue("emailVerified") as boolean,
+      emailVerified: row.getValue("emailVerified"),
       maritalStatus: row.getValue("maritalStatus"),
       nationality: row.getValue("nationality"),
       address: row.getValue("address"),
       contactNumber: row.getValue("contactNumber"),
-      password: row.getValue("password") as string,
+      password: row.getValue("password"),
     },
   });
 
@@ -160,7 +160,7 @@ export function EditDialog<TData>({
                       <FormItem className="flex h-20 flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                         <FormControl>
                           <Checkbox
-                            checked={field.value}
+                            checked={field.value ?? false}
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>

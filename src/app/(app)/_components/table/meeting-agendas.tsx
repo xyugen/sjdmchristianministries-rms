@@ -1,4 +1,5 @@
 "use client";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -7,8 +8,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { api } from "@/trpc/react";
+import { formatDate } from "date-fns";
 import { format } from "date-fns/format";
 
 export interface MeetingAgenda {
@@ -20,13 +21,9 @@ export interface MeetingAgenda {
   endTime: string;
 }
 
-interface MeetingAgendaTableProps {
-  agendas: MeetingAgenda[];
-}
-
 const MeetingAgendaTable = () => {
   const meetingAgendas = api.administrative.getAllMeetingAgendas.useQuery();
-  const agendas = meetingAgendas.data || [];
+  const agendas = meetingAgendas.data ?? [];
   return (
     <Card className="rounded-sm shadow-none">
       <CardHeader>
@@ -43,7 +40,7 @@ const MeetingAgendaTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {agendas.slice(0, 5).map((agenda, index) => (
+            {agendas.slice(0, 5).map((agenda) => (
               <TableRow key={agenda.id} className="border-b border-gray-200">
                 <TableCell className="py-3">
                   {format(agenda.meetingDate, "yyyy-MM-dd")}
@@ -54,7 +51,7 @@ const MeetingAgendaTable = () => {
                 </TableCell>
                 <TableCell className="py-3">
                   {agenda.startTime && agenda.endTime
-                    ? `${agenda.startTime} – ${agenda.endTime}`
+                    ? `${formatDate(agenda.startTime, "hh:mm a")} – ${formatDate(agenda.endTime, "hh:mm a")}`
                     : "No date selected"}
                 </TableCell>
               </TableRow>

@@ -1,8 +1,10 @@
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
+  DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogContent,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -11,22 +13,20 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { DialogProps } from "@radix-ui/react-dialog";
-import type { Row } from "@tanstack/react-table";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
-import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { type DialogProps } from "@radix-ui/react-dialog";
+import type { Row } from "@tanstack/react-table";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { type z } from "zod";
 import { trainingFormSchema } from "../../create/_components/schema/schema";
 
 interface DataTableRowActionsProps<TData> {

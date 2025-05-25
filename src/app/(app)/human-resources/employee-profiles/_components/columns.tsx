@@ -1,12 +1,11 @@
 "use client";
 
-import { type ColumnDef } from "@tanstack/react-table";
+import { Badge } from "@/components/ui/badge";
+import type { RoleType } from "@/constants/roles";
 import type { InferSelectModel } from "@/server/db";
 import type { employee } from "@/server/db/schema";
+import { type ColumnDef } from "@tanstack/react-table";
 import { DataTableRowActions } from "./table-row-actions";
-import { Checkbox } from "@/components/ui/checkbox";
-import type { RoleType } from "@/constants/roles";
-import { Badge } from "@/components/ui/badge";
 
 type Employees = InferSelectModel<typeof employee> & {
   name: string;
