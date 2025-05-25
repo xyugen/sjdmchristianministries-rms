@@ -13,13 +13,16 @@ import {
   uploadLegalDocument as uploadLegalDocumentFile,
 } from "@/lib/api/administrative/mutation";
 import {
-  downloadLegalDocumentFileById,
   getAllLegalDocuments,
   getAllMeetingAgendas,
   getAllOrganizationalPolicies,
   getLegalDocumentFileById,
 } from "@/lib/api/administrative/query";
-import { coerceDateOptional, coerceDateRequired, generateUUID } from "@/lib/utils";
+import {
+  coerceDateOptional,
+  coerceDateRequired,
+  generateUUID,
+} from "@/lib/utils";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
@@ -76,16 +79,7 @@ export const administrativeRouter = createTRPCRouter({
    * Legal Documents
    */
   createLegalDocument: protectedProcedure
-    .input(
-      z.object({
-        documentType: z.enum(DOCUMENT_TYPE),
-        documentNumber: z.string(),
-        documentOrigin: z.enum(DOCUMENT_ORIGIN),
-        issuerId: z.string().optional(),
-        issueDate: coerceDateRequired(),
-        expiryDate: coerceDateOptional(),
-      }),
-    )
+    .input(createDocumentSchema)
     .mutation(async ({ input }) => {
       try {
         return await createLegalDocument({
