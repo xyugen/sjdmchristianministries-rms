@@ -13,11 +13,11 @@ export const InfoCard = () => {
     api.finance.getWeeklyInflows.useQuery();
 
   return (
-    <div className="border-r-1 grid grid-cols-3 gap-3">
+    <div className="border-r-1 grid grid-cols-1 gap-3 sm:grid-cols-1 md:grid-cols-3">
       <Card className="my-3 shadow-none">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <BadgeDollarSign className="size-6 text-yellow-500" />
+          <CardTitle className="flex items-center gap-2 text-sm md:text-lg">
+            <BadgeDollarSign className="size-5 text-yellow-500 md:size-6" />
             Offerings
           </CardTitle>
         </CardHeader>
@@ -26,7 +26,7 @@ export const InfoCard = () => {
             {isOfferingLoading ? (
               <Skeleton className="h-6 w-40 animate-pulse rounded bg-gray-300" />
             ) : (
-              <div className="text-3xl font-semibold">
+              <div className="text-lg font-semibold md:text-3xl">
                 {new Intl.NumberFormat("en-PH", {
                   style: "currency",
                   currency: "PHP",
@@ -34,7 +34,7 @@ export const InfoCard = () => {
               </div>
             )}
           </div>
-          <div className="mt-2 text-sm font-normal text-gray-400">
+          <div className="mt-2 text-xs font-normal text-gray-400 md:text-sm">
             {isOfferingLoading ? (
               <Skeleton className="h-4 w-16 animate-pulse rounded bg-gray-300" />
             ) : (
@@ -46,8 +46,8 @@ export const InfoCard = () => {
 
       <Card className="my-3 shadow-none">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <HandCoins className="size-6 text-red-500" />
+          <CardTitle className="flex items-center gap-2 text-sm md:text-lg">
+            <HandCoins className="size-5 text-red-500 md:size-6" />
             Donations
           </CardTitle>
         </CardHeader>
@@ -56,7 +56,7 @@ export const InfoCard = () => {
             {isDonationsLoading ? (
               <Skeleton className="h-6 w-40 animate-pulse rounded bg-gray-300" />
             ) : (
-              <div className="text-3xl font-semibold">
+              <div className="text-lg font-semibold md:text-3xl">
                 {new Intl.NumberFormat("en-PH", {
                   style: "currency",
                   currency: "PHP",
@@ -64,7 +64,7 @@ export const InfoCard = () => {
               </div>
             )}
           </div>
-          <div className="mt-2 text-sm font-normal text-gray-400">
+          <div className="mt-2 text-xs font-normal text-gray-400 md:text-sm">
             {isDonationsLoading ? (
               <Skeleton className="h-4 w-16 animate-pulse rounded bg-gray-300" />
             ) : (
@@ -76,8 +76,8 @@ export const InfoCard = () => {
 
       <Card className="my-3 shadow-none">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <BookMarked className="size-6 text-blue-500" />
+          <CardTitle className="flex items-center gap-2 md:text-lg">
+            <BookMarked className="size-5 text-blue-500 md:size-6" />
             Pledges
           </CardTitle>
         </CardHeader>
@@ -86,7 +86,7 @@ export const InfoCard = () => {
             {isPledgesLoading ? (
               <Skeleton className="h-6 w-40 animate-pulse rounded bg-gray-300" />
             ) : (
-              <div className="text-3xl font-semibold">
+              <div className="text-lg font-semibold md:text-3xl">
                 {new Intl.NumberFormat("en-PH", {
                   style: "currency",
                   currency: "PHP",
@@ -94,7 +94,7 @@ export const InfoCard = () => {
               </div>
             )}
           </div>
-          <div className="mt-2 text-sm font-normal text-gray-400">
+          <div className="mt-2 text-xs font-normal text-gray-400 md:text-sm">
             {isPledgesLoading ? (
               <Skeleton className="h-4 w-16 animate-pulse rounded bg-gray-300" />
             ) : (
