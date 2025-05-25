@@ -47,6 +47,8 @@ import { MARITAL_STATUSES } from "@/constants/marital-statuses";
 import { ROLES } from "@/constants/roles";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { PageRoutes } from "@/constants/page-routes";
 
 type EmployeeFormValues = z.infer<typeof employeeFormSchema>;
 
@@ -68,12 +70,15 @@ export function EmployeeForm() {
     resolver: zodResolver(employeeFormSchema),
     defaultValues,
   });
+  const router = useRouter();
 
   async function onSubmit(data: z.infer<typeof employeeFormSchema>) {
     const toastId = toast.loading("Adding Employee Account...");
     try {
       const response = await mutateAsync({
         ...data,
+        emailVerified: data.emailVerified ?? false,
+        password: data.password ?? "",
         birthDate: format(data.birthDate, "yyyy-MM-dd"),
       });
       if (response) {
@@ -81,6 +86,7 @@ export function EmployeeForm() {
           id: toastId,
         });
         form.reset();
+        router.push(PageRoutes.EMPLOYEE_PROFILES);
       }
     } catch (error) {
       if (error instanceof Error) {

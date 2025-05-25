@@ -37,7 +37,6 @@ import {
 import TimePicker from "./time-picker";
 import { useRouter } from "next/navigation";
 import { PageRoutes } from "@/constants/page-routes";
-import { Table } from "@/components/ui/table";
 
 const MeetingAgendasForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
