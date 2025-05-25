@@ -1,15 +1,6 @@
 "use client";
 
-import {
-  type ColumnDef,
-  type ColumnFiltersState,
-  flexRender,
-  getPaginationRowModel,
-  getCoreRowModel,
-  getFilteredRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -18,16 +9,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { type QueryObserverResult } from "@tanstack/react-query";
+import {
+  type ColumnDef,
+  type ColumnFiltersState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  useReactTable,
+  type VisibilityState,
+} from "@tanstack/react-table";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { DataTableToolbar } from "./data-table-toolbar";
-import { QueryObserverResult } from "@tanstack/react-query";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   filteredTitle: string;
   filteredColumn?: string;
+  columnVisibility: VisibilityState;
   options?: {
     label: string;
     value: string;
@@ -40,11 +41,18 @@ export function DataTable<TData, TValue>({
   data,
   filteredTitle,
   filteredColumn,
+  columnVisibility,
   options,
   refetch,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState({});
+  const [columnVisibilityState, setColumnVisibility] =
+    useState<VisibilityState>({
+      id: false,
+      recordedById: false,
+      employeeId: false,
+      ...columnVisibility,
+    });
 
   const table = useReactTable({
     data,
@@ -55,11 +63,7 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     state: {
       columnFilters,
-      columnVisibility: {
-        id: false,
-        recordedById: false,
-        employeeId: false,
-      },
+      columnVisibility: columnVisibilityState,
     },
     onColumnVisibilityChange: setColumnVisibility,
     meta: {

@@ -21,6 +21,7 @@ const LegalDocumentsTable = () => {
           data={data}
           filteredTitle="employeeName"
           filteredColumn="documentType"
+          columnVisibility={{ documentFileName: false, documentFileId: false }}
           options={
             DOCUMENT_TYPE.map((type) => ({
               label: documentTypeLabels[type],

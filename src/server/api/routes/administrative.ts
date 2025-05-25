@@ -10,14 +10,18 @@ import {
   editLegalDocument,
   editMeetingAgenda,
   editOrganizationalPolicy,
+  uploadLegalDocument as uploadLegalDocumentFile,
 } from "@/lib/api/administrative/mutation";
 import {
+  downloadLegalDocumentFileById,
   getAllLegalDocuments,
   getAllMeetingAgendas,
   getAllOrganizationalPolicies,
+  getLegalDocumentFileById,
 } from "@/lib/api/administrative/query";
 import { generateUUID } from "@/lib/utils";
 import { z } from "zod";
+import { zfd } from "zod-form-data";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const administrativeRouter = createTRPCRouter({
@@ -116,6 +120,24 @@ export const administrativeRouter = createTRPCRouter({
     .input(z.object({ id: z.string() }))
     .mutation(async ({ input }) => {
       return await deleteLegalDocument(input.id);
+    }),
+  uploadLegalDocumentFile: protectedProcedure
+    .input(zfd.formData({ file: zfd.file() }))
+    .mutation(async ({ input }) => {
+      try {
+        return await uploadLegalDocumentFile(input.file);
+      } catch (error) {
+        console.log(error);
+      }
+    }),
+  getLegalDocumentFileById: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input }) => {
+      try {
+        return await getLegalDocumentFileById(input.id);
+      } catch (error) {
+        console.log(error);
+      }
     }),
 
   /**

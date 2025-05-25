@@ -7,6 +7,7 @@ export const createDocumentSchema = z
     documentType: z.enum(DOCUMENT_TYPE, { message: "Required" }),
     documentNumber: z.string().min(1, { message: "Required" }),
     documentOrigin: z.enum(DOCUMENT_ORIGIN),
+    documentFileId: z.string().min(1, { message: "Required" }),
     issueDate: z.date(),
     expiryDate: z.date().nullish(),
   })

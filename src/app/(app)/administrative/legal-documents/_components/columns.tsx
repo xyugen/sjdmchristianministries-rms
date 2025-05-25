@@ -14,6 +14,8 @@ import { DataTableRowActions } from "./table-row-actions";
 
 type LegalDocument = InferSelectModel<typeof legalDocumentsTable> & {
   employeeName: string;
+  documentFileId: string | null;
+  documentFileName: string | null;
 };
 
 export const columns: ColumnDef<LegalDocument>[] = [
@@ -86,6 +88,14 @@ export const columns: ColumnDef<LegalDocument>[] = [
       const formattedDate = rawDate.toLocaleDateString("en-US");
       return formattedDate;
     },
+  },
+  {
+    accessorKey: "documentFileId",
+    header: undefined,
+  },
+  {
+    accessorKey: "documentFileName",
+    header: undefined,
   },
   {
     accessorKey: "actions",
