@@ -1,5 +1,4 @@
 import { createDocumentSchema } from "@/app/(app)/administrative/legal-documents/create/_components/schema";
-import { DOCUMENT_ORIGIN, DOCUMENT_TYPE } from "@/constants/document";
 import {
   createLegalDocument,
   createMeetingAgenda,
@@ -19,7 +18,6 @@ import {
   getLegalDocumentFileById,
 } from "@/lib/api/administrative/query";
 import {
-  coerceDateNullish,
   coerceDateOptional,
   coerceDateRequired,
   generateUUID,
