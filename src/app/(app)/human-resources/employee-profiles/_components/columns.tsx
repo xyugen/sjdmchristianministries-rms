@@ -38,6 +38,9 @@ export const columns: ColumnDef<Employees>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "id",
+  },
+  {
     accessorKey: "name",
     header: "Name",
   },
