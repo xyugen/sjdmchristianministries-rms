@@ -1,3 +1,5 @@
+"use client";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -6,7 +8,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { api } from "@/trpc/react";
+import { formatDate } from "date-fns";
+import { format } from "date-fns/format";
 
 export interface MeetingAgenda {
   id: string;
@@ -17,22 +21,18 @@ export interface MeetingAgenda {
   endTime: string;
 }
 
-interface MeetingAgendaTableProps {
-  agendas: MeetingAgenda[];
-  className?: string;
-}
-
-const MeetingAgendaTable = ({
-  agendas,
-  className,
-}: MeetingAgendaTableProps) => {
+const MeetingAgendaTable = () => {
+  const meetingAgendas = api.administrative.getAllMeetingAgendas.useQuery();
+  const agendas = meetingAgendas.data ?? [];
   return (
-    <Card className={className}>
+    <Card className="w-full rounded-xl shadow-none">
       <CardHeader>
-        <CardTitle>Recent Meeting Agendas</CardTitle>
+        <CardTitle className="text-md md:text-lg">
+          Recent Meeting Agendas
+        </CardTitle>
       </CardHeader>
-      <CardContent className="p-0">
-        <Table>
+      <CardContent className="px-4">
+        <Table className="sm:w-full">
           <TableHeader>
             <TableRow className="border-b border-gray-200">
               <TableHead className="font-medium">Date</TableHead>
@@ -42,12 +42,20 @@ const MeetingAgendaTable = ({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {agendas.map((agenda) => (
+            {agendas.slice(0, 5).map((agenda) => (
               <TableRow key={agenda.id} className="border-b border-gray-200">
-                <TableCell className="py-3">{agenda.date}</TableCell>
-                <TableCell className="py-3">{agenda.title}</TableCell>
-                <TableCell className="py-3">{agenda.presiding}</TableCell>
-                <TableCell className="py-3">{`${agenda.startTime} – ${agenda.endTime}`}</TableCell>
+                <TableCell className="py-3 md:w-1/4">
+                  {format(agenda.meetingDate, "yyyy-MM-dd")}
+                </TableCell>
+                <TableCell className="py-3 md:w-1/4">{agenda.agenda}</TableCell>
+                <TableCell className="py-3 md:w-1/4">
+                  {agenda.presidingOfficer}
+                </TableCell>
+                <TableCell className="py-3 md:w-1/4">
+                  {agenda.startTime && agenda.endTime
+                    ? `${formatDate(agenda.startTime, "hh:mm a")} – ${formatDate(agenda.endTime, "hh:mm a")}`
+                    : "No date selected"}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -55,6 +63,6 @@ const MeetingAgendaTable = ({
       </CardContent>
     </Card>
   );
-}
+};
 
 export default MeetingAgendaTable;

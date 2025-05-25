@@ -1,5 +1,7 @@
 import React from "react";
 import BreadcrumbLayout from "@/components/breadcrumb/page-breadcrumb";
+import MeetingAgendasTable from "./_components/data-table";
+import Header from "./_components/table-header";
 
 export const metadata = {
   title: "Meeting Agendas",
@@ -7,11 +9,14 @@ export const metadata = {
 
 const Page = () => {
   return (
-    <div className="flex flex-col">
-        <BreadcrumbLayout
-          currentPage="Meeting Agendas"
-          parentPage="Administrative Records"
-        />
+    <div className="mx-auto w-full px-4">
+      <BreadcrumbLayout
+        currentPage="Meeting Agendas"
+        parentPage="Administrative Records"
+      />
+
+      <Header />
+      <MeetingAgendasTable />
     </div>
   );
 };

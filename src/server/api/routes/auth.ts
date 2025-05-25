@@ -1,6 +1,6 @@
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { z } from "zod";
-import { getUserByEmail, getAccountByUserId } from "@/lib/api/auth/query";
+import { getUserByEmail, getAccountByUserId, getAllUserCount } from "@/lib/api/auth/query";
 import { TRPCError } from "@trpc/server";
 import { getEmployeeByUserId } from "@/lib/api/human-resource/query";
 
@@ -53,6 +53,14 @@ export const authRouter = createTRPCRouter({
         }
       }
       
+    } catch (error) {
+      console.log(error);
+    }
+  }),
+
+  getAllUserCount: publicProcedure.query(async () => {
+    try {
+      return await getAllUserCount();
     } catch (error) {
       console.log(error);
     }

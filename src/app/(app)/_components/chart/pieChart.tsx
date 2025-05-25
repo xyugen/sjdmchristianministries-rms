@@ -2,7 +2,7 @@
 
 import { TrendingUp } from "lucide-react";
 import * as React from "react";
-import { Label, Pie, PieChart } from "recharts";
+import { Label, Pie, PieChart, Cell } from "recharts";
 
 import {
   Card,
@@ -12,16 +12,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import {
   type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+
 const chartData = [
-  { category: "Offering", earnings: 2400, color: "var(--chart-offering)" },
-  { category: "Pledge", earnings: 400, color: "var(--chart-pledge)" },
-  { category: "Donation", earnings: 940, color: "var(--chart-donation)" },
+  { category: "Offering", earnings: 400, color: "var(--color-offering)" },
+  { category: "Pledge", earnings: 400, color: "var(--color-pledge)" },
+  { category: "Donation", earnings: 540, color: "var(--color-donation)" },
 ];
 
 const chartConfig = {
@@ -43,12 +45,12 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function DonutChart() {
-  const totalVisitors = React.useMemo(() => {
+  const totalEarnings = React.useMemo(() => {
     return chartData.reduce((acc, curr) => acc + curr.earnings, 0);
   }, []);
 
   return (
-    <Card className="flex flex-col rounded-sm px-12 shadow-none">
+    <Card className="flex flex-col rounded-sm border-none px-12 shadow-none">
       <CardHeader className="items-center pb-0">
         <CardTitle>Total Earnings</CardTitle>
         <CardDescription>January - April 2025</CardDescription>
@@ -67,9 +69,12 @@ export function DonutChart() {
               data={chartData}
               dataKey="earnings"
               nameKey="category"
-              innerRadius={60}
+              innerRadius={63}
               strokeWidth={5}
             >
+              {chartData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
               <Label
                 content={({ viewBox }) => {
                   const viewBoxType = viewBox as { cx: number; cy: number };
@@ -88,9 +93,9 @@ export function DonutChart() {
                         <tspan
                           x={viewBoxType.cx}
                           y={viewBoxType.cy}
-                          className="fill-foreground text-3xl font-bold"
+                          className="fill-foreground text-2xl font-bold"
                         >
-                          {totalVisitors.toLocaleString()}
+                          {"₱ " + totalEarnings.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBoxType.cx}

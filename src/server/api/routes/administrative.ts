@@ -3,17 +3,30 @@ import {
   createLegalDocument,
   createMeetingAgenda,
   createOrganizationalPolicy,
+  deleteLegalDocument,
+  deleteMeetingAgenda,
   deleteOrganizationalPolicy,
+  editLegalDocument,
+  editMeetingAgenda,
   editOrganizationalPolicy,
+  uploadLegalDocument as uploadLegalDocumentFile,
 } from "@/lib/api/administrative/mutation";
 import {
   getAllLegalDocuments,
   getAllMeetingAgendas,
   getAllOrganizationalPolicies,
+  getLegalDocumentFileById,
 } from "@/lib/api/administrative/query";
-import { generateUUID } from "@/lib/utils";
+import {
+  coerceDateOptional,
+  coerceDateRequired,
+  generateUUID,
+} from "@/lib/utils";
 import { z } from "zod";
+import { zfd } from "zod-form-data";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+
+export type CreateLegalDocument = z.infer<typeof createDocumentSchema>;
 
 export const administrativeRouter = createTRPCRouter({
   getAllOrganizationalPolicies: protectedProcedure.query(async () => {
@@ -86,6 +99,43 @@ export const administrativeRouter = createTRPCRouter({
       console.log(error);
     }
   }),
+  editLegalDocument: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        data: createDocumentSchema,
+      }),
+    )
+    .mutation(async ({ input }) => {
+      try {
+        return await editLegalDocument(input.id, input.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }),
+  deleteLegalDocument: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input }) => {
+      return await deleteLegalDocument(input.id);
+    }),
+  uploadLegalDocumentFile: protectedProcedure
+    .input(zfd.formData({ file: zfd.file() }))
+    .mutation(async ({ input }) => {
+      try {
+        return await uploadLegalDocumentFile(input.file);
+      } catch (error) {
+        console.log(error);
+      }
+    }),
+  getLegalDocumentFileById: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input }) => {
+      try {
+        return await getLegalDocumentFileById(input.id);
+      } catch (error) {
+        console.log(error);
+      }
+    }),
 
   /**
    * Meeting Agendas
@@ -93,15 +143,9 @@ export const administrativeRouter = createTRPCRouter({
   createMeetingAgenda: protectedProcedure
     .input(
       z.object({
-        meetingDate: z.string().transform((val) => new Date(val)),
-        startTime: z
-          .string()
-          .optional()
-          .transform((val) => (val ? new Date(val) : undefined)),
-        endTime: z
-          .string()
-          .optional()
-          .transform((val) => (val ? new Date(val) : undefined)),
+        meetingDate: coerceDateRequired(),
+        startTime: coerceDateOptional(),
+        endTime: coerceDateOptional(),
         presidingOfficer: z.string(),
         agenda: z.string(),
         summary: z.string().optional(),
@@ -125,4 +169,30 @@ export const administrativeRouter = createTRPCRouter({
       console.log(error);
     }
   }),
+  editMeetingAgenda: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        data: z.object({
+          meetingDate: coerceDateOptional(),
+          startTime: coerceDateOptional(),
+          endTime: coerceDateOptional(),
+          presidingOfficer: z.string().optional(),
+          agenda: z.string().optional(),
+          summary: z.string().optional(),
+        }),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      try {
+        return await editMeetingAgenda(input.id, input.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }),
+  deleteMeetingAgenda: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input }) => {
+      return await deleteMeetingAgenda(input.id);
+    }),
 });

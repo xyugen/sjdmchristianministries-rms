@@ -7,25 +7,28 @@ import { api } from "@/trpc/react";
 import { columns } from "./columns";
 
 const LegalDocumentsTable = () => {
-  const { data, isLoading } =
+  const { data, isLoading, refetch } =
     api.administrative.getAllLegalDocuments.useQuery();
-
-  console.log(data);
 
   return (
     <div className="mt-6 w-full">
       {!isLoading && data ? (
         <DataTable
+          // FIXME: column type error
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
           columns={columns}
           data={data}
-          filteredTitle="issuedBy"
+          filteredTitle="employeeName"
           filteredColumn="documentType"
+          columnVisibility={{ documentFileName: false, documentFileId: false }}
           options={
             DOCUMENT_TYPE.map((type) => ({
               label: documentTypeLabels[type],
               value: type,
             })) || []
           }
+          refetch={refetch}
         />
       ) : (
         <DataTableSkeleton />

@@ -1,34 +1,41 @@
 "use client";
 
+import { type employeeTraining as employeeTrainingTable } from "@/server/db/schema";
 import { type ColumnDef } from "@tanstack/react-table";
+import { type InferSelectModel } from "drizzle-orm";
+import { DataTableRowActions } from "./table-row-actions";
 
-export type EmployeeTrainingRecord = {
-  id: number;
-  employee_id: number;
-  training_name: string;
-  date_completed: Date;
+type EmployeeTraining = InferSelectModel<typeof employeeTrainingTable> & {
+  name: string;
 };
 
-export const columns: ColumnDef<EmployeeTrainingRecord>[] = [
+export const columns: ColumnDef<EmployeeTraining>[] = [
   {
     accessorKey: "id",
-    header: "ID",
+    enableHiding: true,
   },
   {
-    accessorKey: "employee_id",
-    header: "Employee ID",
+    accessorKey: "employeeId",
   },
   {
-    accessorKey: "training_name",
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "trainingName",
     header: "Training",
   },
   {
-    accessorKey: "date_completed",
+    accessorKey: "dateCompleted",
     header: "Date Completed",
     cell: ({ getValue }) => {
       const rawDate = new Date(getValue() as string);
       const formattedDate = rawDate.toLocaleDateString("en-US");
       return formattedDate;
     },
+  },
+  {
+    id: "actions",
+    cell: ({ row, table }) => <DataTableRowActions row={row} table={table} />,
   },
 ];
