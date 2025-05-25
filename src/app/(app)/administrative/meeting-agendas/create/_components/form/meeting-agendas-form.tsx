@@ -35,6 +35,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import TimePicker from "./time-picker";
+import { useRouter } from "next/navigation";
+import { PageRoutes } from "@/constants/page-routes";
+import { Table } from "@/components/ui/table";
 
 const MeetingAgendasForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -47,6 +50,7 @@ const MeetingAgendasForm = () => {
   });
   const { mutateAsync, isPending } =
     api.administrative.createMeetingAgenda.useMutation();
+  const router = useRouter();
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     const toastId = toast.loading("Adding Meeting Agendas...");
@@ -64,6 +68,7 @@ const MeetingAgendasForm = () => {
           id: toastId,
         });
         form.reset();
+        router.push(PageRoutes.MEETING_AGENDAS);
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -169,7 +174,7 @@ const MeetingAgendasForm = () => {
                       <TimePicker
                         date={field.value}
                         setDate={field.onChange}
-                        placeholder="Select end time"   
+                        placeholder="Select end time"
                       />
                     </FormControl>
                     <FormMessage />
