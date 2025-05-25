@@ -1,7 +1,7 @@
+import { ROLES } from "@/constants/roles";
 import { sql } from "drizzle-orm";
 import { integer, text } from "drizzle-orm/sqlite-core";
 import { createTable } from "../table";
-import { ROLES } from "@/constants/roles";
 
 // User Table
 export const user = createTable("user", {
@@ -27,8 +27,10 @@ export const session = createTable("session", {
   userId: text("userId")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
+  token: text("token", { mode: "text" }).notNull(),
   expiresAt: integer("expiresAt", { mode: "timestamp" }).notNull(),
   ipAddress: text("ipAddress"),
+  userAgent: text("userAgent", { mode: "text" }),
   impersonatedBy: text("impersonatedBy"),
   createdAt: integer("createdAt", { mode: "timestamp" })
     .notNull()
@@ -48,7 +50,12 @@ export const account = createTable("account", {
   providerId: text("providerId").notNull(),
   accessToken: text("accessToken"),
   refreshToken: text("refreshToken"),
-  expiresAt: integer("expiresAt", { mode: "timestamp" }).notNull(),
+  accessTokenExpiresAt: integer("refreshTokenExpiresAt", {
+    mode: "timestamp",
+  }),
+  refreshTokenExpiresAt: integer("refreshTokenExpiresAt", {
+    mode: "timestamp",
+  }),
   password: text("password"),
   createdAt: integer("createdAt", { mode: "timestamp" })
     .notNull()
