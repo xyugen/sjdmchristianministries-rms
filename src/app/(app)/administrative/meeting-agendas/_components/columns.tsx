@@ -28,7 +28,9 @@ export const columns: ColumnDef<meetingAgendas>[] = [
     accessorKey: "startTime",
     header: "Start Time",
     cell: ({ getValue }) => {
-      const rawDate = new Date(getValue() as string);
+      const value = getValue() as string;
+      if (!value) return "";
+      const rawDate = new Date(value);
       const formattedDate = rawDate.toLocaleTimeString("en-US", {
         hour: "2-digit",
         minute: "2-digit",
@@ -40,7 +42,9 @@ export const columns: ColumnDef<meetingAgendas>[] = [
     accessorKey: "endTime",
     header: "End Time",
     cell: ({ getValue }) => {
-      const rawDate = new Date(getValue() as string);
+      const value = getValue() as string;
+      if (!value) return "";
+      const rawDate = new Date(value);
       const formattedDate = rawDate.toLocaleTimeString("en-US", {
         hour: "2-digit",
         minute: "2-digit",

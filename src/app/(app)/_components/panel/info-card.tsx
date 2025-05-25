@@ -34,13 +34,13 @@ export const InfoCard = () => {
               </div>
             )}
           </div>
-          <p className="mt-2 text-sm font-normal text-gray-400">
+          <div className="mt-2 text-sm font-normal text-gray-400">
             {isOfferingLoading ? (
               <Skeleton className="h-4 w-16 animate-pulse rounded bg-gray-300" />
             ) : (
               "This weeks amount"
             )}
-          </p>
+          </div>
         </CardContent>
       </Card>
 
@@ -64,13 +64,13 @@ export const InfoCard = () => {
               </div>
             )}
           </div>
-          <p className="mt-2 text-sm font-normal text-gray-400">
+          <div className="mt-2 text-sm font-normal text-gray-400">
             {isDonationsLoading ? (
               <Skeleton className="h-4 w-16 animate-pulse rounded bg-gray-300" />
             ) : (
               "This weeks amount"
             )}
-          </p>
+          </div>
         </CardContent>
       </Card>
 
@@ -94,13 +94,13 @@ export const InfoCard = () => {
               </div>
             )}
           </div>
-          <p className="mt-2 text-sm font-normal text-gray-400">
+          <div className="mt-2 text-sm font-normal text-gray-400">
             {isPledgesLoading ? (
               <Skeleton className="h-4 w-16 animate-pulse rounded bg-gray-300" />
             ) : (
               "This weeks amount"
             )}
-          </p>
+          </div>
         </CardContent>
       </Card>
     </div>
