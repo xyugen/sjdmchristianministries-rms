@@ -1,3 +1,4 @@
+"use client";
 import {
   Table,
   TableBody,
@@ -7,6 +8,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { api } from "@/trpc/react";
+import { format } from "date-fns/format";
 
 export interface MeetingAgenda {
   id: string;
@@ -21,9 +24,9 @@ interface MeetingAgendaTableProps {
   agendas: MeetingAgenda[];
 }
 
-const MeetingAgendaTable = ({
-  agendas,
-}: MeetingAgendaTableProps) => {
+const MeetingAgendaTable = () => {
+  const meetingAgendas = api.administrative.getAllMeetingAgendas.useQuery();
+  const agendas = meetingAgendas.data || [];
   return (
     <Card className="rounded-sm shadow-none">
       <CardHeader>
@@ -40,12 +43,20 @@ const MeetingAgendaTable = ({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {agendas.map((agenda) => (
+            {agendas.slice(0, 5).map((agenda, index) => (
               <TableRow key={agenda.id} className="border-b border-gray-200">
-                <TableCell className="py-3">{agenda.date}</TableCell>
-                <TableCell className="py-3">{agenda.title}</TableCell>
-                <TableCell className="py-3">{agenda.presiding}</TableCell>
-                <TableCell className="py-3">{`${agenda.startTime} – ${agenda.endTime}`}</TableCell>
+                <TableCell className="py-3">
+                  {format(agenda.meetingDate, "yyyy-MM-dd")}
+                </TableCell>
+                <TableCell className="py-3">{agenda.agenda}</TableCell>
+                <TableCell className="py-3">
+                  {agenda.presidingOfficer}
+                </TableCell>
+                <TableCell className="py-3">
+                  {agenda.startTime && agenda.endTime
+                    ? `${agenda.startTime} – ${agenda.endTime}`
+                    : "No date selected"}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -53,6 +64,6 @@ const MeetingAgendaTable = ({
       </CardContent>
     </Card>
   );
-}
+};
 
 export default MeetingAgendaTable;
