@@ -3,7 +3,7 @@
  ******************************************/
 
 import { DOCUMENT_ORIGIN, DOCUMENT_TYPE } from "@/constants/document";
-import { int, text } from "drizzle-orm/sqlite-core";
+import { blob, int, text } from "drizzle-orm/sqlite-core";
 import { createTable } from "../table";
 import { employee } from "./human-resource";
 
@@ -18,8 +18,15 @@ export const legalDocuments = createTable("legal_documents", {
   documentType: text("document_type", { enum: DOCUMENT_TYPE }).notNull(),
   documentNumber: text("document_number", { mode: "text" }),
   documentOrigin: text("document_origin", { enum: DOCUMENT_ORIGIN }).notNull(),
-  issuerId: text("issuer_id", { mode: "text" })
-    .references(() => employee.id, { onDelete: "cascade" }),
+  issuerId: text("issuer_id", { mode: "text" }).references(() => employee.id, {
+    onDelete: "cascade",
+  }),
+  documentFileId: text("document_file_id", { mode: "text" }).references(
+    () => legalDocumentFiles.id,
+    {
+      onDelete: "cascade",
+    },
+  ),
   issueDate: int("issue_date", { mode: "timestamp" }).notNull(),
   expiryDate: int("expiry_date", { mode: "timestamp" }),
 });
@@ -32,4 +39,11 @@ export const meetingAgendas = createTable("meeting_agendas", {
   presidingOfficer: text("presiding_officer", { mode: "text" }).notNull(),
   agenda: text("agenda").notNull(),
   summary: text("summary"),
+});
+
+export const legalDocumentFiles = createTable("legal_document_files", {
+  id: text("id").primaryKey(),
+  fileName: text("file_name", { mode: "text" }).notNull(),
+  file: blob("file", { mode: "buffer" }).notNull(),
+  isTemporary: int("is_temporary", { mode: "boolean" }).default(true),
 });

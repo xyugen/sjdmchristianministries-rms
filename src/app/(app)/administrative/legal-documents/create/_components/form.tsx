@@ -49,10 +49,15 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { type z } from "zod";
 import { createDocumentSchema } from "./schema";
+import { useRouter } from "next/navigation";
+import { PageRoutes } from "@/constants/page-routes";
 
 const CreateDocumentForm = () => {
   const { mutateAsync, isPending } =
     api.administrative.createLegalDocument.useMutation();
+
+  const { mutateAsync: mutateAsyncUpload, isPending: isPendingUpload } =
+    api.administrative.uploadLegalDocumentFile.useMutation();
 
   const { data: employees, isLoading: isEmployeesLoading } =
     api.humanResource.getAllEmployees.useQuery();
@@ -60,6 +65,7 @@ const CreateDocumentForm = () => {
   const form = useForm<z.infer<typeof createDocumentSchema>>({
     resolver: zodResolver(createDocumentSchema),
   });
+  const router = useRouter();
 
   const onSubmit = async (values: z.infer<typeof createDocumentSchema>) => {
     const toastId = toast.loading("Adding document...");
@@ -70,6 +76,7 @@ const CreateDocumentForm = () => {
       if (response?.lastInsertRowid) {
         toast.success("Document added successfully!", { id: toastId });
         form.reset();
+        router.push(PageRoutes.LEGAL_DOCUMENTS);
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -272,6 +279,7 @@ const CreateDocumentForm = () => {
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="expiryDate"
@@ -316,6 +324,89 @@ const CreateDocumentForm = () => {
                     <FormDescription>
                       Leave empty if the document does not expire
                     </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="documentFileId"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Attachment File</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="file"
+                        accept=".pdf"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
+
+                          const toastId = toast.loading(
+                            "Uploading document...",
+                          );
+
+                          if (file.type !== "application/pdf") {
+                            toast.error(
+                              "Invalid file type. Please upload a PDF file.",
+                              {
+                                id: toastId,
+                              },
+                            );
+                            return;
+                          }
+
+                          const formData = new FormData();
+                          formData.append("file", file);
+
+                          try {
+                            const response = await mutateAsyncUpload(formData);
+
+                            if (response) {
+                              field.onChange(response);
+                              toast.success("Document added successfully!", {
+                                id: toastId,
+                              });
+                            } else {
+                              toast.error(
+                                "Failed to upload document. Please try again.",
+                                {
+                                  id: toastId,
+                                },
+                              );
+                              console.error("Upload failed:", response);
+                            }
+                          } catch (err) {
+                            toast.error(
+                              "Failed to upload document. Please try again.",
+                              {
+                                id: toastId,
+                              },
+                            );
+                            console.error("Error uploading file:", err);
+                          }
+                        }}
+                        disabled={isPendingUpload}
+                      />
+                    </FormControl>
+
+                    {field.value && (
+                      <>
+                        <div className="mt-1 text-sm text-muted-foreground">
+                          File ID: {field.value}
+                        </div>
+                        <Button
+                          variant="outline"
+                          className="mt-1 w-full"
+                          onClick={() => field.onChange(undefined)}
+                        >
+                          Clear
+                          <X className="ml-2 h-4 w-4 opacity-50" />
+                        </Button>
+                      </>
+                    )}
+
                     <FormMessage />
                   </FormItem>
                 )}

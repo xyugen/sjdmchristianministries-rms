@@ -13,9 +13,17 @@ import {
 } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 
-export function TimePickerDemo() {
-  const [date, setDate] = React.useState<Date | undefined>();
+interface TimePickerProps {
+  date: Date | null | undefined;
+  setDate: (date: Date | null | undefined) => void;
+  placeholder: string;
+}
 
+const TimePicker: React.FC<TimePickerProps> = ({
+  date,
+  setDate,
+  placeholder,
+}) => {
   const minuteRef = React.useRef<HTMLInputElement>(null);
   const hourRef = React.useRef<HTMLInputElement>(null);
   const [hour, setHour] = React.useState<string>(
@@ -109,7 +117,7 @@ export function TimePickerDemo() {
           )}
         >
           <Clock className="mr-2 h-4 w-4" />
-          {date ? format(date, "hh:mm a") : "Select time"}
+          {date ? format(date, "hh:mm a") : placeholder}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-4">
@@ -155,4 +163,6 @@ export function TimePickerDemo() {
       </PopoverContent>
     </Popover>
   );
-}
+};
+
+export default TimePicker;

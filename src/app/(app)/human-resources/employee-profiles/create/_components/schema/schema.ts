@@ -9,7 +9,7 @@ export const employeeFormSchema = z.object({
   role: z.enum(ROLES, {
     required_error: "Please select a role",
   }),
-  emailVerified: z.boolean().default(false),
+  emailVerified: z.boolean().default(false).nullish(),
   birthDate: z.date({
     required_error: "Birth date is required",
   }),

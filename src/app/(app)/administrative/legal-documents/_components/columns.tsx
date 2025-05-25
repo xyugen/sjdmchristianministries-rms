@@ -14,31 +14,11 @@ import { DataTableRowActions } from "./table-row-actions";
 
 type LegalDocument = InferSelectModel<typeof legalDocumentsTable> & {
   employeeName: string;
+  documentFileId: string | null;
+  documentFileName: string | null;
 };
 
 export const columns: ColumnDef<LegalDocument>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
   {
     accessorKey: "id",
     enableHiding: true,
@@ -90,6 +70,14 @@ export const columns: ColumnDef<LegalDocument>[] = [
       const formattedDate = rawDate.toLocaleDateString("en-US");
       return formattedDate;
     },
+  },
+  {
+    accessorKey: "documentFileId",
+    header: undefined,
+  },
+  {
+    accessorKey: "documentFileName",
+    header: undefined,
   },
   {
     accessorKey: "actions",
