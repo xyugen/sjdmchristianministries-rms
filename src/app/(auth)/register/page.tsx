@@ -1,13 +1,13 @@
 import Logo from "@/assets/images/logo.jpg";
-import { PageRoutes } from "@/constants/page-routes";
-import { api } from "@/trpc/server";
 import { type Metadata } from "next";
 import Image from "next/image";
+import RegisterForm from "./_components/form";
+import { api } from "@/trpc/server";
+import { PageRoutes } from "@/constants/page-routes";
 import { redirect } from "next/navigation";
-import LoginForm from "./_components/form";
 
 export const metadata: Metadata = {
-  title: "Login",
+  title: "Register",
 };
 
 const Page = async () => {
@@ -18,8 +18,8 @@ const Page = async () => {
     return <div>Error occurred while fetching user count</div>;
   }
 
-  if (userCount < 1) {
-    redirect(PageRoutes.REGISTER);
+  if (userCount >= 1) {
+    redirect(PageRoutes.LOGIN);
   }
 
   return (
@@ -39,10 +39,10 @@ const Page = async () => {
       </div>
 
       <h3 className="text-center text-lg font-semibold text-foreground sm:text-xl">
-        Please sign in to your account
+        Please create an admin account
       </h3>
 
-      <LoginForm />
+      <RegisterForm />
     </div>
   );
 };
